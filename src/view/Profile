@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.ProgressBar?>
+<?import javafx.scene.control.SplitPane?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.layout.AnchorPane?>
+
+<AnchorPane prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/8.0.121" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.Profile">
+   <children>
+      <SplitPane dividerPositions="0.29797979797979796" layoutX="12.0" layoutY="84.0" prefHeight="265.0" prefWidth="582.0">
+        <items>
+          <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="160.0" prefWidth="100.0">
+               <children>
+                  <TextField layoutX="11.0" layoutY="25.0" />
+                  <TextField layoutX="11.0" layoutY="72.0" />
+                  <TextField layoutX="11.0" layoutY="119.0" />
+                  <TextField layoutX="11.0" layoutY="169.0" />
+                  <TextField layoutX="11.0" layoutY="213.0" />
+                  <Label layoutX="58.0" layoutY="6.0" text="Username" />
+                  <Label layoutX="58.0" layoutY="55.0" text="Password" />
+                  <Label layoutX="67.0" layoutY="102.0" text="E-mail" />
+                  <Label layoutX="67.0" layoutY="152.0" text="Nome" />
+                  <Label layoutX="57.0" layoutY="194.0" text="Cognome" />
+               </children>
+            </AnchorPane>
+          <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="262.0" prefWidth="398.0">
+               <children>
+                  <Button layoutX="285.0" layoutY="224.0" mnemonicParsing="false" text="Carica Immagine" />
+               </children>
+            </AnchorPane>
+        </items>
+      </SplitPane>
+      <Label layoutX="28.0" layoutY="24.0" prefHeight="40.0" prefWidth="90.0" text="JLibrary" textAlignment="CENTER" />
+      <ProgressBar layoutX="213.0" layoutY="35.0" prefWidth="200.0" progress="0.0" />
+      <Label layoutX="211.0" layoutY="16.0" prefHeight="17.0" prefWidth="102.0" text="USERNAME DA DB" />
+      <Label layoutX="130.0" layoutY="36.0" text="Livello Account" />
+   </children>
+</AnchorPane>
