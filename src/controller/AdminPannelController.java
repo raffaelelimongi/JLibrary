@@ -15,7 +15,8 @@ import javafx.stage.Stage;
 
 import java.net.URL;
 
-public class AdminPannelController {
+public class AdminPannelController 
+{
 
 
     @FXML
@@ -46,7 +47,8 @@ public class AdminPannelController {
     public ComboBox<String> cbricerca;
     ObservableList<String> List = FXCollections.observableArrayList("User", "Supervisor", "Trascriber");
 
-    public void initialize() {
+    public void initialize() 
+    {
         cbricerca.setItems(List);
     }
 
@@ -55,7 +57,8 @@ public class AdminPannelController {
         label22.setText ( cbricerca.getValue());
     }
 
-    public void gotoHome(ActionEvent event) throws Exception {
+    public void gotoHome(ActionEvent event) throws Exception 
+    {
         Stage stage4;
         Parent home4;
 
@@ -69,7 +72,8 @@ public class AdminPannelController {
         stage4.show();
 
     }
-    public void gotoProfile(ActionEvent event) throws Exception {
+    public void gotoProfile(ActionEvent event) throws Exception 
+    {
         Stage stage1;
         Parent home1;
 
