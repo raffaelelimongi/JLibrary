@@ -57,19 +57,6 @@ CREATE TABLE `immagine` (
   `image` longblob NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
---
--- Dump dei dati per la tabella `immagine`
---
-
-INSERT INTO `immagine` (`ID`, `nome`, `formato`, `image`) VALUES
-(1, 'clusone-foppolo_nugo.jpg', '.jpg', 0x6a6176612e696f2e46696c65496e70757453747265616d403561373833383165),
-(2, 'stemma juve.jpg', '.jpg', 0x6a6176612e696f2e46696c65496e70757453747265616d403662643533626233),
-(4, 'juventus-campionato-apice-vettore_91-2147487401.jpg', '.jpg', 0x6a6176612e696f2e46696c65496e70757453747265616d403439316137346631),
-(8, 'adidas-water-drops-wallpaper.png', '.jpg', 0x6a6176612e696f2e46696c65496e70757453747265616d4031643130613435),
-(9, 'SofaScore-logo-e1393309495507.png', '.jpg', 0x6a6176612e696f2e46696c65496e70757453747265616d403334326166316534),
-(10, 'pjaca.jpg', '.jpg', 0x6a6176612e696f2e46696c65496e70757453747265616d403535373732616236),
-(11, 'borsastudio.png', '.jpg', 0x6a6176612e696f2e46696c65496e70757453747265616d403439303936616131);
-
 -- --------------------------------------------------------
 
 --
