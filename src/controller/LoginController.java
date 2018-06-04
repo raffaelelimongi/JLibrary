@@ -1,10 +1,8 @@
 package controller;
 
-import vo.*;
 import dao.*;
 import model.*;
 import javafx.event.ActionEvent;
-
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
@@ -13,14 +11,13 @@ import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import javafx.stage.Stage;
-
 import java.io.IOException;
 import java.sql.*;
-import java.util.concurrent.TimeUnit;
-
-public class LoginController {
 
 
+
+public class LoginController
+{
 
     @FXML
     public TextField textusername;
@@ -29,67 +26,67 @@ public class LoginController {
     public TextField textpassword;
 
     @FXML
-    private Button bt1;
+    private Button btlogin;
 
     @FXML
     private Label result;
 
     @FXML
-    private Button signup;
+    private Button btsignup;
 
+    private static String username;
 
-    UserModel userModel = new UserModel("","","");
+   // public  UserModel userModel = new UserModel("","",true,"",0,true,"","","");
 
-    public void Login (ActionEvent event) throws Exception {
+    public LoginController()
+    {
+    }
 
-        userModel.setUsername(textusername.getText());
-        userModel.setPassword(textpassword.getText());
+    public void Login (ActionEvent event) throws Exception
+    {
+       //setUser(textusername.getText());
         try {
 
+            ResultSet resultSet = (ResultSet)  new UserAuthenticationQuery().UserAuthenticationQuery(textusername.getText(),textpassword.getText());
 
-            /*String user=""+textusername.getText()+"";
-            String pass=""+textpassword.getText()+"";*/
-
-            ResultSet resultSet = (ResultSet)  new UserAuthenticationQuery().UserAuthenticationQuery1(userModel.getUsername(), userModel.getPassword());
-
-            if(resultSet.next()){
-
-                Stage stage;
-                Parent home;
-
-                stage =(Stage) bt1.getScene().getWindow();
-                home = FXMLLoader.load(getClass().getResource("home.fxml"));
-
-                Scene homescene = new Scene(home);
-                stage.setScene(homescene);
-                stage.setTitle("HomePage");
-
-                stage.show();
-
+            if(resultSet.next())
+            {
+                //userModel= new UserInfoQuery().UserInfoQuery(textusername.getText(),userModel);
+                new UserInfoQuery().UserInfoQuery(textusername.getText());
+                new HomePageController().setscene(event);
             }
             else {
-                result.setText("autenticazione fallita");
+                result.setText("Username or password invalid");
             }
-
-
         }catch (SQLException e) {
             e.printStackTrace();
         }
-
     }
-    public void gotosignup(ActionEvent event) throws IOException {
+
+    public void gotosignup(ActionEvent event) throws IOException
+    {
 
         Stage stage;
         Parent home;
 
-        stage =(Stage) signup.getScene().getWindow();
-        home = FXMLLoader.load(getClass().getResource("signup.fxml"));
+        stage =(Stage) btsignup.getScene().getWindow();
+        home = FXMLLoader.load(getClass().getResource("../view/signup.fxml"));
 
         Scene homescene = new Scene(home);
         stage.setScene(homescene);
         stage.setTitle("SignUp");
 
         stage.show();
-
     }
+
+  /*  public String getuser()
+    {
+       return username;
+    }*/
+
+  /*  public void setUser(String user)
+    {
+        username = user;
+    }*/
+
 }
