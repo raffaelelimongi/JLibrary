@@ -1,0 +1,29 @@
+package dao;
+
+import java.sql.Connection;
+import java.sql.SQLException;
+import java.sql.Statement;
+
+public class ProfileQuery
+{
+
+    public ProfileQuery()
+    {
+
+
+    }
+
+    public int ProfileQuery1(String user, String pass, String nome, String cognome, String email) throws SQLException {
+
+
+        ConnectionClass connectionClass = new ConnectionClass();
+        Connection connection = connectionClass.getConnection();
+        Statement statement = connection.createStatement();
+
+               String sql = "UPDATE utente SET (username,password,email,nome,cognome) VALUES ('"
+               + user + "', '" + pass + "', '" + email + "' , '" + nome + "' , '" + cognome + "')";
+
+        return statement.executeUpdate(sql);
+
+    }
+}
