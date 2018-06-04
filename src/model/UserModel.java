@@ -1,20 +1,36 @@
 package model;
 
 import vo.UserInfo;
-public class UserModel extends UserInfo {
 
-    private String username;
+import java.util.Iterator;
+
+//Classe contenente tutti i dati principali dell'Utente iscritto
+public class UserModel extends UserInfo 
+{
+    private  String username;
     private String password;
     private boolean vip;
     private String privilegio;
     private Integer livello;
-    private Boolean Trascrittore;
+    private Boolean trascrittore;
 
-    public UserModel(String n,String c, String e)
+    private static final UserModel instance = new UserModel("","",false,"",0,false,"","","");
+
+    private UserModel(String user, String pass, Boolean vip, String privilegio, Integer liv, Boolean trascrittore, String n, String c, String e)
     {
-        super(n,c,e);
+        super(n, c, e);
+        this.username = user;
+        this.password = pass;
+        this.vip = vip;
+        this.privilegio = privilegio;
+        this.livello = liv;
+        this.trascrittore = trascrittore;
     }
 
+    public static UserModel getInstance()
+    {
+        return instance;
+    }
     public String getUsername() {
         return username;
     }
@@ -36,12 +52,13 @@ public class UserModel extends UserInfo {
     }
 
     public Boolean getTrascrittore() {
-        return Trascrittore;
+        return trascrittore;
     }
 
     public void setUsername(String username) {
         this.username = username;
     }
+
     public void setPassword(String password) {
         this.password = password;
     }
@@ -59,6 +76,7 @@ public class UserModel extends UserInfo {
     }
 
     public void setTrascrittore(Boolean trascrittore) {
-        Trascrittore = trascrittore;
+        this.trascrittore = trascrittore;
     }
+
 }
