@@ -1,4 +1,4 @@
-ppackage controller;
+package controller;
 
 import com.jfoenix.controls.JFXButton;
 import dao.SearchOperaQuery;
