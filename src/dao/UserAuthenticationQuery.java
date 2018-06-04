@@ -11,9 +11,10 @@ public class UserAuthenticationQuery implements UserDaoInterface
 {
     public UserAuthenticationQuery()
     {
-        
+
     }
 
+    @Override
     public ResultSet UserAuthenticationQuery(String username1,String password1) throws SQLException
     {
 
