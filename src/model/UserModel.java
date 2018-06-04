@@ -35,47 +35,58 @@ public class UserModel extends UserInfo
         return username;
     }
 
-    public String getPassword() {
+    public String getPassword() 
+    {
         return password;
     }
 
-    public boolean isVip() {
+    public boolean isVip() 
+    {
         return vip;
     }
 
-    public String getPrivilegio() {
+    public String getPrivilegio() 
+    {
         return privilegio;
     }
 
-    public Integer getLivello() {
+    public Integer getLivello() 
+    {
         return livello;
     }
 
-    public Boolean getTrascrittore() {
+    public Boolean getTrascrittore() 
+    {
         return trascrittore;
     }
 
-    public void setUsername(String username) {
+    public void setUsername(String username) 
+    {
         this.username = username;
     }
 
-    public void setPassword(String password) {
+    public void setPassword(String password) 
+    {
         this.password = password;
     }
 
-    public void setVip(boolean vip) {
+    public void setVip(boolean vip)
+    {
         this.vip = vip;
     }
 
-    public void setPrivilegio(String privilegio) {
+    public void setPrivilegio(String privilegio) 
+    {
         this.privilegio = privilegio;
     }
 
-    public void setLivello(Integer livello) {
+    public void setLivello(Integer livello) 
+    {
         this.livello = livello;
     }
 
-    public void setTrascrittore(Boolean trascrittore) {
+    public void setTrascrittore(Boolean trascrittore) 
+    {
         this.trascrittore = trascrittore;
     }
 
