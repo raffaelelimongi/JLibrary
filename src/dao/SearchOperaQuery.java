@@ -1,38 +1,43 @@
 package dao;
 
 import dao.Interface.SearchOperaInterface;
-import java.sql.Connection;
-import java.sql.ResultSet;
-import java.sql.SQLException;
-import java.sql.Statement;
 
-import static com.sun.tools.doclint.Entity.and;
+import java.sql.*;
 
 public class SearchOperaQuery implements SearchOperaInterface
 {
+    PreparedStatement ps;
     public void SearchOperaQuery()
     {
 
     }
+    public ResultSet SearchOperaQueryKeyword(String keyword) throws SQLException
+    {
+        ConnectionClass connectionClass = new ConnectionClass();
+        Connection connection = connectionClass.getConnection();
+        String sql ="SELECT titolo,autore,c.nome FROM opera join categoria c ON (opera.IDcategoria=c.ID) WHERE TITOLO LIKE ?";
+        ps = connection.prepareStatement(sql);
+        ps.setString(1,"%"+keyword+"%");
+        ResultSet resultSet = ps.executeQuery();
+        return resultSet;
+    }
 
     public ResultSet SearchOperaQueryGeneral(String keyword, String kind) throws SQLException
     {
-        OperaInfoQuery.ConnectionClass connectionClass = new OperaInfoQuery.ConnectionClass();
+        ConnectionClass connectionClass = new ConnectionClass();
         Connection connection = connectionClass.getConnection();
-        Statement statement = connection.createStatement();
-
-
 
         String sql = "SELECT" + " titolo,autore,c.nome, IDcategoria " +
                 "FROM opera join categoria c ON (opera.IDcategoria=c.ID) " +
-                "WHERE TITOLO LIKE'%" + keyword + "%'" +
-                "AND c.nome LIKE '" + kind + "'";
+                "WHERE TITOLO LIKE ?" +
+                "AND c.nome LIKE ?";
+        ps = connection.prepareStatement(sql);
+        ps.setString(1,"%"+keyword+"%");
+        ps.setString(2,"%"+kind+"%");
 
-        ResultSet resultSet = statement.executeQuery(sql);
+        ResultSet resultSet = ps.executeQuery();
 
         return resultSet;
     }
 
 }
-
-
