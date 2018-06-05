@@ -3,7 +3,6 @@ package controller;
 import com.jfoenix.controls.JFXButton;
 import dao.Interface.SearchOperaInterface;
 import dao.SearchOperaQuery;
-import dao.UserInfoQuery;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
@@ -17,8 +16,6 @@ import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.stage.Stage;
 import vo.OperaMetadati;
-import vo.UserInfo;
-
 import java.io.IOException;
 import java.net.URL;
 import java.sql.ResultSet;
@@ -80,25 +77,29 @@ public class HomePageController implements Initializable
     }
     public void search() throws SQLException, IOException
     {
+        String keywords2;
+        String kind2;
         OperaMetadati operadati = new OperaMetadati("","","");
         txtsearch.setPromptText("");
-        if(1==1)       //controllo che nella choisebox sia stato scelto il filtro Horror
+        
+        oblist.removeAll(oblist);
+        if(cbfilter.getValue().equals(""))       //controllo che la choisebox sia vuota per cercare solo tramite keyword
         {
-            String kind2= cbfilter.getValue();
-            String keywords2 = txtsearch.getText(); //Rimuovo tutte le eventuali e precedenti ricerche
+            keywords2 = txtsearch.getText();
+
             if (!keywords2.equals(""))
             {
-                ResultSet resultSet = (ResultSet) searchOperaInterface.SearchOperaQueryGeneral(keywords2,kind2);
+                keywords2=txtsearch.getText();
+                ResultSet resultSet = searchOperaInterface.SearchOperaQueryKeyword(keywords2);
                 while (resultSet.next())
                 {
                     //setto le variabili con le informazioni presenti nel DB e le passo al metodo setTable
                     autore = resultSet.getString("autore");
                     titolo = resultSet.getString("titolo");
                     genere = resultSet.getString("c.nome");
-                    if(!operadati.getTitolo().equals(titolo) || !operadati.getAutore().equals(autore))
-                    {
-                        setTable(titolo, autore, genere);
-                    }
+
+                    setTable(titolo, autore, genere);
+
                     operadati.setTitolo(titolo);
                     operadati.setAutore(autore);
                     operadati.setGenere(genere);
@@ -108,6 +109,27 @@ public class HomePageController implements Initializable
                 {
                 txtsearch.setPromptText("Inserire almeno una lettera!");
                 }
+        }
+        else
+        {
+            keywords2 = txtsearch.getText();
+            kind2 = cbfilter.getValue();
+
+            ResultSet resultSet = searchOperaInterface.SearchOperaQueryGeneral(keywords2,kind2);
+
+            while (resultSet.next())
+            {
+                //setto le variabili con le informazioni presenti nel DB e le passo al metodo setTable
+                autore = resultSet.getString("autore");
+                titolo = resultSet.getString("titolo");
+                genere = resultSet.getString("c.nome");
+
+                setTable(titolo, autore, genere);
+
+                operadati.setTitolo(titolo);
+                operadati.setAutore(autore);
+                operadati.setGenere(genere);
+            }
         }
         txtsearch.clear();
     }
@@ -146,7 +168,7 @@ public class HomePageController implements Initializable
     {
         GestioneUserController.GestioneUserController(event);
     }
-    public void gototrascrizione(ActionEvent event) throws SQLException
+    public void gototrascrizione(ActionEvent event) throws SQLException, IOException
     {
         new TrascrizioneController().setScene(event);
     }
@@ -156,8 +178,8 @@ public class HomePageController implements Initializable
     @Override
     public void initialize(URL location, ResourceBundle resources)
     {
-        cbfilter.getItems().addAll("horror","fantasy","historical", "crime", "action", "adventure", "drama");
-        cbfilter.setValue("horror");
+        cbfilter.getItems().addAll("","horror","fantasy","historical", "crime", "action", "adventure", "drama");
+        cbfilter.setValue("");
 
         col_titolo.setCellValueFactory(new PropertyValueFactory<>("titolo"));
         col_autore.setCellValueFactory(new PropertyValueFactory<>("autore"));
