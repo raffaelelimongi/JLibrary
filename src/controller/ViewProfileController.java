@@ -22,34 +22,14 @@ import java.util.ResourceBundle;
 
 public class ViewProfileController implements Initializable {
     @FXML
-    private TextField txtuser;
+    private TextField txtuser,txtemail,txtnome,txtcognome;
     @FXML
     private PasswordField txtpass;
     @FXML
-    private TextField txtemail;
+    private Label lbresult,lblevel,lbtrascrittore,lbvip,lbtxtvip,textlbtrasc,lbprivilegio;
     @FXML
-    private TextField txtnome;
-    @FXML
-    private TextField txtcognome;
-    @FXML
-    private Label lbresult;
-    @FXML
-    private Label lblevel;
-    @FXML
-    private Label lbtrascrittore;
-    @FXML
-    private Label lbvip;
-    @FXML
-    private Button btvip;
-    @FXML
-    private Label lbtxtvip;
-    @FXML
-    private Label textlbtrasc;
-    @FXML
-    private Button bttrasc;
-    @FXML
-    private Label lbprivilegio;
-
+    private Button btvip,bttrasc;
+    
     UserModel userModel = UserModel.getInstance();
 
     UserInfoInterface userInfoInterface = new UserInfoQuery();
@@ -136,6 +116,14 @@ public class ViewProfileController implements Initializable {
         }
         lbtxtvip.setVisible(false);
         btvip.setVisible(false);
+    }
+
+    public void Trascrittore() throws SQLException
+    {
+        lbtrascrittore.setText("SI");
+        userInfoInterface.Trascrittore(userModel.getUsername(),1);
+        textlbtrasc.setVisible(false);
+        bttrasc.setVisible(false);
     }
 
     @Override
