@@ -138,6 +138,14 @@ public class ViewProfileController implements Initializable {
         btvip.setVisible(false);
     }
 
+    public void Trascrittore() throws SQLException
+    {
+        lbtrascrittore.setText("SI");
+        userInfoInterface.Trascrittore(userModel.getUsername(),1);
+        textlbtrasc.setVisible(false);
+        bttrasc.setVisible(false);
+    }
+
     @Override
     public void initialize(URL location, ResourceBundle resources)
     {

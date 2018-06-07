@@ -1,6 +1,5 @@
 package controller;
 
-import dao.Interface.UserDaoInterface;
 import dao.UserAuthenticationQuery;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -49,7 +48,7 @@ public class SignUpController
             {
 
                 try {
-                    UserDaoInterface userDaoInterface = new UserAuthenticationQuery();
+                    UserAuthenticationQuery userDaoInterface = new UserAuthenticationQuery();
                     //faccio una chiamata al metodo SignInQuery1 passandogli le stringhe scritte nei campi di testo grafico e metto il risultato in una variabile di tipo integer
                    // int result = new UserAuthenticationQuery().SignInQuery(txtuser.getText(), txtpass.getText(),txtname.getText(),txtsurname.getText(), txtemail.getText());
                     int result= userDaoInterface.SignInQuery(txtuser.getText(),txtpass.getText(),txtname.getText(),txtsurname.getText(), txtemail.getText());

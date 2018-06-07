@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.text.*?>
+<?import javafx.scene.image.*?>
+<?import com.jfoenix.controls.*?>
+<?import java.lang.*?>
+<?import java.util.*?>
+<?import javafx.scene.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<AnchorPane prefHeight="792.0" prefWidth="788.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.TeiEditor">
+   <children>
+      <JFXTextArea fx:id="texttrascrizione" focusColor="#0040ff" layoutY="-3.0" prefHeight="465.0" prefWidth="661.0" promptText="Scrivere qui la trascrizione!" unFocusColor="#ff0404" />
+      <VBox fx:id="vbox" layoutX="660.0" layoutY="-3.0" prefHeight="471.0" prefWidth="128.0" style="-fx-background-color: black;">
+         <children>
+            <JFXButton fx:id="btaccept" onAction="#Accept" prefHeight="119.0" prefWidth="128.0" text="Accept" textFill="WHITE" />
+            <JFXButton fx:id="btsave" onAction="#SaveText" prefHeight="119.0" prefWidth="128.0" text="SaveText" textFill="WHITE" />
+            <JFXButton fx:id="btclose" onAction="#Close" prefHeight="119.0" prefWidth="128.0" text="Close" textFill="WHITE" />
+            <JFXButton fx:id="btdecline" onAction="#Decline" prefHeight="123.0" prefWidth="128.0" text="Decline" textFill="WHITE" />
+         </children>
+      </VBox>
+      <TableView fx:id="tbwimage" layoutY="468.0" prefHeight="323.0" prefWidth="788.0">
+        <columns>
+          <TableColumn fx:id="col_image" prefWidth="787.0" text="Immagini" />
+        </columns>
+      </TableView>
+   </children>
+</AnchorPane>

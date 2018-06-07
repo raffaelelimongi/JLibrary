@@ -7,12 +7,11 @@
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
 
-
 <AnchorPane prefHeight="577.0" prefWidth="564.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.TrascrizioneController">
    <children>
       <TableView fx:id="tabletrascrizioni" prefHeight="577.0" prefWidth="460.0">
         <columns>
-          <TableColumn fx:id="col_titolo" prefWidth="367.0" text="Titolo Opera" />
+          <TableColumn fx:id="col_titolo2" prefWidth="367.0" text="Titolo Opera" />
           <TableColumn fx:id="col_link" minWidth="0.0" prefWidth="92.0" text="link" />
         </columns>
       </TableView>

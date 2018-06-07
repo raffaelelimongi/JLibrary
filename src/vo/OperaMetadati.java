@@ -10,18 +10,21 @@ public class OperaMetadati
 {
     String titolo,autore,categoria,genere;
     Date datapubb = new Date();
-   private Label view;
+    private Label view;
 
-    public OperaMetadati(String titolo, String autore, String genere) throws IOException {
+    public OperaMetadati(String titolo, String autore, String genere) throws IOException
+    {
         this.titolo = titolo;
         this.autore = autore;
         this.genere=genere;
         this.view =new Label("view");
         view.setUnderline(true);
         view.setStyle("-fx-background-color: red");
+
+        //se viene cliccato apre la finestra per la visualizzazione dell'opera
         view.setOnMouseClicked((MouseEvent mouseEvent) ->
         {
-            ViewOperaController.ViewOpera();
+            ViewOperaController.ViewOpera(this.titolo);
         });
 
     }

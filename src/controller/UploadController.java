@@ -12,7 +12,10 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.DatePicker;
+import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
 import vo.ImmagineDati;
@@ -37,8 +40,14 @@ public class UploadController implements Initializable
     private TextField txtgenere;
     @FXML
     private DatePicker date;
+    @FXML
+    private Label lblchose;
 
-   ImmagineDati imagedate = new ImmagineDati(""); //creo una istanza di immagineDati presente nel VO
+    private Image image;
+    private ImageView imageView;
+    String nome;
+
+   ImmagineDati imagedate = new ImmagineDati("",null); //creo una istanza di immagineDati presente nel VO
 
     public UploadController()
     {
@@ -61,7 +70,7 @@ public class UploadController implements Initializable
     }
 
     //metodo per la scelta e il caricamento delle immagini nel DB
-    public void choseImage() throws FileNotFoundException, SQLException
+    public void choseImage() throws IOException, SQLException
     {
         FileChooser fc = new FileChooser(); //creo un nuovo filechoser per la scelta dei file
         fc.getExtensionFilters().add(new FileChooser.ExtensionFilter("Image Files",filext)); //setto l'estensione jpg di tali file
@@ -70,21 +79,27 @@ public class UploadController implements Initializable
 
         if(f!=null)
         {
-            String nome = f.getName();
-            InputStream immagine = new FileInputStream(new File(f.getPath()));  //prendo il path dell'immagine(prendo l'immagine vera e propria) e lo metto in un inputstream
+             nome = f.getName();
+            lblchose.setText(f.getAbsolutePath());
+
+            /* 2METODO MENO EFFICENTE E SICURO MA PIU SIMILE AD UNA SITUAZIONE REALE
+            image = new Image(f.toURI().toString(),100,150,true,true);
+            imageView=new ImageView(image);
+            imageView.setFitWidth(100);
+            imageView.setFitHeight(150);
+            imageView.setPreserveRatio(true);
+            */
             imagedate.setNomeimg(nome);
 
-            UploadImageInterface uploadImageInterface= new UploadImageQuery();  //creo una nuova istanza dell'interfaccia Uploadimage
-            uploadImageInterface.UploadImageQuery(nome, immagine);              //passo il nome dell'immagine e l'immagine alla query per inserirla nel DB
+           // UploadImageInterface uploadImageInterface= new UploadImageQuery();  //creo una nuova istanza dell'interfaccia Uploadimage
+          //  uploadImageInterface.UploadImageQuery(nome, lblchose.getText());              //passo il nome dell'immagine e l'immagine alla query per inserirla nel DB
         }
     }
 
     public void Upload() throws SQLException
     {
-           String nome= imagedate.getNomeimg();
-
         OperaInfoInterface operaInfoInterface = new OperaInfoQuery();
-        operaInfoInterface.OperaInfoQuery(txtTitolo.getText(), txtautore.getText(), date.getValue(), txtgenere.getText(),nome); //invio le informazioni relative all'opera da inserire nel DB
+        operaInfoInterface.OperaInfoQuery(txtTitolo.getText(), txtautore.getText(), date.getValue(), txtgenere.getText(),nome,lblchose.getText()); //invio le informazioni relative all'opera da inserire nel DB
     }
 
     @Override

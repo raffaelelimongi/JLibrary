@@ -1,62 +1,45 @@
 package dao;
 
 import dao.Interface.SearchOperaInterface;
-import java.sql.Connection;
-import java.sql.ResultSet;
-import java.sql.SQLException;
-import java.sql.Statement;
+
+import java.sql.*;
 
 public class SearchOperaQuery implements SearchOperaInterface
 {
+    PreparedStatement ps;
+
     public void SearchOperaQuery()
     {
-
     }
-
-    public ResultSet SearchOperaQueryKeyword(String keyword) throws SQLException {
-
+    public ResultSet SearchOperaQueryGeneral(String keyword, String kind) throws SQLException
+    {
         ConnectionClass connectionClass = new ConnectionClass();
         Connection connection = connectionClass.getConnection();
-        Statement statement = connection.createStatement();
 
-        //preparo la query da inviare ed eseguire sul DB
-        String sql = "SELECT titolo,autore,c.nome FROM opera join categoria c ON (opera.IDcategoria=c.ID) WHERE TITOLO LIKE'%" + keyword + "%'" ;
+        String sql = "SELECT DISTINCT(titolo) titolo,autore,c.nome,IDcategoria,data_pubb FROM opera join categoria c ON (opera.IDcategoria=c.ID) JOIN immagine i ON(opera.ID=i.IDopera) WHERE TITOLO LIKE ? AND c.nome LIKE ? AND i.accept=?";
+        ps = connection.prepareStatement(sql);
+        ps.setString(1,"%"+keyword+"%");
+        ps.setString(2,"%"+kind+"%");
+        ps.setInt(3,1);
 
-        //ritorno il sisultato della query
-        ResultSet resultSet = statement.executeQuery(sql);
+        ResultSet resultSet = ps.executeQuery();
 
         return resultSet;
     }
 
-    public ResultSet SearchOperaQueryAutore(String keyword) throws SQLException {
-
+    public ResultSet LoadOpera(String tit) throws SQLException
+    {
         ConnectionClass connectionClass = new ConnectionClass();
         Connection connection = connectionClass.getConnection();
-        Statement statement = connection.createStatement();
+        String sql ="SELECT titolo,autore,c.nome,IDcategoria,data_pubb,op.testo,i.image,op.accept FROM opera join categoria c ON (opera.IDcategoria=c.ID) JOIN immagine i ON(opera.ID=i.IDopera) join opera_trascritta op ON(opera.IDoperatrascritta=op.ID)WHERE titolo=? AND i.accept=?";
+        ps = connection.prepareStatement(sql);
+        ps.setString(1,tit);
+        ps.setInt(2,1);
 
-        //preparo la query da inviare ed eseguire sul DB
-        String sql = "SELECT titolo,autore,c.nome FROM opera join categoria c ON (opera.IDcategoria=c.ID) WHERE autore LIKE'%" + keyword + "%'" ;
-
-        //ritorno il sisultato della query
-        ResultSet resultSet = statement.executeQuery(sql);
+        ResultSet resultSet = ps.executeQuery();
 
         return resultSet;
     }
-    public ResultSet SearchOperaQueryGenere(String keyword) throws SQLException {
-
-        ConnectionClass connectionClass = new ConnectionClass();
-        Connection connection = connectionClass.getConnection();
-        Statement statement = connection.createStatement();
-
-        //preparo la query da inviare ed eseguire sul DB
-        String sql = "SELECT titolo,autore,c.nome FROM opera join categoria c ON (opera.IDcategoria=c.ID) WHERE c.nome LIKE'%" + keyword + "%'" ;
-
-        //ritorno il sisultato della query
-        ResultSet resultSet = statement.executeQuery(sql);
-
-        return resultSet;
-    }
-
 }
 
 

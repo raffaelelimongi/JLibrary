@@ -71,7 +71,7 @@
                                 <Font size="16.0" />
                             </font>
                         </Label>
-                        <Button fx:id="bttrasc" layoutX="249.0" layoutY="218.0" mnemonicParsing="false" prefHeight="31.0" prefWidth="144.0" text="click here" />
+                        <Button fx:id="bttrasc" layoutX="249.0" layoutY="218.0" mnemonicParsing="false" onAction="#Trascrittore" prefHeight="31.0" prefWidth="144.0" text="click here" />
                     </children>
                 </AnchorPane>
             </items>

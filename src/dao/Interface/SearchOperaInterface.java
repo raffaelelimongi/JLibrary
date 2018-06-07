@@ -5,9 +5,7 @@ import java.sql.SQLException;
 
 public interface SearchOperaInterface
 {
-     ResultSet SearchOperaQueryKeyword(String keyword) throws SQLException;
+    ResultSet SearchOperaQueryGeneral(String keyword, String kind) throws SQLException;
 
-    ResultSet SearchOperaQueryAutore(String keyword) throws SQLException;
-
-    ResultSet SearchOperaQueryGenere(String keyword) throws SQLException;
+    public ResultSet LoadOpera(String tit) throws SQLException;
 }

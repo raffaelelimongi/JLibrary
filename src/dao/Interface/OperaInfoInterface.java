@@ -5,5 +5,5 @@ import java.time.LocalDate;
 
 public interface OperaInfoInterface
 {
-    void OperaInfoQuery(String titolo, String autore, LocalDate data, String genere, String nomeimmagine) throws SQLException;
+    void OperaInfoQuery(String titolo, String autore, LocalDate data, String genere, String nomeimmagine,String path) throws SQLException;
 }

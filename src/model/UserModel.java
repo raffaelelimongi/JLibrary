@@ -12,11 +12,13 @@ public class UserModel extends UserInfo
     private boolean vip;
     private String privilegio;
     private Integer livello;
-    private Boolean trascrittore;
+    private Boolean trascrittore,rictrascrittore;
 
-    private static final UserModel instance = new UserModel("","",false,"",0,false,"","","");
+    //setto la classe in questo modo per estendere il concetto di Singleton che permette l’accesso a una e una sola istanza di una specifica classe
+    private static final UserModel instance = new UserModel("","",false,"",0,false,false,"","","");
 
-    private UserModel(String user, String pass, Boolean vip, String privilegio, Integer liv, Boolean trascrittore, String n, String c, String e) {
+    private UserModel(String user, String pass, Boolean vip, String privilegio, Integer liv, Boolean trascrittore,Boolean rictrascrittore,String n, String c, String e)
+    {
         super(n, c, e);
         this.username = user;
         this.password = pass;
@@ -24,6 +26,7 @@ public class UserModel extends UserInfo
         this.privilegio = privilegio;
         this.livello = liv;
         this.trascrittore = trascrittore;
+        this.rictrascrittore=rictrascrittore;
     }
 
     public static UserModel getInstance()
@@ -78,4 +81,11 @@ public class UserModel extends UserInfo
         this.trascrittore = trascrittore;
     }
 
+    public Boolean getRictrascrittore() {
+        return rictrascrittore;
+    }
+
+    public void setRictrascrittore(Boolean rictrascrittore) {
+        this.rictrascrittore = rictrascrittore;
+    }
 }

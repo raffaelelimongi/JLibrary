@@ -1,14 +1,13 @@
 package dao;
 
-import dao.Interface.UserDaoInterface;
+import dao.Interface.UserAuthenticationInterface;
 
-import java.sql.Connection;
-import java.sql.ResultSet;
-import java.sql.SQLException;
-import java.sql.Statement;
+import java.sql.*;
 
-public class UserAuthenticationQuery implements UserDaoInterface
+public class UserAuthenticationQuery implements UserAuthenticationInterface
 {
+    PreparedStatement ps;
+
     public UserAuthenticationQuery()
     {
 
@@ -17,18 +16,19 @@ public class UserAuthenticationQuery implements UserDaoInterface
     @Override
     public ResultSet UserAuthenticationQuery(String username1,String password1) throws SQLException
     {
-
         //inizializzo la connessione al DB
         ConnectionClass connectionClass = new ConnectionClass();
         Connection connection = connectionClass.getConnection();
-        Statement statement = connection.createStatement();
 
         //preparo la query da inviare ed eseguire sul DB
-        String sql = "SELECT username,password FROM utente  WHERE  USERNAME= '"
-                + username1 + "' AND PASSWORD ='" + password1 + "'";
-
+        String sql = "SELECT username,password FROM utente  WHERE  USERNAME=? AND PASSWORD =?";
+        ps = connection.prepareStatement(sql);
+        ps.setString(1,username1);
+        ps.setString(2,password1);
+        
         //ritorno il sisultato della query
-        ResultSet resultSet = statement.executeQuery(sql);
+        ResultSet resultSet = ps.executeQuery();
+
         return resultSet;
     }
 
@@ -38,14 +38,41 @@ public class UserAuthenticationQuery implements UserDaoInterface
         //inizializzo la connessione al DB
         ConnectionClass connectionClass = new ConnectionClass();
         Connection connection = connectionClass.getConnection();
-        Statement statement = connection.createStatement();
 
-        String sql= "INSERT INTO utente(username,password,email,nome,cognome) VALUES ('"
-                +user+"','"+pass+"','"+email+"','"+nome+"','"+cognome+"')";
-        statement.executeUpdate(sql);
+        String sql= "INSERT INTO utente(username,password,email,nome,cognome) VALUES (?,?,?,?,?)";
+        ps = connection.prepareStatement(sql);
+        ps.setString(1,user);
+        ps.setString(2,pass);
+        ps.setString(3,email);
+        ps.setString(4,nome);
+        ps.setString(5,cognome);
+        ps.execute();
 
-        String sql2= "INSERT INTO ruolo(privilegio,IDutente) VALUES ('utente base',(SELECT ID FROM utente WHERE username = '"+user+"'))";
-        return statement.executeUpdate(sql2); //ritorno l'esecuzione della query
+        String sql2= "INSERT INTO ruolo(privilegio,IDutente) VALUES (?,(SELECT ID FROM utente WHERE username=?))";
+        ps = connection.prepareStatement(sql2);
+        ps.setString(1,"utente base");
+        ps.setString(2,user);
+
+        return ps.executeUpdate(); //ritorno l'esecuzione della query
     }
 
+    @Override
+   public ResultSet SingInAdminQuery(String username1, String password1) throws SQLException
+    {
+        ConnectionClass connectionClass = new ConnectionClass();
+        Connection connection = connectionClass.getConnection();
+
+        String sql= "INSERT INTO utente(username,password,email,nome,cognome) VALUES (?,?,?,?,?)";
+        ps = connection.prepareStatement(sql);
+        ps.setString(1,username1);
+        ps.setString(2,password1);
+        ps.execute();
+
+        String sql2= "INSERT INTO ruolo(privilegio,IDutente) VALUES (?,(SELECT ID FROM utente WHERE username=?))";
+        ps = connection.prepareStatement(sql2);
+        ps.setString(1,"utente base");
+        ps.setString(2,username1);
+
+        return ps.executeQuery(); //ritorno l'
+    }
 }

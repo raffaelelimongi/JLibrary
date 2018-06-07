@@ -1,9 +1,7 @@
 package controller;
 
 import dao.*;
-import dao.Interface.UserDaoInterface;
 import dao.Interface.UserInfoInterface;
-import model.*;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -48,7 +46,7 @@ public class LoginController
     {
        //setUser(textusername.getText());
         try {
-            UserDaoInterface userDaoInterface = new UserAuthenticationQuery();
+            UserAuthenticationQuery userDaoInterface = new UserAuthenticationQuery();
             UserInfoInterface userInfoInterface = new UserInfoQuery();
 
             ResultSet resultSet = (ResultSet)  userDaoInterface.UserAuthenticationQuery(textusername.getText(),textpassword.getText());

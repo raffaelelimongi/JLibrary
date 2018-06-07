@@ -1,76 +1,96 @@
 package dao;
 
-import dao.Interface.UserDaoInterface;
 import dao.Interface.UserInfoInterface;
 import model.UserModel;
 
-import java.sql.Connection;
-import java.sql.ResultSet;
-import java.sql.SQLException;
-import java.sql.Statement;
+import java.sql.*;
 
 public class UserInfoQuery implements UserInfoInterface
 {
+    ConnectionClass connectionClass = new ConnectionClass();
+    Connection connection = connectionClass.getConnection();
+    PreparedStatement st;
     public UserInfoQuery()
     {
     }
 
-    public void UserInfoQuery(String user) throws SQLException
+    public ResultSet UserInfoQuery(String user) throws SQLException
     {
-        ConnectionClass connectionClass = new ConnectionClass();
-        Connection connection = connectionClass.getConnection();
-        Statement statement = connection.createStatement();
 
         //preparo la query da inviare ed eseguire sul DB
-        String sql = "SELECT username,password,email,nome,cognome,livello,trascrittore,vip,privilegio FROM utente,ruolo where username='"+user+"'";
-
+        String sql = "SELECT username,password,email,nome,cognome,livello,trascrittore,vip,r.privilegio FROM utente u JOIN ruolo r ON u.ID=r.IDutente where u.username=?";
+        st = connection.prepareStatement(sql);
+        st.setString(1,user);
         //ritorno il sisultato della query
-        ResultSet resultSet = statement.executeQuery(sql);
+        ResultSet resultSet = st.executeQuery();
+
         while(resultSet.next())
         {
-           // userModel= new UserModel(resultSet.getString("username"),resultSet.getString("password"),
-                  //  resultSet.getBoolean("vip"), resultSet.getString("privilegio"), resultSet.getInt("livello"),
-                    //resultSet.getBoolean("trascrittore"), resultSet.getString("nome"), resultSet.getString("cognome"), resultSet.getString("email"));
             UserModel usermodel = UserModel.getInstance();
             usermodel.setUsername(resultSet.getString("username"));
             usermodel.setPassword(resultSet.getString("password"));
             usermodel.setVip(resultSet.getBoolean("vip"));
-            usermodel.setPrivilegio(resultSet.getString("privilegio"));
+            usermodel.setPrivilegio(resultSet.getString("r.privilegio"));
             usermodel.setLivello(resultSet.getInt("livello"));
             usermodel.setTrascrittore(resultSet.getBoolean("trascrittore"));
             usermodel.setNome(resultSet.getString("nome"));
             usermodel.setCognome(resultSet.getString("cognome"));
             usermodel.setEmail(resultSet.getString("email"));
         }
+        return  resultSet;
     }
 
     public int UpdateInfo(String user, String pass, String email, String name, String surname) throws SQLException
     {
-        ConnectionClass connectionClass = new ConnectionClass();
-        Connection connection = connectionClass.getConnection();
-        Statement statement = connection.createStatement();
 
         //preparo la query da inviare ed eseguire sul DB
-        String sql = "UPDATE utente SET password ='"+pass+"', email='"+email+"', nome='"+name+"', cognome ='"+surname+"' WHERE username='"+user+"'";
+        String sql = "UPDATE utente SET password =?, email=?, nome=?, cognome =? WHERE username=?";
+        st =connection.prepareStatement(sql);
+        st.setString(1,pass);
+        st.setString(2,email);
+        st.setString(3,name);
+        st.setString(4,surname);
+        st.setString(5,user);
 
         //ritorno il sisultato della query
-        int resultSet = statement.executeUpdate(sql);
+        int resultSet = st.executeUpdate();
 
         UserInfoQuery(user);
+
         return resultSet;
     }
 
-    public int VipQuery(String user , int vip) throws SQLException
+    public void VipQuery(String user , int vip) throws SQLException
     {
-        ConnectionClass connectionClass = new ConnectionClass();
-        Connection connection = connectionClass.getConnection();
-        Statement statement = connection.createStatement();
 
         //preparo la query da inviare ed eseguire sul DB
-        String sql = "UPDATE utente SET vip='"+vip+"' WHERE username='"+user+"'";
-        int resultSet = statement.executeUpdate(sql);
+        String sql = "UPDATE utente SET vip=? WHERE username=?";
+        st = connection.prepareStatement(sql);
+        st.setInt(1,vip);
+        st.setString(2,user);
+        st.executeUpdate();
 
-        return resultSet;
+    }
+
+    public void Trascrittore(String user , int rictrascr) throws SQLException
+    {
+
+        //preparo la query da inviare ed eseguire sul DB
+        String sql = "UPDATE utente SET ric_trascrittore=? WHERE username=?";
+        st = connection.prepareStatement(sql);
+        st.setInt(1,rictrascr);
+        st.setString(2,user);
+        st.executeUpdate();
+    }
+
+    public ResultSet GetListUser(String key) throws SQLException {
+        String sql = "SELECT username,email,nome,cognome FROM utente WHERE username LIKE ?";
+        st = connection.prepareStatement(sql);
+        st.setString(1,"%"+key+"%");
+        //ritorno il sisultato della query
+        ResultSet resultSet = st.executeQuery();
+
+        return  resultSet;
     }
 
 }
