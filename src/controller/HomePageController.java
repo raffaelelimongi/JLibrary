@@ -155,7 +155,11 @@ public class HomePageController implements Initializable
 
     public void gotoprofile(ActionEvent event) throws SQLException
     {
-        ViewProfileController.ViewProfile(event);
+    ResultSet resultSet= userAuthenticationInterface.SingInAdminQuery(userModel.getUsername(),userModel.getUsername());
+        if (resultSet.next())
+            AdminPannelController.gotoAdmin(event);
+        else
+            ViewProfileController.ViewProfile(event);
     }
 
     public void gotochose(ActionEvent event) throws  SQLException
