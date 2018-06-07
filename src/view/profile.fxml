@@ -11,7 +11,7 @@
 <?import javafx.scene.control.TextField?>
 <?import javafx.scene.layout.AnchorPane?>
 
-<AnchorPane prefHeight="410.0" prefWidth="657.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.ViewProfileController">
+<AnchorPane prefHeight="410.0" prefWidth="657.0" style="-fx-background-color: ##ccffff;" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.ViewProfileController">
     <children>
         <SplitPane dividerPositions="0.29797979797979796" layoutX="12.0" layoutY="84.0" prefHeight="275.0" prefWidth="606.0">
             <items>
