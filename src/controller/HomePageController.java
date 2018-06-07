@@ -15,6 +15,7 @@ import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.stage.Stage;
+import model.UserModel;
 import vo.OperaMetadati;
 import java.io.IOException;
 import java.net.URL;
@@ -25,13 +26,11 @@ import java.util.ResourceBundle;
 public class HomePageController implements Initializable
 {
     @FXML
-    private JFXButton btlogout;
-    @FXML
     private TextField txtsearch;
     @FXML
     private ChoiceBox<String> cbfilter;
     @FXML
-    private Button btsearch;
+    private Button btsearch,bttrascrizione,btlogout;
     @FXML
     private TableView<OperaMetadati> tablesearch;
     @FXML
@@ -43,13 +42,14 @@ public class HomePageController implements Initializable
     @FXML
     private TableColumn<OperaMetadati,String> col_link;
 
-    private ObservableList<OperaMetadati> oblist;
+    private ObservableList<OperaMetadati> oblist;  //uso la Collection ObservableList per creare una lista di istanze di tipo OperaMetadati da inserire successivamente nella tableview
 
     public String autore;
-    public String titolo;
+    public static String titolo;
     public String genere;
 
-    OperaMetadati operaMetadati= new OperaMetadati(titolo,autore,genere);
+    UserModel user =UserModel.getInstance();
+    OperaMetadati operadati = new OperaMetadati("","","");
 
     SearchOperaInterface searchOperaInterface =new SearchOperaQuery();
 
@@ -79,18 +79,17 @@ public class HomePageController implements Initializable
     {
         String keywords2;
         String kind2;
-        OperaMetadati operadati = new OperaMetadati("","","");
         txtsearch.setPromptText("");
-        
-        oblist.removeAll(oblist);
+
+        oblist.removeAll(oblist); //ogni volta che ri-effetuo una ricerca rimuovo tutte le vecchie istanze create nella oblist
+
         if(cbfilter.getValue().equals(""))       //controllo che la choisebox sia vuota per cercare solo tramite keyword
         {
             keywords2 = txtsearch.getText();
-
             if (!keywords2.equals(""))
             {
                 keywords2=txtsearch.getText();
-                ResultSet resultSet = searchOperaInterface.SearchOperaQueryKeyword(keywords2);
+                ResultSet resultSet = searchOperaInterface.SearchOperaQueryGeneral(keywords2,cbfilter.getValue());
                 while (resultSet.next())
                 {
                     //setto le variabili con le informazioni presenti nel DB e le passo al metodo setTable
@@ -98,11 +97,11 @@ public class HomePageController implements Initializable
                     titolo = resultSet.getString("titolo");
                     genere = resultSet.getString("c.nome");
 
-                    setTable(titolo, autore, genere);
+                        setTable(titolo, autore, genere);
 
-                    operadati.setTitolo(titolo);
-                    operadati.setAutore(autore);
-                    operadati.setGenere(genere);
+                        operadati.setTitolo(titolo);
+                        operadati.setAutore(autore);
+                        operadati.setGenere(genere);
                 }
 
             } else
@@ -173,8 +172,7 @@ public class HomePageController implements Initializable
         new TrascrizioneController().setScene(event);
     }
 
-
-    //metodo per inizializzare il ChoiseBox e la Table view
+    //metodo per inizializzare il ChoiseBox,tableview e l'observablelist
     @Override
     public void initialize(URL location, ResourceBundle resources)
     {
@@ -186,8 +184,13 @@ public class HomePageController implements Initializable
         col_genere.setCellValueFactory(new PropertyValueFactory<>("genere"));
         col_link.setCellValueFactory(new PropertyValueFactory<>("view"));
 
-        oblist=FXCollections.observableArrayList();
+        oblist=FXCollections.observableArrayList(); //dichiaro l'oblist nel metodo initialize della classe
 
+        //controllo che entrambe le condizioni siano vere che l'utente non è un trascrittore e neanche un supervisor e nascondo il button per l'accesso alle trascrizioni
+        if(!user.getTrascrittore() && !user.getPrivilegio().equals("supervisor"))
+        {
+            bttrascrizione.setVisible(false);
+        }
     }
 
     //Metodo per settare la Tableview con i valori presi dal DB
