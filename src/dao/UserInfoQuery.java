@@ -1,9 +1,9 @@
 package dao;
 
-import dao.Interface.UserDaoInterface;
 import dao.Interface.UserInfoInterface;
 import model.UserModel;
 
+import javax.xml.transform.Result;
 import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -73,5 +73,67 @@ public class UserInfoQuery implements UserInfoInterface
         return resultSet;
     }
 
-}
+    public static int RicTrascQuery(String user , int ric_trascrittore) throws SQLException
+    {
+        ConnectionClass connectionClass = new ConnectionClass();
+        Connection connection = connectionClass.getConnection();
+        Statement statement = connection.createStatement();
 
+        //preparo la query da inviare ed eseguire sul DB
+        String sql = "UPDATE utente SET ric_trascrittore ='"+ric_trascrittore+"' WHERE username='"+user+"'";
+        int resultSet = statement.executeUpdate(sql);
+
+        return resultSet;
+    }
+
+    public static ResultSet  SupervisorUserPanelQuery (String keyword , String kind) throws SQLException {
+        ConnectionClass connectionClass = new ConnectionClass();
+        Connection connection = connectionClass.getConnection();
+        Statement statement = connection.createStatement();
+
+        if (kind.equals("Trascrittori"))
+        {
+
+            //preparo la query da inviare ed eseguire sul DB
+            String sql1 = "SELECT username,password,nome,cognome,email FROM utente " +
+                    "WHERE '"+kind+"' LIKE '" + 1 + "'";
+            ResultSet resultSet = statement.executeQuery(sql1);
+
+            return resultSet;
+        }
+
+        if (kind.equals("vip"))
+        {
+
+            //preparo la query da inviare ed eseguire sul DB
+            String sql2 = "SELECT username,password,nome,cognome,email FROM utente " +
+                    "WHERE vip LIKE '" + 1 + "'";
+            ResultSet resultSet = statement.executeQuery(sql2);
+
+            return resultSet;
+        }
+
+        if (kind.equals("RichiesteTrascrittori"))
+        {
+            //preparo la query da inviare ed eseguire sul DB
+            String sql3 = "SELECT username,password,nome,cognome,email FROM utente " +
+                    "WHERE ric_trascrittore LIKE '" + 1 + "'";
+            ResultSet resultSet = statement.executeQuery(sql3);
+
+            return resultSet;
+        }
+
+        if (kind.equals(""))
+        {
+
+            //preparo la query da inviare ed eseguire sul DB
+            String sql4 = "SELECT username,password,nome,cognome,email FROM utente " +
+                    "WHERE username LIKE '%" + keyword + "%'";
+            ResultSet resultSet = statement.executeQuery(sql4);
+
+            return resultSet;
+        }
+        return null;
+    }
+
+}
