@@ -1,6 +1,8 @@
 package controller;
 
+import dao.DeleteUserQuery;
 import dao.InfoUserTableQuery;
+import dao.Interface.DeleteUserInterface;
 import dao.Interface.SearchOperaInterface;
 import dao.SearchOperaQuery;
 import javafx.collections.FXCollections;
@@ -18,6 +20,7 @@ import javafx.stage.Stage;
 import vo.InfoUserTable;
 import vo.OperaMetadati;
 
+import javax.swing.*;
 import java.io.IOException;
 import java.net.URL;
 import java.sql.ResultSet;
@@ -96,11 +99,13 @@ public class AdminPannelController implements Initializable {
     public String nome;
     public String cognome;
 
+
     InfoUserTable infoUserTable = new InfoUserTable(username, email, nome, cognome);
 
     ObservableList<String> List = FXCollections.observableArrayList("User", "Supervisor", "Trascriber");
 
     SearchOperaInterface searchOperaInterface = new SearchOperaQuery();
+    DeleteUserInterface deleteUserInterface= new DeleteUserQuery();
 
     public AdminPannelController() throws IOException {
     }
@@ -172,6 +177,9 @@ public class AdminPannelController implements Initializable {
     public void initialize(URL location, ResourceBundle resources) {
         cbou.getItems().addAll("Utente", "Opera");
         cbou.setValue("Opera");
+        butdelete.setVisible(false);
+        cbsuperv.setVisible(false);
+        cbtrascr.setVisible(false);
 
         col_username1.setCellValueFactory(new PropertyValueFactory<>("Nome"));
         col_email1.setCellValueFactory(new PropertyValueFactory<>("Autore"));
@@ -262,9 +270,31 @@ public class AdminPannelController implements Initializable {
     public void search1() throws SQLException, IOException
     {
         if(cbou.getValue().equals("Utente"))
+        {
+            butdelete.setVisible(true);
+            cbsuperv.setVisible(true);
+            cbtrascr.setVisible(true);
             searchuser();
+        }
         if(cbou.getValue().equals("Opera"))
+        {
+            butdelete.setVisible(false);
+            cbsuperv.setVisible(false);
+            cbtrascr.setVisible(false);
             searchOpera();
+        }
+    }
 
+    public void deleteAccount(ActionEvent event) throws SQLException
+    {
+        Alert alert = new Alert(Alert.AlertType.CONFIRMATION, "You are going to delete this Account. Are you sure?", ButtonType.YES, ButtonType.NO, ButtonType.CANCEL);
+        alert.showAndWait();
+
+        if (alert.getResult() == ButtonType.YES)
+        {
+            tableView.getItems().removeAll(tableView.getSelectionModel().getSelectedItem());
+            InfoUserTable Deleter= tableView.getSelectionModel().getSelectedItem();
+            deleteUserInterface.DeleteUser(Deleter.getUsername());
+        }
     }
 }
