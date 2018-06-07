@@ -1,5 +1,6 @@
 package dao;
 
+import dao.Interface.UserAuthenticationInterface;
 import dao.Interface.UserDaoInterface;
 
 import java.sql.Connection;
@@ -7,7 +8,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 
-public class UserAuthenticationQuery implements UserDaoInterface
+public class UserAuthenticationQuery implements UserAuthenticationInterface
 {
     public UserAuthenticationQuery()
     {
@@ -24,8 +25,9 @@ public class UserAuthenticationQuery implements UserDaoInterface
         Statement statement = connection.createStatement();
 
         //preparo la query da inviare ed eseguire sul DB
-        String sql = "SELECT username,password FROM utente  WHERE  USERNAME= '"
-                + username1 + "' AND PASSWORD ='" + password1 + "'";
+        String sql = "SELECT username,password FROM utente  " +
+                "WHERE  USERNAME= '" + username1 + "' " +
+                "AND PASSWORD ='" + password1 + "'";
 
         //ritorno il sisultato della query
         ResultSet resultSet = statement.executeQuery(sql);
@@ -46,6 +48,24 @@ public class UserAuthenticationQuery implements UserDaoInterface
 
         String sql2= "INSERT INTO ruolo(privilegio,IDutente) VALUES ('utente base',(SELECT ID FROM utente WHERE username = '"+user+"'))";
         return statement.executeUpdate(sql2); //ritorno l'esecuzione della query
+    }
+
+    public  ResultSet SingInAdminQuery(String username1, String password1) throws SQLException
+    {
+        //inizializzo la connessione al DB
+        ConnectionClass connectionClass = new ConnectionClass();
+        Connection connection = connectionClass.getConnection();
+        Statement statement = connection.createStatement();
+
+        String sql = "SELECT username, password, admin FROM utente " +
+                "WHERE USERNAME= '" + username1 + "' " +
+                "AND PASSWORD ='" + password1 + "'" +
+                "AND admin=1";
+
+        ResultSet resultSet = statement.executeQuery(sql);
+
+        return resultSet;
+
     }
 
 }
