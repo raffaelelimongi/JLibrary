@@ -8,7 +8,7 @@
 <?import javafx.scene.layout.*?>
 
 
-<AnchorPane prefHeight="577.0" prefWidth="564.0" style="-fx-background-color: ##ccffff;" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.TrascrizioneController">
+<AnchorPane prefHeight="577.0" prefWidth="564.0" style="-fx-background-color: #ccffff;" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.TrascrizioneController">
    <children>
       <TableView fx:id="tabletrascrizioni" prefHeight="577.0" prefWidth="460.0">
         <columns>
