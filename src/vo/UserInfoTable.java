@@ -1,38 +1,31 @@
 package vo;
 
-import java.util.Iterator;
+import controller.*;
+import javafx.scene.control.Label;
+import javafx.scene.input.MouseEvent;
+import java.io.IOException;
+import java.util.Date;
 
-//Classe per le informazioni piu utilizzate dell'utente iscritto al portale
-public class UserInfoTable
+public class InfoUserTable
 {
-    private  String username;
-    private  String nome;
-    private  String cognome;
-    private  String email;
+    String username, email, nome, cognome;
 
-    public UserInfoTable(String u, String n, String c, String e)
+    public InfoUserTable(String username, String email, String nome, String cognome) throws IOException
     {
-        username = u;
-        nome=n;
-        cognome=c;
-        email=e;
-    }
-
-    public UserInfoTable(String s, String s1, String s2)
-    {
+        this.username=username;
+        this.email=email;
+        this.nome=nome;
+        this.cognome=cognome;
 
     }
-
-    public  String getUsername() { return username; }
-
-    public String getNome()
+    public String getUsername()
     {
-        return nome;
+        return username;
     }
 
-    public String getCognome()
+    public void setUsername(String username)
     {
-        return cognome;
+        this.username = username;
     }
 
     public String getEmail()
@@ -40,21 +33,28 @@ public class UserInfoTable
         return email;
     }
 
-    public void setUsername(String username) { this.username = username; }
+    public void setEmail(String email)
+    {
+        this.email = email;
+    }
 
-    public  void setNome(String nome)
+    public String getNome()
+    {
+        return nome;
+    }
+
+    public void setNome(String nome)
     {
         this.nome = nome;
+    }
+
+    public String getCognome()
+    {
+        return cognome;
     }
 
     public void setCognome(String cognome)
     {
         this.cognome = cognome;
     }
-
-    public void setEmail(String email)
-    {
-        this.email = email;
-    }
-
 }
