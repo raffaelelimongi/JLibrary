@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.text.*?>
+<?import javafx.scene.image.*?>
+<?import com.jfoenix.controls.*?>
+<?import java.lang.*?>
+<?import java.util.*?>
+<?import javafx.scene.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<AnchorPane prefHeight="792.0" prefWidth="788.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.ViewImage">
+    <children>
+        <VBox fx:id="vbox" layoutX="660.0" prefHeight="247.0" prefWidth="128.0" style="-fx-background-color: black;">
+            <children>
+                <JFXButton fx:id="btaccept" onAction="#Accept" prefHeight="119.0" prefWidth="128.0" text="Accept" textFill="WHITE" />
+                <JFXButton fx:id="btdecline" onAction="#Decline" prefHeight="123.0" prefWidth="128.0" text="Decline" textFill="WHITE" />
+            </children>
+        </VBox>
+        <TableView fx:id="tbwimage" prefHeight="792.0" prefWidth="660.0">
+            <columns>
+                <TableColumn fx:id="col_image" editable="false" prefWidth="787.0" text="Immagini" />
+            </columns>
+        </TableView>
+    </children>
+</AnchorPane>

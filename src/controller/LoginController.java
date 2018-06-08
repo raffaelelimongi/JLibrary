@@ -14,29 +14,16 @@ import javafx.stage.Stage;
 import java.io.IOException;
 import java.sql.*;
 
-
-
 public class LoginController
 {
-
     @FXML
-    public TextField textusername;
-
+    public TextField textusername,textpassword;
     @FXML
-    public TextField textpassword;
-
-    @FXML
-    private Button btlogin;
-
+    private Button btlogin,btsignup;
     @FXML
     private Label result;
 
-    @FXML
-    private Button btsignup;
-
     private static String username;
-
-   // public  UserModel userModel = new UserModel("","",true,"",0,true,"","","");
 
     public LoginController()
     {
@@ -44,16 +31,14 @@ public class LoginController
 
     public void Login (ActionEvent event) throws Exception
     {
-       //setUser(textusername.getText());
         try {
             UserAuthenticationQuery userDaoInterface = new UserAuthenticationQuery();
             UserInfoInterface userInfoInterface = new UserInfoQuery();
 
-            ResultSet resultSet = (ResultSet)  userDaoInterface.UserAuthenticationQuery(textusername.getText(),textpassword.getText());
+            ResultSet resultSet = userDaoInterface.UserAuthenticationQuery(textusername.getText(),textpassword.getText());
 
             if(resultSet.next())
             {
-                //userModel= new UserInfoQuery().UserInfoQuery(textusername.getText(),userModel);
                 userInfoInterface.UserInfoQuery(textusername.getText());
                 new HomePageController().setscene(event);
             }

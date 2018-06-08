@@ -22,33 +22,13 @@ import java.util.ResourceBundle;
 
 public class ViewProfileController implements Initializable {
     @FXML
-    private TextField txtuser;
+    private TextField txtuser,txtemail,txtnome,txtcognome;
     @FXML
     private PasswordField txtpass;
     @FXML
-    private TextField txtemail;
+    private Label lbresult,lblevel,lbtrascrittore,lbvip,lbtxtvip,textlbtrasc,lbprivilegio;
     @FXML
-    private TextField txtnome;
-    @FXML
-    private TextField txtcognome;
-    @FXML
-    private Label lbresult;
-    @FXML
-    private Label lblevel;
-    @FXML
-    private Label lbtrascrittore;
-    @FXML
-    private Label lbvip;
-    @FXML
-    private Button btvip;
-    @FXML
-    private Label lbtxtvip;
-    @FXML
-    private Label textlbtrasc;
-    @FXML
-    private Button bttrasc;
-    @FXML
-    private Label lbprivilegio;
+    private Button btvip,bttrasc;
 
     UserModel userModel = UserModel.getInstance();
 
@@ -58,7 +38,6 @@ public class ViewProfileController implements Initializable {
     {
 
     }
-
     //metodo che carica la view per la visualizzazione del profilo
     public static void ViewProfile(ActionEvent event) throws SQLException
     {
@@ -82,7 +61,7 @@ public class ViewProfileController implements Initializable {
         HomePageController.setscene(event);
     }
 
-    public void userInfo() throws SQLException
+    public void userInfo()
     {
         txtuser.setText(userModel.getUsername());
         txtpass.setText(userModel.getPassword());
@@ -149,10 +128,6 @@ public class ViewProfileController implements Initializable {
     @Override
     public void initialize(URL location, ResourceBundle resources)
     {
-        try {
-            userInfo();
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
+        userInfo();
     }
 }

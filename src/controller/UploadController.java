@@ -1,10 +1,7 @@
 package controller;
 
 import dao.Interface.OperaInfoInterface;
-import dao.Interface.UploadImageInterface;
-import dao.Interface.UserInfoInterface;
 import dao.OperaInfoQuery;
-import dao.UploadImageQuery;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
@@ -19,7 +16,6 @@ import javafx.scene.image.ImageView;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
 import vo.ImmagineDati;
-
 import java.io.*;
 import java.net.URL;
 import java.sql.SQLException;
@@ -33,11 +29,7 @@ public class UploadController implements Initializable
     @FXML
     private Button btupload;
     @FXML
-    private TextField txtTitolo;
-    @FXML
-    private TextField txtautore;
-    @FXML
-    private TextField txtgenere;
+    private TextField txtTitolo,txtautore,txtgenere;
     @FXML
     private DatePicker date;
     @FXML
@@ -46,8 +38,18 @@ public class UploadController implements Initializable
     private Image image;
     private ImageView imageView;
     String nome;
+    List<File> f;
 
-   ImmagineDati imagedate = new ImmagineDati("",null); //creo una istanza di immagineDati presente nel VO
+
+   ImmagineDati imagedate; //creo una istanza di immagineDati presente nel VO
+
+    {
+        try {
+            imagedate = new ImmagineDati("",null,"","","");
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
 
     public UploadController()
     {
@@ -70,17 +72,23 @@ public class UploadController implements Initializable
     }
 
     //metodo per la scelta e il caricamento delle immagini nel DB
-    public void choseImage() throws IOException, SQLException
+    public void choseImage()
     {
         FileChooser fc = new FileChooser(); //creo un nuovo filechoser per la scelta dei file
         fc.getExtensionFilters().add(new FileChooser.ExtensionFilter("Image Files",filext)); //setto l'estensione jpg di tali file
         //ciclo sui file scelti per leggere il nome e il file di tipo jpg e l'invio alla classe del dao per la memorizzazione nel DB
-        File f = fc.showOpenDialog(null);
+         f =  fc.showOpenMultipleDialog(null);
 
-        if(f!=null)
+        for(File file:f)
         {
-             nome = f.getName();
-            lblchose.setText(f.getAbsolutePath());
+            nome = file.getName();
+            lblchose.setText(file.getAbsolutePath());
+            imagedate.setNomeimg(nome);
+        }
+
+      /*  if(f!=null)
+        {
+
 
             /* 2METODO MENO EFFICENTE E SICURO MA PIU SIMILE AD UNA SITUAZIONE REALE
             image = new Image(f.toURI().toString(),100,150,true,true);
@@ -88,18 +96,23 @@ public class UploadController implements Initializable
             imageView.setFitWidth(100);
             imageView.setFitHeight(150);
             imageView.setPreserveRatio(true);
-            */
-            imagedate.setNomeimg(nome);
 
-           // UploadImageInterface uploadImageInterface= new UploadImageQuery();  //creo una nuova istanza dell'interfaccia Uploadimage
-          //  uploadImageInterface.UploadImageQuery(nome, lblchose.getText());              //passo il nome dell'immagine e l'immagine alla query per inserirla nel DB
-        }
+            imagedate.setNomeimg(nome);
+        }*/
     }
 
     public void Upload() throws SQLException
     {
         OperaInfoInterface operaInfoInterface = new OperaInfoQuery();
-        operaInfoInterface.OperaInfoQuery(txtTitolo.getText(), txtautore.getText(), date.getValue(), txtgenere.getText(),nome,lblchose.getText()); //invio le informazioni relative all'opera da inserire nel DB
+        operaInfoInterface.OperaInfoQuery(txtTitolo.getText(), txtautore.getText(), date.getValue(), txtgenere.getText(),nome,lblchose.getText());
+        //invio le informazioni relative all'opera da inserire nel DB
+
+        for(File file:f)
+        {
+            System.out.println(file.getName());
+            ((OperaInfoQuery) operaInfoInterface).UploadImageQuery(file.getName(), file.getAbsolutePath(), txtTitolo.getText());
+        }
+        //passo il nome dell'immagine e l'immagine alla query per inserirla nel DB
     }
 
     @Override

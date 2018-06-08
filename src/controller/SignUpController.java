@@ -20,24 +20,13 @@ public class SignUpController
     @FXML
     private Label error;
     @FXML
-    private TextField txtuser;
+    private TextField txtuser,txtname,txtsurname,txtemail;
     @FXML
-    private PasswordField txtpass;
+    private PasswordField txtpass,txtrpass;
     @FXML
-    private PasswordField txtrpass;
-    @FXML
-    private TextField txtname;
-    @FXML
-    private TextField txtsurname;
-    @FXML
-    private TextField txtemail;
-    @FXML
-    private Button btsubmit;
-    @FXML
-    private Button btback;
+    private Button btsubmit,btback;
 
-
-    public void Submit(ActionEvent event) throws Exception
+    public void Submit() throws Exception
     {
         //Controllo che nei campi Username,password,email non venga inserito un testo vuoto
         if (!txtpass.getText().matches("") && !txtuser.getText().matches("") && !txtemail.getText().matches(""))
@@ -90,7 +79,7 @@ public class SignUpController
         }
     }
 
-    public  void gotologin(javafx.event.ActionEvent event) throws IOException
+    public  void gotologin() throws IOException
     {
         Stage back;
         Parent gologin;

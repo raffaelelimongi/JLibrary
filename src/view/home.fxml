@@ -25,7 +25,7 @@
       <VBox layoutX="527.0" layoutY="95.0" prefHeight="491.0" prefWidth="176.0" style="-fx-background-color: black;">
          <children>
             <JFXButton fx:id="btprofile" onAction="#gotoprofile" prefHeight="81.0" prefWidth="176.0" text="Profilo" textFill="WHITE" />
-            <JFXButton fx:id="btimage" prefHeight="81.0" prefWidth="183.0" text="Gestione Immagini" textFill="WHITE" />
+            <JFXButton fx:id="btimage" onAction="#gotomanageimage" prefHeight="81.0" prefWidth="183.0" text="Gestione Immagini" textFill="WHITE" />
             <JFXButton fx:id="bttrascrizione" onAction="#gototrascrizione" prefHeight="81.0" prefWidth="185.0" text="Trascrizione" textFill="WHITE" />
             <JFXButton fx:id="btgestuser" onAction="#gotomanageuser" prefHeight="81.0" prefWidth="183.0" text="Gestione User" textFill="WHITE" />
             <JFXButton onAction="#gotochose" prefHeight="81.0" prefWidth="191.0" text="Upload" textFill="WHITE" />

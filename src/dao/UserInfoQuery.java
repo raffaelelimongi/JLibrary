@@ -83,6 +83,7 @@ public class UserInfoQuery implements UserInfoInterface
         st.executeUpdate();
     }
 
+    @Override
     public ResultSet GetListUser(String key) throws SQLException {
         String sql = "SELECT username,email,nome,cognome FROM utente WHERE username LIKE ?";
         st = connection.prepareStatement(sql);
@@ -91,6 +92,41 @@ public class UserInfoQuery implements UserInfoInterface
         ResultSet resultSet = st.executeQuery();
 
         return  resultSet;
+    }
+
+    @Override
+    public void DeleteUser(String Username) throws SQLException
+    {
+        String sql = "DELETE FROM utente WHERE username = ?";
+        st=connection.prepareStatement(sql);
+        st.setString(1,Username);
+        st.execute();
+    }
+
+    @Override
+    public  ResultSet  SupervisorUserPanelQuery (String keyword , String kind) throws SQLException
+    {
+        if(kind.equals("ric_trascrittore"))
+        {
+            //preparo la query da inviare ed eseguire sul DB
+            String sql1 = "SELECT username,password,nome,cognome,email FROM utente WHERE (ric_trascrittore=?)";
+            st = connection.prepareStatement(sql1);
+            st.setInt(1, 1);
+            ResultSet resultSet = st.executeQuery();
+            return resultSet;
+        }
+        else
+        {
+            if(kind.equals("Trascrittori"))
+            {
+                String sql1 = "SELECT username,password,nome,cognome,email FROM utente WHERE (trascrittore=?)";
+                st = connection.prepareStatement(sql1);
+                st.setInt(1, 1);
+                ResultSet resultSet = st.executeQuery();
+                return resultSet;
+            }
+        }
+        return null;
     }
 
 }

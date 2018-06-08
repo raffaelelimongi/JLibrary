@@ -36,8 +36,6 @@ public class TeiEditor implements Initializable
     private TableColumn<OperaMetadati,ImageView> col_image;
     @FXML
     private JFXButton btclose,btaccept,btdecline,btsave;
-    @FXML
-    private VBox vbox;
 
     private ObservableList<ImmagineDati> oblist;
     private Image image;
@@ -68,8 +66,8 @@ public class TeiEditor implements Initializable
 
         ResultSet resultSet = trascrQueryInterf.loadtext(titolo); //faccio la query per caricarmi le info delle opere da trascrivere
 
-        while (resultSet.next()) {
-
+        while (resultSet.next())
+        {
                 texttrascrizione.setText(resultSet.getString("op.testo"));
                 titolo = resultSet.getString("o.titolo");
           /*   2 modo per visualizzare le immagini ma poco efficente e sicuro,anche se un po piu reale
@@ -124,9 +122,9 @@ public class TeiEditor implements Initializable
         stage.close();
     }
 
-    private void setTable(String titolo, ImageView imageView2)
+    private void setTable(String titolo, ImageView imageView2) throws IOException
     {
-        oblist.add(new ImmagineDati(titolo,imageView2));
+        oblist.add(new ImmagineDati(titolo,imageView2,titolo,"",""));
         tbwimage.setItems(oblist);
     }
 

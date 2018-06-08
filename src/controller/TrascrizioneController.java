@@ -74,7 +74,7 @@ public class TrascrizioneController implements Initializable
     {
         oblist.removeAll(oblist);
 
-        ResultSet resultSet = trascrQueryInterface.getTrascrizioniList(userModel.getUsername());
+        ResultSet resultSet = trascrQueryInterface.getTrascrizioniList(userModel.getUsername(),userModel.getPrivilegio());
 
         while (resultSet.next())
         {

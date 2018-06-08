@@ -5,7 +5,7 @@ import java.sql.SQLException;
 
 public interface TrascrizioneQueryInterface
 {
-     ResultSet getTrascrizioniList (String u) throws SQLException;
+     ResultSet getTrascrizioniList (String u,String priv) throws SQLException;
 
      ResultSet getUserAbility() throws SQLException;
 
@@ -16,5 +16,6 @@ public interface TrascrizioneQueryInterface
      void Accept() throws SQLException;
 
      void Decline(String name) throws SQLException;
+     void Create() throws SQLException;
 
 }

@@ -110,7 +110,7 @@ public class ViewOperaController implements Initializable
     }
 
     //Classe per effettuare il download delle opere
-    public void Download() throws IOException
+    public void Download()
     {
         Stage secondStage = new Stage();
         //dichiro l'azione che faccio una volta premuto il button per il download
@@ -141,9 +141,9 @@ public class ViewOperaController implements Initializable
 
     }
 
-    public void setTable(String titolo, ImageView imageView2)
+    public void setTable(String titolo, ImageView imageView2) throws IOException
     {
-    oblist.add(new ImmagineDati(titolo,imageView2));
+    oblist.add(new ImmagineDati("",imageView2,titolo,"",""));
     tableimage.setItems(oblist);
     }
 

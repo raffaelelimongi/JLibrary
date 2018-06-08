@@ -7,5 +7,5 @@ public interface SearchOperaInterface
 {
     ResultSet SearchOperaQueryGeneral(String keyword, String kind) throws SQLException;
 
-    public ResultSet LoadOpera(String tit) throws SQLException;
+     ResultSet LoadOpera(String tit) throws SQLException;
 }

@@ -32,7 +32,7 @@ public class HomePageController implements Initializable
     @FXML
     private ChoiceBox<String> cbfilter;
     @FXML
-    private Button btsearch,bttrascrizione,btlogout;
+    private Button btsearch,bttrascrizione,btlogout,btimage,btgestuser;
     @FXML
     private TableView<OperaMetadati> tablesearch;
     @FXML
@@ -52,7 +52,6 @@ public class HomePageController implements Initializable
 
     UserModel user =UserModel.getInstance();
     OperaMetadati operadati = new OperaMetadati("","","");
-    UserAuthenticationInterface userAuthenticationInterface =new UserAuthenticationQuery();
     SearchOperaInterface searchOperaInterface =new SearchOperaQuery();
 
     public HomePageController() throws IOException
@@ -135,7 +134,7 @@ public class HomePageController implements Initializable
         txtsearch.clear();
     }
 
-    public void returnlogin() throws IOException
+    public void returnlogin()
     {
         try{
         Stage back;
@@ -163,7 +162,7 @@ public class HomePageController implements Initializable
             ViewProfileController.ViewProfile(event);
     }
 
-    public void gotochose(ActionEvent event) throws  SQLException
+    public void gotochose()
     {
         new UploadController().UploadController();
     }
@@ -172,9 +171,13 @@ public class HomePageController implements Initializable
     {
         GestioneUserController.GestioneUserController(event);
     }
-    public void gototrascrizione(ActionEvent event) throws SQLException, IOException
+    public void gototrascrizione(ActionEvent event) throws IOException
     {
         new TrascrizioneController().setScene(event);
+    }
+    public void gotomanageimage(ActionEvent event)
+    {
+        new GestioneImmaginiController().setscene(event);
     }
 
     //metodo per inizializzare il ChoiseBox,tableview e l'observablelist
@@ -195,6 +198,11 @@ public class HomePageController implements Initializable
         if(!user.getTrascrittore() && !user.getPrivilegio().equals("supervisor") && !user.getPrivilegio().equals("admin"))
         {
             bttrascrizione.setVisible(false);
+        }
+        if(!user.getPrivilegio().equals("supervisor") && !user.getPrivilegio().equals("admin"))
+        {
+            btimage.setVisible(false);
+            btgestuser.setVisible(false);
         }
     }
 
