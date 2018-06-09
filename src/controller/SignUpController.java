@@ -26,6 +26,10 @@ public class SignUpController
     @FXML
     private Button btsubmit,btback;
 
+    public SignUpController()
+    {
+    }
+
     public void Submit() throws Exception
     {
         //Controllo che nei campi Username,password,email non venga inserito un testo vuoto
@@ -38,8 +42,7 @@ public class SignUpController
 
                 try {
                     UserAuthenticationQuery userDaoInterface = new UserAuthenticationQuery();
-                    //faccio una chiamata al metodo SignInQuery1 passandogli le stringhe scritte nei campi di testo grafico e metto il risultato in una variabile di tipo integer
-                   // int result = new UserAuthenticationQuery().SignInQuery(txtuser.getText(), txtpass.getText(),txtname.getText(),txtsurname.getText(), txtemail.getText());
+
                     int result= userDaoInterface.SignInQuery(txtuser.getText(),txtpass.getText(),txtname.getText(),txtsurname.getText(), txtemail.getText());
                     if (result == 1) {
                         Stage stage;
