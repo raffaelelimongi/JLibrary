@@ -1,10 +1,7 @@
 package controller;
 
-import com.jfoenix.controls.JFXButton;
 import dao.Interface.SearchOperaInterface;
-import dao.Interface.UserAuthenticationInterface;
 import dao.SearchOperaQuery;
-import dao.UserAuthenticationQuery;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
@@ -18,11 +15,12 @@ import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.stage.Stage;
 import model.UserModel;
-import vo.OperaMetadati;
+import model.OperaMetadati;
 import java.io.IOException;
 import java.net.URL;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.Date;
 import java.util.ResourceBundle;
 
 public class HomePageController implements Initializable
@@ -36,15 +34,25 @@ public class HomePageController implements Initializable
     @FXML
     private TableView<OperaMetadati> tablesearch;
     @FXML
-    private TableColumn<OperaMetadati,String> col_titolo, col_autore, col_genere, col_link;
+    private TableColumn<OperaMetadati,String> col_titolo;
+    @FXML
+    private TableColumn<OperaMetadati,String> col_autore;
+    @FXML
+    private TableColumn<OperaMetadati,String> col_genere;
+    @FXML
+    private TableColumn<OperaMetadati,String> col_data;
+    @FXML
+    private TableColumn<OperaMetadati,String> col_link;
 
     private ObservableList<OperaMetadati> oblist;  //uso la Collection ObservableList per creare una lista di istanze di tipo OperaMetadati da inserire successivamente nella tableview
 
-    public String autore, genere;
+    public String autore;
     public static String titolo;
+    public String genere;
+    public Date data;
 
     UserModel user =UserModel.getInstance();
-    OperaMetadati operadati = new OperaMetadati("","","");
+    OperaMetadati operadati = new OperaMetadati("","","",null);
     SearchOperaInterface searchOperaInterface =new SearchOperaQuery();
 
     public HomePageController() throws IOException
@@ -69,9 +77,12 @@ public class HomePageController implements Initializable
             e.printStackTrace();
         }
     }
-    public void search() throws SQLException, IOException
+
+    @FXML
+    private void search() throws SQLException, IOException
     {
-        String keywords2, kind2;
+        String keywords2;
+        String kind2;
         txtsearch.setPromptText("");
 
         oblist.removeAll(oblist); //ogni volta che ri-effetuo una ricerca rimuovo tutte le vecchie istanze create nella oblist
@@ -89,12 +100,14 @@ public class HomePageController implements Initializable
                     autore = resultSet.getString("autore");
                     titolo = resultSet.getString("titolo");
                     genere = resultSet.getString("c.nome");
+                    data=resultSet.getDate("data_pubb");
 
-                        setTable(titolo, autore, genere);
+                        setTable(titolo, autore, genere,data);
 
                         operadati.setTitolo(titolo);
                         operadati.setAutore(autore);
                         operadati.setGenere(genere);
+                        operadati.setDatapubb(data);
                 }
 
             } else
@@ -115,12 +128,14 @@ public class HomePageController implements Initializable
                 autore = resultSet.getString("autore");
                 titolo = resultSet.getString("titolo");
                 genere = resultSet.getString("c.nome");
+                data=resultSet.getDate("data_pubb");
 
-                setTable(titolo, autore, genere);
+                setTable(titolo, autore, genere,data);
 
                 operadati.setTitolo(titolo);
                 operadati.setAutore(autore);
                 operadati.setGenere(genere);
+                operadati.setDatapubb(data);
             }
         }
         txtsearch.clear();
@@ -149,19 +164,19 @@ public class HomePageController implements Initializable
     public void gotoprofile(ActionEvent event) throws SQLException
     {
         if (user.getPrivilegio().equals("admin"))
-            AdminPannelController.gotoAdmin(event);
+            AdminPannelController.setsceneAdmin(event);
         else
             ViewProfileController.ViewProfile(event);
     }
 
     public void gotochose()
     {
-        new UploadController().UploadController();
+        new UploadController().setscene();
     }
 
     public void gotomanageuser(ActionEvent event) throws SQLException
     {
-        GestioneUserController.GestioneUserController(event);
+        GestioneUserController.setscene(event);
     }
     public void gototrascrizione(ActionEvent event) throws IOException
     {
@@ -182,6 +197,7 @@ public class HomePageController implements Initializable
         col_titolo.setCellValueFactory(new PropertyValueFactory<>("titolo"));
         col_autore.setCellValueFactory(new PropertyValueFactory<>("autore"));
         col_genere.setCellValueFactory(new PropertyValueFactory<>("genere"));
+        col_data.setCellValueFactory(new PropertyValueFactory<>("data"));
         col_link.setCellValueFactory(new PropertyValueFactory<>("view"));
 
         oblist=FXCollections.observableArrayList(); //dichiaro l'oblist nel metodo initialize della classe
@@ -199,9 +215,9 @@ public class HomePageController implements Initializable
     }
 
     //Metodo per settare la Tableview con i valori presi dal DB
-    private void setTable(String titolo, String autore, String genere) throws IOException
+    private void setTable(String titolo, String autore, String genere,Date data) throws IOException
     {
-        oblist.add(new OperaMetadati(titolo, autore, genere));
+        oblist.add(new OperaMetadati(titolo, autore, genere,data));
         tablesearch.setItems(oblist);
     }
 
