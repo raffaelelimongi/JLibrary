@@ -13,9 +13,8 @@ public interface TrascrizioneQueryInterface
 
      void savetext(String titolo,String text) throws SQLException;
 
-     void Accept() throws SQLException;
-
-     void Decline(String name) throws SQLException;
      void Create() throws SQLException;
+
+     int AssegnaTrascrizione(String tit,String aut,String user) throws SQLException;
 
 }
