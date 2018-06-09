@@ -13,10 +13,10 @@ import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
-import javafx.scene.layout.AnchorPane;
 import javafx.stage.FileChooser;
+import model.ImmagineDati;
+import model.OperaMetadati;
 import model.UserModel;
-import vo.*;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
@@ -42,8 +42,6 @@ public class ViewOperaController implements Initializable
     private TableColumn<OperaMetadati,ImageView> col_image;
     @FXML
     private Button btdownload;
-    @FXML
-    private AnchorPane pane;
 
     private ObservableList<ImmagineDati> oblist;
     private Image image;
@@ -143,7 +141,7 @@ public class ViewOperaController implements Initializable
 
     public void setTable(String titolo, ImageView imageView2) throws IOException
     {
-    oblist.add(new ImmagineDati("",imageView2,titolo,"",""));
+    oblist.add(new ImmagineDati("",imageView2,titolo,"","",null));
     tableimage.setItems(oblist);
     }
 
