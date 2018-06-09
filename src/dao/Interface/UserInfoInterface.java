@@ -24,4 +24,8 @@ public interface UserInfoInterface
     void setUserQuery(String username1) throws SQLException;
 
     void setAdminQuery(String username1) throws SQLException;
+    
+    ResultSet CheckAdminQuery(String username1) throws SQLException;
+
+    ResultSet CheckSupervisorQuery(String username1) throws SQLException;
 }
