@@ -1,13 +1,13 @@
 package dao;
 
 import dao.Interface.ImageQueryInterface;
-
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
-public class ImageQuery implements ImageQueryInterface {
+public class ImageQuery implements  ImageQueryInterface
+{
     PreparedStatement ps;
     ConnectionClass connectionClass = new ConnectionClass();
     Connection connection = connectionClass.getConnection();
@@ -29,7 +29,7 @@ public class ImageQuery implements ImageQueryInterface {
     }
 
     @Override
-    public void UploadImageQuery(String nome, String path, String tit) throws SQLException {
+    public void UploadImageQuery(String nome, String path, String tit,String aut) throws SQLException {
 
       /*
        try {
@@ -40,11 +40,13 @@ public class ImageQuery implements ImageQueryInterface {
         //2 modo di memorizzare e visualizzare le immagini ma poco efficente e sicuro
         ******/
 
-        String sql = "INSERT INTO immagine(nome,formato,image,IDopera) VALUES (?,?,?)";
+        String sql = "INSERT INTO immagine(nome,formato,image,IDopera) VALUES (?,?,?,(SELECT ID from opera WHERE titolo=? AND autore=?))";
         ps = connection.prepareStatement(sql);
         ps.setString(1, nome);
         ps.setString(2, ".jpg");
         ps.setString(3, path);
+        ps.setString(4,tit);
+        ps.setString(5,aut);
 
         //ps.setBinaryStream(3,(InputStream)fis, (int)f.length()); //2modo di memorizzare le immagini ma poco efficente e sicuro
 
@@ -76,7 +78,7 @@ public class ImageQuery implements ImageQueryInterface {
     }
 
     @Override
-    public void Decline(String name,String tit) throws SQLException
+    public void Decline(String name, String tit) throws SQLException
     {
         if(titolo.equals(""))
         {
@@ -86,4 +88,5 @@ public class ImageQuery implements ImageQueryInterface {
             ps.execute();
         }
     }
+
 }
