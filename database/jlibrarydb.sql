@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Creato il: Giu 04, 2018 alle 16:46
+-- Creato il: Giu 10, 2018 alle 00:48
 -- Versione del server: 10.1.32-MariaDB
 -- Versione PHP: 7.2.5
 
@@ -38,10 +38,12 @@ CREATE TABLE `categoria` (
 --
 
 INSERT INTO `categoria` (`ID`, `nome`) VALUES
-(4, 'action'),
-(5, 'adventure'),
-(3, 'drama'),
+(5, 'action'),
+(6, 'adventure'),
+(4, 'crime'),
+(7, 'drama'),
 (2, 'fantasy'),
+(3, 'historical'),
 (1, 'horror');
 
 -- --------------------------------------------------------
@@ -51,10 +53,13 @@ INSERT INTO `categoria` (`ID`, `nome`) VALUES
 --
 
 CREATE TABLE `immagine` (
-  `ID` int(11) UNSIGNED NOT NULL,
+  `ID` int(10) UNSIGNED NOT NULL,
   `nome` varchar(100) NOT NULL,
   `formato` char(4) NOT NULL,
-  `image` longblob NOT NULL
+  `image` varchar(100) NOT NULL,
+  `IDopera` int(10) UNSIGNED DEFAULT NULL,
+  `IDoperatrascritta` int(10) UNSIGNED DEFAULT NULL,
+  `accept` tinyint(1) NOT NULL DEFAULT '0'
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 -- --------------------------------------------------------
@@ -64,24 +69,23 @@ CREATE TABLE `immagine` (
 --
 
 CREATE TABLE `opera` (
-  `ID` int(11) NOT NULL,
+  `ID` int(10) UNSIGNED NOT NULL,
   `titolo` varchar(100) NOT NULL,
   `autore` varchar(45) NOT NULL,
   `data_pubb` date NOT NULL,
-  `IDcategoria` int(10) UNSIGNED DEFAULT NULL,
-  `IDimmagine` int(10) UNSIGNED DEFAULT NULL,
-  `IDoperatrascritta` int(10) UNSIGNED DEFAULT NULL
+  `IDoperatrascritta` int(10) UNSIGNED DEFAULT NULL,
+  `IDcategoria` int(10) UNSIGNED NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 --
 -- Dump dei dati per la tabella `opera`
 --
 
-INSERT INTO `opera` (`ID`, `titolo`, `autore`, `data_pubb`, `IDcategoria`, `IDimmagine`, `IDoperatrascritta`) VALUES
-(3, 'iononsonounabomba', 'bombolo', '0000-00-00', 2, NULL, NULL),
-(4, 'iosonounpanda', 'panda', '0000-00-00', 4, NULL, NULL),
-(5, 'prova', 'test', '2018-06-14', 1, 8, NULL),
-(8, 'prova', 'test', '2018-06-14', 1, 9, NULL);
+INSERT INTO `opera` (`ID`, `titolo`, `autore`, `data_pubb`, `IDoperatrascritta`, `IDcategoria`) VALUES
+(2, 'sonounpanda', 'edjnjed', '2018-06-19', 1, 1),
+(5, 'sonobuefbew', 'cccc', '2018-06-19', NULL, 3),
+(40, 'aurelio', 'ven', '2018-06-08', NULL, 7),
+(41, 'eurelio', 'veno', '2018-06-17', 33, 7);
 
 -- --------------------------------------------------------
 
@@ -91,11 +95,18 @@ INSERT INTO `opera` (`ID`, `titolo`, `autore`, `data_pubb`, `IDcategoria`, `IDim
 
 CREATE TABLE `opera_trascritta` (
   `ID` int(10) UNSIGNED NOT NULL,
-  `nome` varchar(100) NOT NULL,
-  `testo` text NOT NULL,
-  `IDimmagine` int(10) UNSIGNED NOT NULL,
-  `IDutente` int(10) UNSIGNED NOT NULL
+  `testo` text,
+  `accept` tinyint(1) DEFAULT '0'
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+--
+-- Dump dei dati per la tabella `opera_trascritta`
+--
+
+INSERT INTO `opera_trascritta` (`ID`, `testo`, `accept`) VALUES
+(1, 'ciao,questa è la mia prima prova.', 1),
+(2, 'questa,invece è la seconda', 0),
+(33, '', 0);
 
 -- --------------------------------------------------------
 
@@ -105,7 +116,7 @@ CREATE TABLE `opera_trascritta` (
 
 CREATE TABLE `ruolo` (
   `ID` int(11) NOT NULL,
-  `privilegio` varchar(45) NOT NULL,
+  `privilegio` varchar(45) NOT NULL DEFAULT 'utente base',
   `IDutente` int(10) UNSIGNED NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
@@ -114,8 +125,9 @@ CREATE TABLE `ruolo` (
 --
 
 INSERT INTO `ruolo` (`ID`, `privilegio`, `IDutente`) VALUES
-(1, 'utente base', 72),
-(3, 'utente base', 76);
+(15, 'utente base', 15),
+(18, 'utente base', 18),
+(21, 'admin', 21);
 
 -- --------------------------------------------------------
 
@@ -130,21 +142,21 @@ CREATE TABLE `utente` (
   `email` varchar(100) NOT NULL,
   `nome` varchar(35) NOT NULL,
   `cognome` varchar(40) NOT NULL,
-  `livello` tinyint(4) NOT NULL DEFAULT '0',
+  `livello` float NOT NULL DEFAULT '0',
   `trascrittore` tinyint(1) NOT NULL DEFAULT '0',
-  `vip` tinyint(1) NOT NULL DEFAULT '0'
+  `vip` tinyint(1) NOT NULL DEFAULT '0',
+  `ric_trascrittore` tinyint(1) NOT NULL DEFAULT '0',
+  `IDtrascrizione` int(10) UNSIGNED DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 --
 -- Dump dei dati per la tabella `utente`
 --
 
-INSERT INTO `utente` (`ID`, `username`, `password`, `email`, `nome`, `cognome`, `livello`, `trascrittore`, `vip`) VALUES
-(40, 'raffa', 'bomba', 'prova@email.it', 'Raffaele', 'Limongi', 0, 1, 1),
-(67, 'dico', 'test', 'ciao', 'Dicono', 'qualcosa', 0, 1, 0),
-(68, 'savic', 'bomba', 'segejSavic@gmail.com', 'Sergej', 'Milinkovic', 0, 0, 1),
-(72, 'pogbi', 'bombi', 'ss', 'Paul', 'Pogba', 0, 0, 0),
-(76, 'pobba', 'nullo', 'porva', 'groote', 'niagara', 0, 0, 0);
+INSERT INTO `utente` (`ID`, `username`, `password`, `email`, `nome`, `cognome`, `livello`, `trascrittore`, `vip`, `ric_trascrittore`, `IDtrascrizione`) VALUES
+(15, 'bsedb', 'dio', 'dbhebd', 'edbhedb', 'bsehdb', 0, 1, 0, 1, 33),
+(18, 'etde', 'dio', 'sss', 'deyveydh', 'vydvyvy', 0, 0, 0, 1, NULL),
+(21, 'raffa', 'bomba', 'dede', 'Raffaele', 'lImongi', 0, 1, 0, 1, NULL);
 
 --
 -- Indici per le tabelle scaricate
@@ -162,7 +174,9 @@ ALTER TABLE `categoria`
 --
 ALTER TABLE `immagine`
   ADD PRIMARY KEY (`ID`),
-  ADD UNIQUE KEY `nome` (`nome`);
+  ADD UNIQUE KEY `nome` (`nome`),
+  ADD KEY `immagine_opera` (`IDopera`),
+  ADD KEY `immagine_operatrascritta` (`IDoperatrascritta`);
 
 --
 -- Indici per le tabelle `opera`
@@ -170,16 +184,13 @@ ALTER TABLE `immagine`
 ALTER TABLE `opera`
   ADD PRIMARY KEY (`ID`),
   ADD KEY `opera_categoria` (`IDcategoria`),
-  ADD KEY `opera_immagine` (`IDimmagine`),
   ADD KEY `opera_operatrascritta` (`IDoperatrascritta`);
 
 --
 -- Indici per le tabelle `opera_trascritta`
 --
 ALTER TABLE `opera_trascritta`
-  ADD PRIMARY KEY (`ID`),
-  ADD KEY `operatrascritta_immagine` (`IDimmagine`),
-  ADD KEY `operatrascritta_utente` (`IDutente`);
+  ADD PRIMARY KEY (`ID`);
 
 --
 -- Indici per le tabelle `ruolo`
@@ -194,7 +205,8 @@ ALTER TABLE `ruolo`
 ALTER TABLE `utente`
   ADD PRIMARY KEY (`ID`),
   ADD UNIQUE KEY `username` (`username`),
-  ADD UNIQUE KEY `email` (`email`);
+  ADD UNIQUE KEY `email` (`email`),
+  ADD KEY `utente_operatrascritta` (`IDtrascrizione`);
 
 --
 -- AUTO_INCREMENT per le tabelle scaricate
@@ -204,62 +216,67 @@ ALTER TABLE `utente`
 -- AUTO_INCREMENT per la tabella `categoria`
 --
 ALTER TABLE `categoria`
-  MODIFY `ID` int(11) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
+  MODIFY `ID` int(11) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=8;
 
 --
 -- AUTO_INCREMENT per la tabella `immagine`
 --
 ALTER TABLE `immagine`
-  MODIFY `ID` int(11) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=12;
+  MODIFY `ID` int(10) UNSIGNED NOT NULL AUTO_INCREMENT;
 
 --
 -- AUTO_INCREMENT per la tabella `opera`
 --
 ALTER TABLE `opera`
-  MODIFY `ID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=22;
+  MODIFY `ID` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=42;
 
 --
 -- AUTO_INCREMENT per la tabella `opera_trascritta`
 --
 ALTER TABLE `opera_trascritta`
-  MODIFY `ID` int(10) UNSIGNED NOT NULL AUTO_INCREMENT;
+  MODIFY `ID` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=34;
 
 --
 -- AUTO_INCREMENT per la tabella `ruolo`
 --
 ALTER TABLE `ruolo`
-  MODIFY `ID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
+  MODIFY `ID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=22;
 
 --
 -- AUTO_INCREMENT per la tabella `utente`
 --
 ALTER TABLE `utente`
-  MODIFY `ID` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=77;
+  MODIFY `ID` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=22;
 
 --
 -- Limiti per le tabelle scaricate
 --
 
 --
+-- Limiti per la tabella `immagine`
+--
+ALTER TABLE `immagine`
+  ADD CONSTRAINT `immagine_opera` FOREIGN KEY (`IDopera`) REFERENCES `opera` (`ID`) ON DELETE CASCADE,
+  ADD CONSTRAINT `immagine_operatrascritta` FOREIGN KEY (`IDoperatrascritta`) REFERENCES `opera_trascritta` (`ID`) ON DELETE CASCADE;
+
+--
 -- Limiti per la tabella `opera`
 --
 ALTER TABLE `opera`
   ADD CONSTRAINT `opera_categoria` FOREIGN KEY (`IDcategoria`) REFERENCES `categoria` (`ID`),
-  ADD CONSTRAINT `opera_immagine` FOREIGN KEY (`IDimmagine`) REFERENCES `immagine` (`ID`),
-  ADD CONSTRAINT `opera_operatrascritta` FOREIGN KEY (`IDoperatrascritta`) REFERENCES `opera_trascritta` (`ID`);
-
---
--- Limiti per la tabella `opera_trascritta`
---
-ALTER TABLE `opera_trascritta`
-  ADD CONSTRAINT `operatrascritta_immagine` FOREIGN KEY (`IDimmagine`) REFERENCES `immagine` (`ID`),
-  ADD CONSTRAINT `operatrascritta_utente` FOREIGN KEY (`IDutente`) REFERENCES `utente` (`ID`);
+  ADD CONSTRAINT `opera_operatrascritta` FOREIGN KEY (`IDoperatrascritta`) REFERENCES `opera_trascritta` (`ID`) ON DELETE SET NULL;
 
 --
 -- Limiti per la tabella `ruolo`
 --
 ALTER TABLE `ruolo`
-  ADD CONSTRAINT `ruolo_utente` FOREIGN KEY (`IDutente`) REFERENCES `utente` (`ID`);
+  ADD CONSTRAINT `ruolo_utente` FOREIGN KEY (`IDutente`) REFERENCES `utente` (`ID`) ON DELETE CASCADE;
+
+--
+-- Limiti per la tabella `utente`
+--
+ALTER TABLE `utente`
+  ADD CONSTRAINT `utente_operatrascritta` FOREIGN KEY (`IDtrascrizione`) REFERENCES `opera_trascritta` (`ID`) ON DELETE SET NULL;
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
