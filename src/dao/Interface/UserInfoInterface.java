@@ -13,9 +13,15 @@ public interface UserInfoInterface
 
     void Trascrittore(String user , int rictrascr) throws SQLException;
 
-     ResultSet GetListUser(String k) throws SQLException;
+    ResultSet GetListUser(String k) throws SQLException;
 
-      ResultSet  SupervisorUserPanelQuery (String keyword , String kind) throws SQLException;
+    ResultSet  SupervisorUserPanelQuery (String keyword , String kind) throws SQLException;
 
     void DeleteUser(String Username) throws SQLException;
+    
+    void setSupervisorQuery(String username1) throws SQLException;
+
+    void setUserQuery(String username1) throws SQLException;
+
+    void setAdminQuery(String username1) throws SQLException;
 }
