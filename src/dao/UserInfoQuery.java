@@ -174,5 +174,37 @@ public class UserInfoQuery implements UserInfoInterface
 
         int resultSet = statement.executeUpdate(sql);
     }
+    public  ResultSet CheckAdminQuery(String username1) throws SQLException
+    {
+        //inizializzo la connessione al DB
+        ConnectionClass connectionClass = new ConnectionClass();
+        Connection connection = connectionClass.getConnection();
+        Statement statement = connection.createStatement();
+
+        String sql = "SELECT" + " username, password,r.privilegio " +
+                "FROM utente join ruolo r ON (utente.ID=r.IDutente) " +
+                "WHERE r.privilegio LIKE 'admin'" +
+                "AND USERNAME= '" + username1 + "' ";
+
+        ResultSet resultSet = statement.executeQuery(sql);
+
+        return resultSet;
+    }
+    public  ResultSet CheckSupervisorQuery(String username1) throws SQLException
+    {
+        //inizializzo la connessione al DB
+        ConnectionClass connectionClass = new ConnectionClass();
+        Connection connection = connectionClass.getConnection();
+        Statement statement = connection.createStatement();
+
+        String sql = "SELECT" + " username, password,r.privilegio " +
+                "FROM utente join ruolo r ON (utente.ID=r.IDutente) " +
+                "WHERE r.privilegio LIKE 'supervisor'" +
+                "AND USERNAME= '" + username1 + "' ";
+
+        ResultSet resultSet = statement.executeQuery(sql);
+
+        return resultSet;
+    }
 
 }
