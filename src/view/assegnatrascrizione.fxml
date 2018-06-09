@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.text.*?>
+<?import java.lang.*?>
+<?import java.util.*?>
+<?import javafx.scene.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+
+<AnchorPane prefHeight="441.0" prefWidth="777.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.AssegnazioneTrascrizioneController">
+   <children>
+      <TableView fx:id="table" layoutX="8.0" layoutY="35.0" prefHeight="402.0" prefWidth="434.0">
+        <columns>
+          <TableColumn fx:id="col_titolo" prefWidth="256.0" text="col_titolo" />
+          <TableColumn fx:id="col_autore" minWidth="0.0" prefWidth="177.0" text="col_autore" />
+        </columns>
+      </TableView>
+      <Button layoutX="476.0" layoutY="35.0" mnemonicParsing="false" onAction="#CaricaOpere" prefHeight="31.0" prefWidth="191.0" text="Carica Opere" />
+      <Label layoutX="461.0" layoutY="104.0" prefHeight="21.0" prefWidth="222.0" text="Inserisci l'username del trascrittore:">
+         <font>
+            <Font size="13.0" />
+         </font>
+      </Label>
+      <Label fx:id="lbmex" layoutX="461.0" layoutY="406.0" prefHeight="21.0" prefWidth="222.0" />
+      <Label layoutX="462.0" layoutY="183.0" prefHeight="21.0" prefWidth="222.0" text="Inserisci Titolo dell'opera">
+         <font>
+            <Font size="13.0" />
+         </font>
+      </Label>
+      <TextField fx:id="textTitolo" layoutX="465.0" layoutY="211.0" prefHeight="31.0" prefWidth="222.0" />
+      <Label layoutX="465.0" layoutY="263.0" prefHeight="21.0" prefWidth="222.0" text="Inserisci l'autore dell'opera">
+         <font>
+            <Font size="13.0" />
+         </font>
+      </Label>
+      <TextField fx:id="textautore" layoutX="465.0" layoutY="291.0" prefHeight="31.0" prefWidth="222.0" />
+      <Button layoutX="527.0" layoutY="349.0" mnemonicParsing="false" onAction="#Assegna" prefHeight="31.0" prefWidth="90.0" text="Assegna" />
+      <TextField fx:id="textuser" layoutX="462.0" layoutY="132.0" prefHeight="31.0" prefWidth="222.0" />
+   </children>
+</AnchorPane>
