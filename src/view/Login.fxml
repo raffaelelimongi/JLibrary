@@ -18,10 +18,10 @@
             <Font size="23.0" />
          </font>
       </Label>
-      <TextField fx:id="textusername" layoutX="57.0" layoutY="94.0" promptText="username" />
-      <PasswordField fx:id="textpassword" layoutX="57.0" layoutY="142.0" promptText="password" />
-      <Button fx:id="btlogin" layoutX="116.0" layoutY="202.0" mnemonicParsing="false" onAction="#Login" prefHeight="31.0" prefWidth="69.0" text="Login" />
-      <Button fx:id="btsignup" layoutX="116.0" layoutY="253.0" mnemonicParsing="false" onAction="#gotosignup" text="SignUp" />
+      <TextField fx:id="textusername" layoutX="75.0" layoutY="91.0" promptText="username" />
+      <PasswordField fx:id="textpassword" layoutX="75.0" layoutY="145.0" promptText="password" />
+      <Button fx:id="btlogin" layoutX="115.0" layoutY="195.0" mnemonicParsing="false" onAction="#Login" prefHeight="31.0" prefWidth="69.0" text="Login" />
+      <Button fx:id="btsignup" layoutX="122.0" layoutY="243.0" mnemonicParsing="false" onAction="#gotosignup" text="SignUp" />
       <Label fx:id="result" layoutX="132.0" layoutY="39.0" prefHeight="21.0" prefWidth="153.0" />
    </children>
 </AnchorPane>
