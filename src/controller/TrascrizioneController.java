@@ -16,7 +16,7 @@ import javafx.scene.control.TableView;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.stage.Stage;
 import model.UserModel;
-import vo.TrascrizioneDati;
+import model.TrascrizioneDati;
 import java.io.IOException;
 import java.net.URL;
 import java.sql.ResultSet;
@@ -28,14 +28,18 @@ public class TrascrizioneController implements Initializable
     @FXML
     private TableView<TrascrizioneDati> tabletrascrizioni;
     @FXML
-    private TableColumn<TrascrizioneDati,String> col_titolo2, col_link;
+    private TableColumn<TrascrizioneDati,String> col_titolo2;
+    @FXML
+    private TableColumn<TrascrizioneDati,String> col_link;
 
     private ObservableList<TrascrizioneDati> oblist;
 
-    String titolo;
-    
     TrascrizioneQueryInterface trascrQueryInterface = new TrascrizioneQuery();
+
+    String titolo;
+
     TrascrizioneDati trascrizioneDati= new TrascrizioneDati(titolo,null);
+
     UserModel userModel =UserModel.getInstance();
 
     public TrascrizioneController() throws IOException {
