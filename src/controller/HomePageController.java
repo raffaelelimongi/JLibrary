@@ -36,19 +36,12 @@ public class HomePageController implements Initializable
     @FXML
     private TableView<OperaMetadati> tablesearch;
     @FXML
-    private TableColumn<OperaMetadati,String> col_titolo;
-    @FXML
-    private TableColumn<OperaMetadati,String> col_autore;
-    @FXML
-    private TableColumn<OperaMetadati,String> col_genere;
-    @FXML
-    private TableColumn<OperaMetadati,String> col_link;
+    private TableColumn<OperaMetadati,String> col_titolo, col_autore, col_genere, col_link;
 
     private ObservableList<OperaMetadati> oblist;  //uso la Collection ObservableList per creare una lista di istanze di tipo OperaMetadati da inserire successivamente nella tableview
 
-    public String autore;
+    public String autore, genere;
     public static String titolo;
-    public String genere;
 
     UserModel user =UserModel.getInstance();
     OperaMetadati operadati = new OperaMetadati("","","");
@@ -78,8 +71,7 @@ public class HomePageController implements Initializable
     }
     public void search() throws SQLException, IOException
     {
-        String keywords2;
-        String kind2;
+        String keywords2, kind2;
         txtsearch.setPromptText("");
 
         oblist.removeAll(oblist); //ogni volta che ri-effetuo una ricerca rimuovo tutte le vecchie istanze create nella oblist
