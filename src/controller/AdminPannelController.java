@@ -294,4 +294,28 @@ public class AdminPannelController implements Initializable {
             deleteUserInterface.DeleteUser(Deleter.getUsername());
         }
     }
+    public void cbSet() throws SQLException
+    {
+        InfoUserTable setter= tableView.getSelectionModel().getSelectedItem();
+        boolean admn=userInfoInterface.CheckAdminQuery(setter.getUsername()).next();
+        boolean sprvsr= userInfoInterface.CheckSupervisorQuery(setter.getUsername()).next();
+        if (admn)
+        {
+            cbadmin.setSelected(true);
+            cbsuperv.setSelected(false);
+        }
+        else
+        {
+            if (sprvsr)
+            {
+                cbadmin.setSelected(false);
+                cbsuperv.setSelected(true);
+            }
+            else
+            {
+                cbadmin.setSelected(false);
+                cbsuperv.setSelected(false);
+            }
+        }
+    }
 }
