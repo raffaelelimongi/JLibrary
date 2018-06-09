@@ -1,5 +1,7 @@
 package controller;
 
+import dao.ImageQuery;
+import dao.Interface.ImageQueryInterface;
 import dao.Interface.OperaInfoInterface;
 import dao.OperaInfoQuery;
 import javafx.fxml.FXML;
@@ -15,7 +17,7 @@ import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
-import vo.ImmagineDati;
+import model.ImmagineDati;
 import java.io.*;
 import java.net.URL;
 import java.sql.SQLException;
@@ -40,12 +42,13 @@ public class UploadController implements Initializable
     String nome;
     List<File> f;
 
+    OperaInfoInterface operaInfoInterface = new OperaInfoQuery();
+    ImageQueryInterface imageQueryInterface = new ImageQuery();
 
    ImmagineDati imagedate; //creo una istanza di immagineDati presente nel VO
-
     {
         try {
-            imagedate = new ImmagineDati("",null,"","","");
+            imagedate = new ImmagineDati("",null,"","","",null);
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -55,7 +58,7 @@ public class UploadController implements Initializable
     {
     }
 
-    public void UploadController()
+    public void setscene()
     {
         Parent root;
         try {
@@ -103,14 +106,12 @@ public class UploadController implements Initializable
 
     public void Upload() throws SQLException
     {
-        OperaInfoInterface operaInfoInterface = new OperaInfoQuery();
         operaInfoInterface.OperaInfoQuery(txtTitolo.getText(), txtautore.getText(), date.getValue(), txtgenere.getText(),nome,lblchose.getText());
         //invio le informazioni relative all'opera da inserire nel DB
 
         for(File file:f)
         {
-            System.out.println(file.getName());
-            ((OperaInfoQuery) operaInfoInterface).UploadImageQuery(file.getName(), file.getAbsolutePath(), txtTitolo.getText());
+            imageQueryInterface.UploadImageQuery(file.getName(), file.getAbsolutePath(), txtTitolo.getText(),txtautore.getText());
         }
         //passo il nome dell'immagine e l'immagine alla query per inserirla nel DB
     }
