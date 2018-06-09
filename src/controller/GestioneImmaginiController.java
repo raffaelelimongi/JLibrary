@@ -1,6 +1,6 @@
 package controller;
 
-import dao.Interface.SearchOperaInterface;
+import dao.Interface.OperaInfoInterface;
 import dao.OperaInfoQuery;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -16,7 +16,7 @@ import javafx.scene.control.TableView;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.image.ImageView;
 import javafx.stage.Stage;
-import vo.ImmagineDati;
+import model.ImmagineDati;
 import java.io.IOException;
 import java.net.URL;
 import java.sql.ResultSet;
@@ -28,13 +28,18 @@ public class GestioneImmaginiController implements Initializable
     @FXML
     private TableView<ImmagineDati> tablemanage;
     @FXML
-    private TableColumn<ImmagineDati,String> col_titolo, col_image;
+    private TableColumn<ImmagineDati,String> col_titolo;
+    @FXML
+    private TableColumn<ImmagineDati,String> col_image;
 
     private ObservableList<ImmagineDati> oblist;
 
     public String titolo;
 
-    SearchOperaInterface operainfo = new OperaInfoQuery();
+    OperaInfoInterface operainfo = new OperaInfoQuery();
+
+    public GestioneImmaginiController()
+    {}
 
     public void setscene(ActionEvent event)
     {
@@ -90,7 +95,7 @@ public class GestioneImmaginiController implements Initializable
 
     private void setTable(String titolo, ImageView imageView2) throws IOException
     {
-        oblist.add(new ImmagineDati("",imageView2,titolo,"",""));
+        oblist.add(new ImmagineDati("",imageView2,titolo,"","",null));
         tablemanage.setItems(oblist);
     }
 }
