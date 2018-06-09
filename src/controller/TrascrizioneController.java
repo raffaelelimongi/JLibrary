@@ -28,18 +28,14 @@ public class TrascrizioneController implements Initializable
     @FXML
     private TableView<TrascrizioneDati> tabletrascrizioni;
     @FXML
-    private TableColumn<TrascrizioneDati,String> col_titolo2;
-    @FXML
-    private TableColumn<TrascrizioneDati,String> col_link;
+    private TableColumn<TrascrizioneDati,String> col_titolo2, col_link;
 
     private ObservableList<TrascrizioneDati> oblist;
 
-    TrascrizioneQueryInterface trascrQueryInterface = new TrascrizioneQuery();
-
     String titolo;
-
+    
+    TrascrizioneQueryInterface trascrQueryInterface = new TrascrizioneQuery();
     TrascrizioneDati trascrizioneDati= new TrascrizioneDati(titolo,null);
-
     UserModel userModel =UserModel.getInstance();
 
     public TrascrizioneController() throws IOException {
