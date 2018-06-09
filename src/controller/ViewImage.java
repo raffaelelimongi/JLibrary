@@ -17,8 +17,8 @@ import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.stage.Stage;
-import vo.ImmagineDati;
-import vo.OperaMetadati;
+import model.ImmagineDati;
+import model.OperaMetadati;
 import com.jfoenix.controls.JFXButton;
 import java.io.File;
 import java.io.IOException;
@@ -112,7 +112,7 @@ public class ViewImage implements Initializable
 
     private void setTable(String name, ImageView imageView2) throws IOException
     {
-        oblist.add(new ImmagineDati(name,imageView2,"","",""));
+        oblist.add(new ImmagineDati(name,imageView2,"","","",null));
         tbwimage.setItems(oblist);
     }
 
@@ -131,4 +131,3 @@ public class ViewImage implements Initializable
         }
 
     }
-}
