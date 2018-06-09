@@ -1,5 +1,6 @@
 package controller;
 
+import dao.Interface.ImageQueryInterface;
 import dao.Interface.TrascrizioneQueryInterface;
 import dao.TrascrizioneQuery;
 import javafx.collections.FXCollections;
@@ -13,11 +14,10 @@ import javafx.scene.control.TableColumn;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
-import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 import model.UserModel;
-import vo.ImmagineDati;
-import vo.OperaMetadati;
+import model.ImmagineDati;
+import model.OperaMetadati;
 import javafx.scene.control.TableView;
 import java.io.*;
 import java.net.URL;
@@ -40,6 +40,7 @@ public class TeiEditor implements Initializable
     private ObservableList<ImmagineDati> oblist;
     private Image image;
     TrascrizioneQueryInterface trascrQueryInterf = new TrascrizioneQuery();
+    ImageQueryInterface trascmanage = new TrascrizioneQuery();
     static  String titolo;
 
     public TeiEditor()
@@ -112,19 +113,19 @@ public class TeiEditor implements Initializable
 
     public void Decline() throws SQLException
     {
-        trascrQueryInterf.Decline(titolo);
+        trascmanage.Decline("",titolo);
     }
 
     public void Accept() throws SQLException
     {
-        trascrQueryInterf.Accept();
+        trascmanage.Accept(null,null);
         Stage stage = (Stage) btaccept.getScene().getWindow();
         stage.close();
     }
 
     private void setTable(String titolo, ImageView imageView2) throws IOException
     {
-        oblist.add(new ImmagineDati(titolo,imageView2,titolo,"",""));
+        oblist.add(new ImmagineDati(titolo,imageView2,titolo,"","",null));
         tbwimage.setItems(oblist);
     }
 
