@@ -1,13 +1,11 @@
 package dao;
 
-import dao.Interface.ImageQueryInterface;
-import dao.Interface.OperaInfoInterface;
-import dao.Interface.SearchOperaInterface;
 
+import dao.Interface.OperaInfoInterface;
 import java.sql.*;
 import java.time.LocalDate;
 
-public class OperaInfoQuery implements OperaInfoInterface,ImageQueryInterface,SearchOperaInterface
+public class OperaInfoQuery implements OperaInfoInterface
 {
     PreparedStatement st;
 
@@ -31,8 +29,14 @@ public class OperaInfoQuery implements OperaInfoInterface,ImageQueryInterface,Se
     }
 
     @Override
-    public ResultSet LoadImage(String tit) throws SQLException {
-        return null;
+    public void DeleteOpera(String tit,String aut) throws SQLException
+    {
+        String sql = "DELETE FROM opera WHERE titolo=? AND autore=?";
+        st=connection.prepareStatement(sql);
+        System.out.println(tit+aut);
+        st.setString(1,tit);
+        st.setString(2,aut);
+        st.execute();
     }
 
     @Override
@@ -48,21 +52,6 @@ public class OperaInfoQuery implements OperaInfoInterface,ImageQueryInterface,Se
     }
 
     @Override
-    public void Accept(String name, String tit) throws SQLException {
-
-    }
-
-    @Override
-    public void Decline(String name, String titolo) throws SQLException {
-
-    }
-
-    @Override
-    public ResultSet SearchOperaQueryGeneral(String keyword, String kind) throws SQLException {
-        return null;
-    }
-
-    @Override
     public ResultSet LoadOpera(String tit) throws SQLException {
         ConnectionClass connectionClass = new ConnectionClass();
         Connection connection = connectionClass.getConnection();
@@ -74,4 +63,5 @@ public class OperaInfoQuery implements OperaInfoInterface,ImageQueryInterface,Se
 
         return resultSet;
     }
+
 }
