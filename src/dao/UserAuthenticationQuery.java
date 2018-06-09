@@ -32,6 +32,7 @@ public class UserAuthenticationQuery implements UserAuthenticationInterface
         return resultSet;
     }
 
+
     @Override
     public int SignInQuery(String user, String pass, String nome, String cognome, String email) throws SQLException
     {
@@ -54,25 +55,5 @@ public class UserAuthenticationQuery implements UserAuthenticationInterface
         ps.setString(2,user);
 
         return ps.executeUpdate(); //ritorno l'esecuzione della query
-    }
-
-    @Override
-   public ResultSet SingInAdminQuery(String username1, String password1) throws SQLException
-    {
-        ConnectionClass connectionClass = new ConnectionClass();
-        Connection connection = connectionClass.getConnection();
-
-        String sql= "INSERT INTO utente(username,password,email,nome,cognome) VALUES (?,?,?,?,?)";
-        ps = connection.prepareStatement(sql);
-        ps.setString(1,username1);
-        ps.setString(2,password1);
-        ps.execute();
-
-        String sql2= "INSERT INTO ruolo(privilegio,IDutente) VALUES (?,(SELECT ID FROM utente WHERE username=?))";
-        ps = connection.prepareStatement(sql2);
-        ps.setString(1,"utente base");
-        ps.setString(2,username1);
-
-        return ps.executeQuery(); //ritorno l'
     }
 }
