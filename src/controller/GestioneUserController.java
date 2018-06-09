@@ -28,23 +28,15 @@ import java.util.ResourceBundle;
 public class GestioneUserController implements Initializable
 {
     @FXML
-    private Button btsearch,btacctrasc;
+    private Button btsearch,btacctrasc, bteliminaacc;
     @FXML
     private TextField searchutente;
-    @FXML
-    private Button bteliminaacc;
     @FXML
     private ChoiceBox<String> cbfilter;
     @FXML
     private TableView<InfoUserTable> tablesearch;
     @FXML
-    private TableColumn<InfoUserTable,String> col_username;
-    @FXML
-    private TableColumn<InfoUserTable,String> col_nome;
-    @FXML
-    private TableColumn<InfoUserTable,String> col_cognome;
-    @FXML
-    private TableColumn<InfoUserTable,String> col_email;
+    private TableColumn<InfoUserTable,String> col_username, col_nome, col_cognome, col_email;
 
     private ObservableList<InfoUserTable> oblist;
 
