@@ -17,4 +17,5 @@ public interface TrascrizioneQueryInterface
 
      int AssegnaTrascrizione(String tit,String aut,String user) throws SQLException;
 
+     ResultSet LoadTrascrizione(String tit) throws SQLException;
 }
