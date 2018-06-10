@@ -31,12 +31,14 @@ public class TrascrizioneController implements Initializable
     private TableColumn<TrascrizioneDati,String> col_titolo2, col_link;
 
     private ObservableList<TrascrizioneDati> oblist;
-
+  
+  String titolo;
+   
     TrascrizioneQueryInterface trascrQueryInterface = new TrascrizioneQuery();
     TrascrizioneDati trascrizioneDati= new TrascrizioneDati(titolo,null);
     UserModel userModel =UserModel.getInstance();
     
-    String titolo;
+ 
 
     public TrascrizioneController() throws IOException {
 
