@@ -221,7 +221,7 @@ public class AdminPannelController implements Initializable
     @FXML
     private void DeleteOpera() throws SQLException
     {
-        Alert alert = new Alert(Alert.AlertType.CONFIRMATION, "You are going to delete this Account. Are you sure?", ButtonType.YES, ButtonType.NO, ButtonType.CANCEL);
+        Alert alert = new Alert(Alert.AlertType.CONFIRMATION, "You are going to delete this Opera. Are you sure?", ButtonType.YES, ButtonType.NO, ButtonType.CANCEL);
         alert.showAndWait();
 
         if (alert.getResult() == ButtonType.YES)
