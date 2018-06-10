@@ -2,6 +2,7 @@ package controller;
 
 import dao.*;
 import dao.Interface.SearchOperaInterface;
+import dao.Interface.TrascrizioneQueryInterface;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.embed.swing.SwingFXUtils;
@@ -49,6 +50,7 @@ public class ViewOperaController implements Initializable
     private List<Image> list = new ArrayList<>();
 
     SearchOperaInterface searchOperaInterface = new SearchOperaQuery();
+    TrascrizioneQueryInterface trascrizioneQueryInterface = new TrascrizioneQuery();
     UserModel user = UserModel.getInstance();
 
     public ViewOperaController()
@@ -79,22 +81,12 @@ public class ViewOperaController implements Initializable
     {
         ResultSet resultSet = searchOperaInterface.LoadOpera(titolo); //faccio la query per caricarmi le info dell opera da visualizzare
 
-        while (resultSet.next())
-        {
-            titolo=resultSet.getString("titolo");
+        while (resultSet.next()) {
+            titolo = resultSet.getString("titolo");
             lbtitolo.setText(resultSet.getString("titolo"));
             lbautore.setText(resultSet.getString("autore"));
             lbdata.setText(resultSet.getString("data_pubb"));
             lbgenere.setText(resultSet.getString("c.nome"));
-
-            if(resultSet.getBoolean("accept"))
-            {
-                text.setText(resultSet.getString("op.testo"));
-
-            }
-            else{
-                text.setPromptText("Trascrizione non disponibile!!");
-            }
 
             File file = new File(resultSet.getString("i.image"));
             image = new Image(file.toURI().toString());
@@ -104,6 +96,20 @@ public class ViewOperaController implements Initializable
             imageView.setFitHeight(500);
             imageView.setPreserveRatio(true);
             setTable(titolo, imageView);
+        }
+
+        resultSet=trascrizioneQueryInterface.LoadTrascrizione(titolo);
+
+        while (resultSet.next())
+        {
+            if(resultSet.getBoolean("op.accept"))    {
+                text.setText(resultSet.getString("op.testo"));
+                          }
+            else{
+                text.setPromptText("Trascrizione non disponibile!!");
+            }
+
+
         }
     }
 
