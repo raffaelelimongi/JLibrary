@@ -189,7 +189,7 @@ public class HomePageController implements Initializable
         col_titolo.setCellValueFactory(new PropertyValueFactory<>("titolo"));
         col_autore.setCellValueFactory(new PropertyValueFactory<>("autore"));
         col_genere.setCellValueFactory(new PropertyValueFactory<>("genere"));
-        col_data.setCellValueFactory(new PropertyValueFactory<>("data"));
+        col_data.setCellValueFactory(new PropertyValueFactory<>("datapubb"));
         col_link.setCellValueFactory(new PropertyValueFactory<>("view"));
 
         oblist=FXCollections.observableArrayList(); //dichiaro l'oblist nel metodo initialize della classe
