@@ -149,7 +149,7 @@ public class TrascrizioneQuery implements TrascrizioneQueryInterface,SearchOpera
     }
 
     @Override
-    public void UploadImageQuery(String nome, String path, String tit, String autore) throws SQLException {
+    public int UploadImageQuery(String nome, String path, String tit, String autore) throws SQLException {
 
     }
 }
