@@ -149,18 +149,6 @@ CREATE TABLE `utente` (
   `IDtrascrizione` int(10) UNSIGNED DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
---
--- Dump dei dati per la tabella `utente`
---
-
-INSERT INTO `utente` (`ID`, `username`, `password`, `email`, `nome`, `cognome`, `livello`, `trascrittore`, `vip`, `ric_trascrittore`, `IDtrascrizione`) VALUES
-(15, 'bsedb', 'dio', 'dbhebd', 'edbhedb', 'bsehdb', 0, 1, 0, 1, 33),
-(18, 'etde', 'dio', 'sss', 'deyveydh', 'vydvyvy', 0, 0, 0, 1, NULL),
-(21, 'raffa', 'bomba', 'dede', 'Raffaele', 'lImongi', 0, 1, 0, 1, NULL);
-
---
--- Indici per le tabelle scaricate
---
 
 --
 -- Indici per le tabelle `categoria`
