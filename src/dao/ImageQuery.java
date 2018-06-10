@@ -29,7 +29,7 @@ public class ImageQuery implements  ImageQueryInterface
     }
 
     @Override
-    public void UploadImageQuery(String nome, String path, String tit,String aut) throws SQLException {
+    public int UploadImageQuery(String nome, String path, String tit,String aut) throws SQLException {
 
       /*
        try {
@@ -50,7 +50,7 @@ public class ImageQuery implements  ImageQueryInterface
 
         //ps.setBinaryStream(3,(InputStream)fis, (int)f.length()); //2modo di memorizzare le immagini ma poco efficente e sicuro
 
-        ps.execute();
+         return ps.executeUpdate();
     }
 
     @Override
