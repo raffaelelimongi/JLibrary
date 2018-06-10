@@ -14,7 +14,7 @@ import javafx.stage.Stage;
 import java.io.IOException;
 import java.sql.*;
 
-public class LoginController
+public class LoginController extends Application
 {
     @FXML
     public TextField textusername,textpassword;
@@ -29,6 +29,14 @@ public class LoginController
     {
     }
 
+    @Override
+    public void start(Stage primaryStage) throws Exception{
+        Parent root = FXMLLoader.load(getClass().getResource("../view/Login.fxml"));
+        primaryStage.setTitle("JLibrary");
+        primaryStage.setScene(new Scene(root, 300, 285));
+        primaryStage.show();
+    }
+    
     public void Login (ActionEvent event) throws Exception
     {
         try {
