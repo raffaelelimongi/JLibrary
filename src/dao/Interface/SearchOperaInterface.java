@@ -13,4 +13,3 @@ public interface SearchOperaInterface
 
     ResultSet SearchOperaSoft() throws SQLException;
 }
-
