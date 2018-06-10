@@ -19,10 +19,9 @@ public class TrascrizioneQuery implements TrascrizioneQueryInterface,SearchOpera
     public ResultSet getTrascrizioniList (String user,String privilegio) throws SQLException
     {
         //preparo la query da inviare ed eseguire sul DB
-        String sql = "SELECT o.titolo,op.accept FROM opera o JOIN opera_trascritta op ON (op.ID = o.IDoperatrascritta) JOIN utente u ON (op.id=u.IDtrascrizione) JOIN ruolo r ON (u.ID=r.IDutente) WHERE (u.username=? OR r.privilegio=?)";
+        String sql = "SELECT o.titolo,op.accept FROM opera o JOIN opera_trascritta op ON (op.ID = o.IDoperatrascritta) JOIN utente u ON (op.id=u.IDtrascrizione) JOIN ruolo r ON (u.ID=r.IDutente) WHERE (u.username=? AND u.IDtrascrizione=op.ID)";
         ps = connection.prepareStatement(sql);
         ps.setString(1,user);
-        ps.setString(2,privilegio);
         //ritorno il sisultato della query
         ResultSet resultSet = ps.executeQuery();
 
@@ -33,8 +32,10 @@ public class TrascrizioneQuery implements TrascrizioneQueryInterface,SearchOpera
     public ResultSet getUserAbility () throws SQLException
     {
         //preparo la query da inviare ed eseguire sul DB
-        String sql = "SELECT o.titolo,op.accept FROM opera o JOIN opera_trascritta op ON (op.ID = o.IDoperatrascritta) JOIN utente u JOIN ruolo r ON (u.ID=r.IDutente) WHERE (r.privilegio='supervisor')";
+        String sql = "SELECT o.titolo,op.accept FROM opera o JOIN opera_trascritta op ON (op.ID = o.IDoperatrascritta) JOIN utente u JOIN ruolo r ON (u.ID=r.IDutente) WHERE (r.privilegio=? OR r.privilegio=?)";
         ps = connection.prepareStatement(sql);
+        ps.setString(1,"supervisor");
+        ps.setString(2,"admin");
 
         //ritorno il sisultato della query
         ResultSet resultSet = ps.executeQuery();
