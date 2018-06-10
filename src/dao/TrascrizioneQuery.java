@@ -32,7 +32,7 @@ public class TrascrizioneQuery implements TrascrizioneQueryInterface,SearchOpera
     public ResultSet getUserAbility () throws SQLException
     {
         //preparo la query da inviare ed eseguire sul DB
-        String sql = "SELECT o.titolo,op.accept FROM opera o JOIN opera_trascritta op ON (op.ID = o.IDoperatrascritta) JOIN utente u JOIN ruolo r ON (u.ID=r.IDutente) WHERE (r.privilegio=? OR r.privilegio=?)";
+        String sql = "SELECT DISTINCT(titolo) titolo,op.accept FROM opera o JOIN opera_trascritta op ON (op.ID = o.IDoperatrascritta) JOIN utente u JOIN ruolo r ON (u.ID=r.IDutente) WHERE (r.privilegio=? OR r.privilegio=?)";
         ps = connection.prepareStatement(sql);
         ps.setString(1,"supervisor");
         ps.setString(2,"admin");
