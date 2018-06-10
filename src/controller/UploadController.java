@@ -41,6 +41,7 @@ public class UploadController implements Initializable
     private ImageView imageView;
     String nome;
     List<File> f;
+    int result;
 
     OperaInfoInterface operaInfoInterface = new OperaInfoQuery();
     ImageQueryInterface imageQueryInterface = new ImageQuery();
