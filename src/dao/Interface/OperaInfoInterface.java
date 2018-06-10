@@ -15,3 +15,4 @@ public interface OperaInfoInterface
     ResultSet LoadOpera(String tit) throws SQLException;
 }
 
+
