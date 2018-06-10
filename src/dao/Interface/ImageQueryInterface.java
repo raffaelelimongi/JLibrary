@@ -7,7 +7,7 @@ public interface ImageQueryInterface
 {
     ResultSet LoadImage(String tit) throws SQLException;
 
-    void UploadImageQuery(String nome, String path,String tit,String autore) throws SQLException;
+    int UploadImageQuery(String nome, String path,String tit,String autore) throws SQLException;
 
     void Accept(String name, String tit) throws SQLException;
 
