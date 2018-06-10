@@ -14,4 +14,3 @@ public interface ImageQueryInterface
     void Decline(String name,String titolo) throws SQLException;
 
 }
-
