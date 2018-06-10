@@ -86,7 +86,7 @@ public class UploadController implements Initializable
         for(File file:f)
         {
             nome = file.getName();
-             lblchose.setText(lblchose.getText()+file.getAbsolutePath());
+            lblchose.setText(lblchose.getText()+file.getAbsolutePath());
             imagedate.setNomeimg(nome);
         }
 
@@ -107,15 +107,15 @@ public class UploadController implements Initializable
 
     public void Upload() throws SQLException
     {
-        //invio le informazioni relative all'opera da inserire nel DB
-         result = operaInfoInterface.OperaInfoQuery(txtTitolo.getText(), txtautore.getText(), date.getValue(), txtgenere.getText(),nome,lblchose.getText());
-         
+         //invio le informazioni relative all'opera da inserire nel DB
+       result=  operaInfoInterface.OperaInfoQuery(txtTitolo.getText(), txtautore.getText(), date.getValue(), txtgenere.getText(),nome,lblchose.getText());
+
         for(File file:f)
         {
             //passo il nome dell'immagine e l'immagine alla query per inserirla nel DB
-          result= result+ imageQueryInterface.UploadImageQuery(file.getName(), file.getAbsolutePath(), txtTitolo.getText(),txtautore.getText());
+           result=result + imageQueryInterface.UploadImageQuery(file.getName(), file.getAbsolutePath(), txtTitolo.getText(),txtautore.getText());
         }
-        if (result == 2)
+        if (result >= 2)
         {
             lblchose.setText("Info Opera e immagini Caricate correttamente");
         }
