@@ -120,7 +120,7 @@ public class UserInfoQuery implements UserInfoInterface
     @Override
     public void PromoteUser(String user) throws SQLException
     {
-        String sql = "UPDATE utente SET privilegio=? WHERE(username = ? AND r.privilegio !=?)";
+        String sql = "UPDATE utente JOIN ruolo r ON(utente.ID=r.IDutente) SET privilegio=? WHERE(username = ? AND r.privilegio !=?)";
         st=connection.prepareStatement(sql);
         st.setString(1,"supervisor");
         st.setString(2,user);
