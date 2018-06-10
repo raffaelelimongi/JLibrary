@@ -95,11 +95,12 @@ public class TrascrizioneQuery implements TrascrizioneQueryInterface,SearchOpera
     }
 
     @Override
-    public void Create() throws SQLException
+    public void Create(String titolo) throws SQLException
     {
         //creo il record dell'opera trascritta
-        String sql1 = "INSERT INTO opera_trascritta(testo,accept) VALUES ('',0)";
+        String sql1 = "INSERT INTO opera_trascritta(testo,accept) VALUES (?,0)";
         ps = connection.prepareStatement(sql1);
+        ps.setString(1,titolo);
         ps.execute();
 
     }
