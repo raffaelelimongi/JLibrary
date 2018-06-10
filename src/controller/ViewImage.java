@@ -83,8 +83,10 @@ public class ViewImage implements Initializable {
         }
     }
 
-    public void Accept() throws SQLException {
-        createtrascr.Create();
+    public void Accept() throws SQLException
+    {
+        createtrascr.Create(titolo);
+
         for (int i = 0; i < list.size(); i++)
         {
             imageQueryInterface.Accept(name[i], titolo);
@@ -118,6 +120,5 @@ public class ViewImage implements Initializable {
         } catch (IOException e) {
             e.printStackTrace();
         }
-
     }
 }
