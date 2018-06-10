@@ -28,17 +28,19 @@ public class TrascrizioneController implements Initializable
     @FXML
     private TableView<TrascrizioneDati> tabletrascrizioni;
     @FXML
-    private TableColumn<TrascrizioneDati,String> col_titolo2, col_link;
+    private TableColumn<TrascrizioneDati,String> col_titolo2;
+    @FXML
+    private TableColumn<TrascrizioneDati,String> col_link;
 
     private ObservableList<TrascrizioneDati> oblist;
-  
-  String titolo;
-   
+
     TrascrizioneQueryInterface trascrQueryInterface = new TrascrizioneQuery();
+
+    String titolo;
+
     TrascrizioneDati trascrizioneDati= new TrascrizioneDati(titolo,null);
+
     UserModel userModel =UserModel.getInstance();
-    
- 
 
     public TrascrizioneController() throws IOException {
 
@@ -74,30 +76,28 @@ public class TrascrizioneController implements Initializable
 
         ResultSet resultSet = trascrQueryInterface.getTrascrizioniList(userModel.getUsername(),userModel.getPrivilegio());
 
-     if(userModel.getPrivilegio().equals("supervisor") || userModel.getPrivilegio().equals("admin"))
+        if(userModel.getPrivilegio().equals("supervisor") || userModel.getPrivilegio().equals("admin"))
         {
             ResultSet result = trascrQueryInterface.getUserAbility(); //effettuo la query per selezionare tutte le trascrizioni aperte nel caso in cui l'utente è un supervisor.
             while (result.next())
             {
-                    titolo = result.getString("o.titolo");
-                    setTable(titolo);
-                    trascrizioneDati.setTitolo(titolo);
+                titolo = result.getString("o.titolo");
+                setTable(titolo);
+                trascrizioneDati.setTitolo(titolo);
             }
-        }else
-        {
-        while (resultSet.next())
-        {
-            //controllo se la trascrizione è stata accettata o meno, se non è stata accettata la carico nella tabella
-            if (!resultSet.getBoolean("op.accept"))
-            {
+        }else {
+            while (resultSet.next()) {
+                //controllo se la trascrizione è stata accettata o meno, se non è stata accettata la carico nella tabella
+                if (!resultSet.getBoolean("op.accept")) {
                     //setto le variabili con le informazioni presenti nel DB e le passo al metodo setTable
-                    titolo = resultSet.getString("o.titolo");
+                    titolo = resultSet.getString("titolo");
                     setTable(titolo);
                     trascrizioneDati.setTitolo(titolo);
+                }
             }
         }
-        }
-       
+
+
     }
 
     @Override
