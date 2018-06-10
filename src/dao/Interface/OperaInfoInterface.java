@@ -6,7 +6,7 @@ import java.time.LocalDate;
 
 public interface OperaInfoInterface
 {
-    void OperaInfoQuery(String titolo, String autore, LocalDate data, String genere, String nomeimmagine, String path) throws SQLException;
+    int OperaInfoQuery(String titolo, String autore, LocalDate data, String genere, String nomeimmagine, String path) throws SQLException;
 
     void DeleteOpera(String tit,String aut) throws SQLException;
 
