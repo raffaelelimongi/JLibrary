@@ -28,9 +28,7 @@ public class GestioneImmaginiController implements Initializable
     @FXML
     private TableView<ImmagineDati> tablemanage;
     @FXML
-    private TableColumn<ImmagineDati,String> col_titolo;
-    @FXML
-    private TableColumn<ImmagineDati,String> col_image;
+    private TableColumn<ImmagineDati,String> col_titolo, col_image;
 
     private ObservableList<ImmagineDati> oblist;
 
