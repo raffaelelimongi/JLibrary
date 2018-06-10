@@ -1,6 +1,5 @@
 package dao;
 
-
 import dao.Interface.OperaInfoInterface;
 import java.sql.*;
 import java.time.LocalDate;
@@ -63,5 +62,4 @@ public class OperaInfoQuery implements OperaInfoInterface
 
         return resultSet;
     }
-
 }
