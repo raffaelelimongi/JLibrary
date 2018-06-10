@@ -32,9 +32,7 @@ public class AssegnazioneTrascrizioneController implements Initializable
     @FXML
     private TableView<OperaMetadati> table;
     @FXML
-    private TableColumn<OperaMetadati,String> col_titolo;
-    @FXML
-    private TableColumn<OperaMetadati,String> col_autore;
+    private TableColumn<OperaMetadati,String> col_titolo, col_autore;
 
     private ObservableList<OperaMetadati> oblist;
 
