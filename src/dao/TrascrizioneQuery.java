@@ -105,7 +105,7 @@ public class TrascrizioneQuery implements TrascrizioneQueryInterface,SearchOpera
     public void Decline(String name,String titolo) throws SQLException
     {
         //preparo la query da inviare ed eseguire sul DB
-        String sql = "DELETE FROM opera_trascritta op INNER JOIN opera o ON op.ID = o.IDoperatrascritta WHERE (o.titolo=?)";
+        String sql = "DELETE op.* FROM opera_trascritta op INNER JOIN opera o ON op.ID = o.IDoperatrascritta WHERE (o.titolo=?)";
         ps = connection.prepareStatement(sql);
         ps.setString(1,titolo);
         ps.execute();
