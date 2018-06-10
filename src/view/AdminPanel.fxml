@@ -23,7 +23,7 @@
       </Label>
       <TextField fx:id="tfricerca" layoutX="138.0" layoutY="44.0" prefHeight="25.0" prefWidth="131.0" style="-fx-background-radius: 10;" text="Search" />
       <ChoiceBox fx:id="cbou" layoutX="274.0" layoutY="44.0" prefHeight="25.0" prefWidth="98.0" />
-      <Button layoutX="381.0" layoutY="44.0" mnemonicParsing="false" onAction="#search1" text="Search" />
+      <Button layoutX="381.0" layoutY="44.0" mnemonicParsing="false" onAction="#search1" text="" />
       <Button fx:id="btdeleteopera" layoutX="455.0" layoutY="9.0" mnemonicParsing="false" onAction="#DeleteOpera" text="Delete Opera" />
       <Button fx:id="butdelete" layoutX="457.0" layoutY="9.0" mnemonicParsing="false" onAction="#DeleteAccount" style="-fx-background-radius: 5;" text="Delete Account" />
       <CheckBox fx:id="cbsuperv" layoutX="469.0" layoutY="39.0" mnemonicParsing="false" onAction="#cbSupV" style="-fx-background-size: 15;" text="Supervisor" />
