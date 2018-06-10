@@ -50,7 +50,7 @@ public class ImageQuery implements  ImageQueryInterface
 
         //ps.setBinaryStream(3,(InputStream)fis, (int)f.length()); //2modo di memorizzare le immagini ma poco efficente e sicuro
 
-         return ps.executeUpdate();
+        return ps.executeUpdate();
     }
 
     @Override
