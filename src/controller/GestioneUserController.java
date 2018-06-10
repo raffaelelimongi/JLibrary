@@ -38,16 +38,8 @@ public class GestioneUserController implements Initializable
     @FXML
     private TableView<InfoUserTable> tablesearch;
     @FXML
-    private TableColumn<InfoUserTable,String> col_username;
-    @FXML
-    private TableColumn<InfoUserTable,String> col_nome;
-    @FXML
-    private TableColumn<InfoUserTable,String> col_cognome;
-    @FXML
-    private TableColumn<InfoUserTable,String> col_email;
-    @FXML
-    private TableColumn<InfoUserTable,String> col_privilegio;
-
+    private TableColumn<InfoUserTable,String> col_username, col_nome, col_cognome, col_email, col_privilegio;
+    
     private ObservableList<InfoUserTable> oblist;
 
     public String Username,Nome,Cognome,Email,Privilegio;
