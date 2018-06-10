@@ -85,7 +85,7 @@ public class UploadController implements Initializable
         for(File file:f)
         {
             nome = file.getName();
-            lblchose.setText(file.getAbsolutePath());
+             lblchose.setText(lblchose.getText()+file.getAbsolutePath());
             imagedate.setNomeimg(nome);
         }
 
