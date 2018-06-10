@@ -12,7 +12,7 @@
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane fx:id="pane" prefHeight="777.0" prefWidth="1029.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.ViewOperaController">
+<AnchorPane fx:id="pane" prefHeight="777.0" prefWidth="1029.0" style="-fx-background-color: #ccffff;" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.ViewOperaController">
    <children>
       <Label prefHeight="28.0" prefWidth="58.0" text="Titolo:">
          <font>
