@@ -15,7 +15,7 @@ public class OperaInfoQuery implements OperaInfoInterface
     public OperaInfoQuery(){}
 
     @Override
-    public void OperaInfoQuery(String titolo, String autore, LocalDate data, String genere,String nomeimmagine,String pathimage) throws SQLException
+    public int OperaInfoQuery(String titolo, String autore, LocalDate data, String genere,String nomeimmagine,String pathimage) throws SQLException
     {
 
         String sql= "INSERT INTO opera (titolo,autore,data_pubb,IDcategoria) VALUES (?,?,?,(SELECT ID FROM categoria c WHERE c.nome=?))";
@@ -24,7 +24,7 @@ public class OperaInfoQuery implements OperaInfoInterface
         st.setString(2,autore);
         st.setDate(3,Date.valueOf(data));
         st.setString(4,genere);
-        st.execute();
+        return st.executeUpdate();
     }
 
     @Override
