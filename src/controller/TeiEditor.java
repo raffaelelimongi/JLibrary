@@ -118,7 +118,7 @@ public class TeiEditor implements Initializable
 
     public void Accept() throws SQLException
     {
-        trascmanage.Accept(null,null);
+        trascmanage.Accept(null,texttrascrizione.getText());
         Stage stage = (Stage) btaccept.getScene().getWindow();
         stage.close();
     }
