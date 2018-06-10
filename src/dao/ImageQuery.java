@@ -62,16 +62,18 @@ public class ImageQuery implements  ImageQueryInterface
         }
 
         //collego l'opera appena accettata all'opera trascritta
-        String sql = "UPDATE opera o SET o.IDoperatrascritta=(SELECT ID from opera_trascritta WHERE(testo='' AND accept=0 )) WHERE (o.titolo=?)";
+        String sql = "UPDATE opera o SET o.IDoperatrascritta=(SELECT ID from opera_trascritta WHERE(testo=? AND accept=0 )) WHERE (o.titolo=?)";
         ps = connection.prepareStatement(sql);
         ps.setString(1, tit);
+        ps.setString(2,tit);
         ps.execute();
 
         //collego l'immagine appena accettata all'opera trascritta
-        String sql2 = "UPDATE immagine i SET i.accept=? ,i.IDoperatrascritta=(SELECT ID from opera_trascritta WHERE(testo='' AND accept=0)) WHERE i.nome=?";
+        String sql2 = "UPDATE immagine i SET i.accept=? ,i.IDoperatrascritta=(SELECT ID from opera_trascritta WHERE(testo=? AND accept=0)) WHERE i.nome=?";
         ps = connection.prepareStatement(sql2);
         ps.setBoolean(1,true);
-        ps.setString(2, name);
+        ps.setString(2,tit);
+        ps.setString(3, name);
         ps.execute();
 
     }
@@ -87,5 +89,4 @@ public class ImageQuery implements  ImageQueryInterface
             ps.execute();
         }
     }
-
 }
