@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Creato il: Giu 10, 2018 alle 00:48
+-- Creato il: Giu 11, 2018 alle 01:29
 -- Versione del server: 10.1.32-MariaDB
 -- Versione PHP: 7.2.5
 
@@ -32,19 +32,6 @@ CREATE TABLE `categoria` (
   `ID` int(11) UNSIGNED NOT NULL,
   `nome` varchar(50) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
-
---
--- Dump dei dati per la tabella `categoria`
---
-
-INSERT INTO `categoria` (`ID`, `nome`) VALUES
-(5, 'action'),
-(6, 'adventure'),
-(4, 'crime'),
-(7, 'drama'),
-(2, 'fantasy'),
-(3, 'historical'),
-(1, 'horror');
 
 -- --------------------------------------------------------
 
@@ -77,16 +64,6 @@ CREATE TABLE `opera` (
   `IDcategoria` int(10) UNSIGNED NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
---
--- Dump dei dati per la tabella `opera`
---
-
-INSERT INTO `opera` (`ID`, `titolo`, `autore`, `data_pubb`, `IDoperatrascritta`, `IDcategoria`) VALUES
-(2, 'sonounpanda', 'edjnjed', '2018-06-19', 1, 1),
-(5, 'sonobuefbew', 'cccc', '2018-06-19', NULL, 3),
-(40, 'aurelio', 'ven', '2018-06-08', NULL, 7),
-(41, 'eurelio', 'veno', '2018-06-17', 33, 7);
-
 -- --------------------------------------------------------
 
 --
@@ -99,15 +76,6 @@ CREATE TABLE `opera_trascritta` (
   `accept` tinyint(1) DEFAULT '0'
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
---
--- Dump dei dati per la tabella `opera_trascritta`
---
-
-INSERT INTO `opera_trascritta` (`ID`, `testo`, `accept`) VALUES
-(1, 'ciao,questa è la mia prima prova.', 1),
-(2, 'questa,invece è la seconda', 0),
-(33, '', 0);
-
 -- --------------------------------------------------------
 
 --
@@ -119,15 +87,6 @@ CREATE TABLE `ruolo` (
   `privilegio` varchar(45) NOT NULL DEFAULT 'utente base',
   `IDutente` int(10) UNSIGNED NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
-
---
--- Dump dei dati per la tabella `ruolo`
---
-
-INSERT INTO `ruolo` (`ID`, `privilegio`, `IDutente`) VALUES
-(15, 'utente base', 15),
-(18, 'utente base', 18),
-(21, 'admin', 21);
 
 -- --------------------------------------------------------
 
@@ -149,6 +108,9 @@ CREATE TABLE `utente` (
   `IDtrascrizione` int(10) UNSIGNED DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
+--
+-- Indici per le tabelle scaricate
+--
 
 --
 -- Indici per le tabelle `categoria`
@@ -204,7 +166,7 @@ ALTER TABLE `utente`
 -- AUTO_INCREMENT per la tabella `categoria`
 --
 ALTER TABLE `categoria`
-  MODIFY `ID` int(11) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=8;
+  MODIFY `ID` int(11) UNSIGNED NOT NULL AUTO_INCREMENT;
 
 --
 -- AUTO_INCREMENT per la tabella `immagine`
@@ -216,25 +178,25 @@ ALTER TABLE `immagine`
 -- AUTO_INCREMENT per la tabella `opera`
 --
 ALTER TABLE `opera`
-  MODIFY `ID` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=42;
+  MODIFY `ID` int(10) UNSIGNED NOT NULL AUTO_INCREMENT;
 
 --
 -- AUTO_INCREMENT per la tabella `opera_trascritta`
 --
 ALTER TABLE `opera_trascritta`
-  MODIFY `ID` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=34;
+  MODIFY `ID` int(10) UNSIGNED NOT NULL AUTO_INCREMENT;
 
 --
 -- AUTO_INCREMENT per la tabella `ruolo`
 --
 ALTER TABLE `ruolo`
-  MODIFY `ID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=22;
+  MODIFY `ID` int(11) NOT NULL AUTO_INCREMENT;
 
 --
 -- AUTO_INCREMENT per la tabella `utente`
 --
 ALTER TABLE `utente`
-  MODIFY `ID` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=22;
+  MODIFY `ID` int(10) UNSIGNED NOT NULL AUTO_INCREMENT;
 
 --
 -- Limiti per le tabelle scaricate
@@ -245,7 +207,7 @@ ALTER TABLE `utente`
 --
 ALTER TABLE `immagine`
   ADD CONSTRAINT `immagine_opera` FOREIGN KEY (`IDopera`) REFERENCES `opera` (`ID`) ON DELETE CASCADE,
-  ADD CONSTRAINT `immagine_operatrascritta` FOREIGN KEY (`IDoperatrascritta`) REFERENCES `opera_trascritta` (`ID`) ON DELETE CASCADE;
+  ADD CONSTRAINT `immagine_operatrascritta` FOREIGN KEY (`IDoperatrascritta`) REFERENCES `opera_trascritta` (`ID`) ON DELETE SET NULL;
 
 --
 -- Limiti per la tabella `opera`
