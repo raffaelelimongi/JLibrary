@@ -1,7 +1,5 @@
 package vo;
 
-import java.util.Iterator;
-
 //Classe per le informazioni piu utilizzate dell'utente iscritto al portale
 public class UserInfo
 {
