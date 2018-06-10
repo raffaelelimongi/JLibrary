@@ -81,29 +81,23 @@ public class TrascrizioneController implements Initializable
             //controllo se la trascrizione è stata accettata o meno, se non è stata accettata la carico nella tabella
             if (!resultSet.getBoolean("op.accept"))
             {
-
                     //setto le variabili con le informazioni presenti nel DB e le passo al metodo setTable
                     titolo = resultSet.getString("o.titolo");
                     setTable(titolo);
                     trascrizioneDati.setTitolo(titolo);
-
             }
         }
 
-        if(userModel.getPrivilegio().equals("supervisor"))
+        if(userModel.getPrivilegio().equals("supervisor") || userModel.getPrivilegio().equals("admin"))
         {
             ResultSet result = trascrQueryInterface.getUserAbility(); //effettuo la query per selezionare tutte le trascrizioni aperte nel caso in cui l'utente è un supervisor.
-            while (result.next()) {
-                //controllo se la trascrizione è stata accettata o meno, se non è stata accettata la carico nella tabella
-                if (!result.getBoolean("op.accept")) {
-                    //setto le variabili con le informazioni presenti nel DB e le passo al metodo setTable
+            while (result.next())
+            {
                     titolo = result.getString("o.titolo");
                     setTable(titolo);
                     trascrizioneDati.setTitolo(titolo);
-                }
             }
         }
-
     }
 
     @Override
