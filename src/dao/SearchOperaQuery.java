@@ -64,8 +64,8 @@ public class SearchOperaQuery implements SearchOperaInterface,ImageQueryInterfac
     }
 
     @Override
-    public void UploadImageQuery(String nome, String path, String tit,String aut) throws SQLException {
-
+    public int UploadImageQuery(String nome, String path, String tit,String aut) throws SQLException {
+        return 0;
     }
 
     @Override
