@@ -1,1 +1,0 @@
-packageSearchIndex = [{"l":"controller"},{"l":"dao"},{"l":"dao.Interface"},{"l":"model"},{"l":"vo"}]
