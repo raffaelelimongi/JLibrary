@@ -47,7 +47,7 @@ public class SearchOperaQuery implements SearchOperaInterface,ImageQueryInterfac
     @Override
     public ResultSet LoadOpera(String tit) throws SQLException
     {
-        String sql = "SELECT titolo,autore,c.nome,IDcategoria,data_pubb,op.testo,i.image,op.accept FROM opera join categoria c ON (opera.IDcategoria=c.ID) JOIN immagine i ON(opera.ID=i.IDopera) join opera_trascritta op ON(opera.IDoperatrascritta=op.ID)WHERE titolo=? AND i.accept=?";
+        String sql = "SELECT titolo,autore,c.nome,data_pubb,i.image FROM opera join categoria c ON (opera.IDcategoria=c.ID) JOIN immagine i ON(opera.ID=i.IDopera) WHERE titolo=? AND i.accept=?";
         ps = connection.prepareStatement(sql);
         ps.setString(1, tit);
         ps.setInt(2, 1);
