@@ -60,7 +60,6 @@ public class ImageQuery implements  ImageQueryInterface
         {
             nome=name;
         }
-        System.out.println(name);
 
         //collego l'opera appena accettata all'opera trascritta
         String sql = "UPDATE opera o SET o.IDoperatrascritta=(SELECT ID from opera_trascritta WHERE(testo='' AND accept=0 )) WHERE (o.titolo=?)";
