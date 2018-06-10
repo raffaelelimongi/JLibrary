@@ -32,10 +32,8 @@ public class TrascrizioneQuery implements TrascrizioneQueryInterface,SearchOpera
     public ResultSet getUserAbility () throws SQLException
     {
         //preparo la query da inviare ed eseguire sul DB
-        String sql = "SELECT DISTINCT(titolo) titolo,op.accept FROM opera o JOIN opera_trascritta op ON (op.ID = o.IDoperatrascritta) JOIN utente u JOIN ruolo r ON (u.ID=r.IDutente) WHERE (r.privilegio=? OR r.privilegio=?)";
+        String sql = "SELECT DISTINCT (titolo) titolo,op.accept FROM opera o JOIN opera_trascritta op ON (op.ID = o.IDoperatrascritta) JOIN utente u JOIN ruolo r ON (u.ID=r.IDutente)";
         ps = connection.prepareStatement(sql);
-        ps.setString(1,"supervisor");
-        ps.setString(2,"admin");
 
         //ritorno il sisultato della query
         ResultSet resultSet = ps.executeQuery();
@@ -48,9 +46,21 @@ public class TrascrizioneQuery implements TrascrizioneQueryInterface,SearchOpera
     public ResultSet loadtext(String tit) throws SQLException
     {
         //preparo la query da inviare ed eseguire sul DB
-        String sql = "SELECT op.testo,o.titolo,i.image FROM opera_trascritta op JOIN opera o ON (op.ID = o.IDoperatrascritta) JOIN immagine i ON (op.ID=i.IDoperatrascritta) WHERE(o.titolo=? AND o.IDoperatrascritta=op.ID) ";
+        String sql = "SELECT op.testo,o.titolo,i.image,op.accept FROM opera_trascritta op JOIN opera o ON (op.ID = o.IDoperatrascritta) JOIN immagine i ON (op.ID=i.IDoperatrascritta) WHERE(o.titolo=? AND o.IDoperatrascritta=op.ID) ";
         ps =connection.prepareStatement(sql);
         ps.setString(1,tit);
+        //ritorno il sisultato della query
+        ResultSet resultSet = ps.executeQuery();
+        return  resultSet;
+    }
+
+    public ResultSet LoadTrascrizione(String tit) throws SQLException
+    {
+        //preparo la query da inviare ed eseguire sul DB
+        String sql = "SELECT op.testo,op.accept FROM opera_trascritta op JOIN opera o ON (op.ID = o.IDoperatrascritta) WHERE(o.titolo=? AND op.accept=?) ";
+        ps =connection.prepareStatement(sql);
+        ps.setString(1,tit);
+        ps.setInt(2,1);
         //ritorno il sisultato della query
         ResultSet resultSet = ps.executeQuery();
         return  resultSet;
@@ -82,13 +92,20 @@ public class TrascrizioneQuery implements TrascrizioneQueryInterface,SearchOpera
         ps.execute();
 
 
+        //preparo la query da inviare ed eseguire sul DB
+        String sql1 = "UPDATE opera_trascritta SET accept=? WHERE testo=?";
+        ps = connection.prepareStatement(sql1);
+        ps.setFloat(1, 1);
+        ps.setString(2,tit);
+        ps.execute();
+
     }
 
     @Override
     public void Decline(String name,String titolo) throws SQLException
     {
         //preparo la query da inviare ed eseguire sul DB
-        String sql = "DELETE op.* FROM opera_trascritta op INNER JOIN opera o ON op.ID = o.IDoperatrascritta WHERE (o.titolo=?)";
+        String sql = "DELETE FROM opera_trascritta op INNER JOIN opera o ON op.ID = o.IDoperatrascritta WHERE (o.titolo=?)";
         ps = connection.prepareStatement(sql);
         ps.setString(1,titolo);
         ps.execute();
@@ -150,6 +167,6 @@ public class TrascrizioneQuery implements TrascrizioneQueryInterface,SearchOpera
 
     @Override
     public int UploadImageQuery(String nome, String path, String tit, String autore) throws SQLException {
-        return 0;
+        return  0;
     }
 }
