@@ -9,7 +9,7 @@
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
 
-<AnchorPane prefHeight="792.0" prefWidth="788.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.TeiEditor">
+<AnchorPane prefHeight="792.0" prefWidth="788.0" style="-fx-background-color: #ccffff;" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.TeiEditor">
    <children>
       <JFXTextArea fx:id="texttrascrizione" focusColor="#0040ff" layoutY="-3.0" prefHeight="465.0" prefWidth="661.0" promptText="Scrivere qui la trascrizione!" unFocusColor="#ff0404" />
       <VBox fx:id="vbox" layoutX="660.0" layoutY="-3.0" prefHeight="471.0" prefWidth="128.0" style="-fx-background-color: black;">
