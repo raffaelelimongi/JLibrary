@@ -29,14 +29,13 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.ResourceBundle;
 
-public class ViewImage implements Initializable
-{
+public class ViewImage implements Initializable {
     @FXML
     private TableView<ImmagineDati> tbwimage;
     @FXML
-    private TableColumn<OperaMetadati,ImageView> col_image;
+    private TableColumn<OperaMetadati, ImageView> col_image;
     @FXML
-    private JFXButton btaccept,btdecline;
+    private JFXButton btaccept, btdecline;
 
     private ObservableList<ImmagineDati> oblist;
 
@@ -46,16 +45,14 @@ public class ViewImage implements Initializable
     public static String titolo;
     private Image image;
     private List<Image> list = new ArrayList<>();
-    private String[] name= new String[20];
-    public int i=0;
+    private String[] name = new String[20];
+    public int i = 0;
 
-    public ViewImage()
-    {
+    public ViewImage() {
     }
 
-    public void setscene(String tit)
-    {
-        titolo=tit;
+    public void setscene(String tit) {
+        titolo = tit;
         Parent root;
         try {
             root = FXMLLoader.load(getClass().getResource("../view/imageview.fxml"));
@@ -70,12 +67,10 @@ public class ViewImage implements Initializable
         }
     }
 
-    public void LoadImage() throws SQLException, IOException
-    {
+    public void LoadImage() throws SQLException, IOException {
         ResultSet resultSet = imageQueryInterface.LoadImage(titolo);
 
-        while (resultSet.next())
-        {
+        while (resultSet.next()) {
             File file = new File(resultSet.getString("i.image"));
             image = new Image(file.toURI().toString());
             list.add(image);
@@ -83,44 +78,38 @@ public class ViewImage implements Initializable
             imageView.setFitWidth(1000);
             imageView.setFitHeight(500);
             imageView.setPreserveRatio(true);
-            setTable(name[i]=resultSet.getString("i.nome"), imageView);
+            setTable(name[i] = resultSet.getString("i.nome"), imageView);
             i++;
         }
     }
 
-    public void Accept() throws SQLException
-    {
+    public void Accept() throws SQLException {
         createtrascr.Create();
-        for(int i=0;i<list.size();i++)
+        for (int i = 0; i < list.size(); i++)
         {
             imageQueryInterface.Accept(name[i], titolo);
         }
-
         Stage stage = (Stage) btaccept.getScene().getWindow();
         stage.close();
     }
 
-    public void Decline() throws SQLException
-    {
-        for(int i=0;i<list.size();i++)
-        {
-            imageQueryInterface.Decline(name[i],titolo);
+    public void Decline() throws SQLException {
+        for (int i = 0; i < list.size(); i++) {
+            imageQueryInterface.Decline(name[i], titolo);
         }
         Stage stage = (Stage) btdecline.getScene().getWindow();
         stage.close();
     }
 
-    private void setTable(String name, ImageView imageView2) throws IOException
-    {
-        oblist.add(new ImmagineDati(name,imageView2,"","","",null));
+    private void setTable(String name, ImageView imageView2) throws IOException {
+        oblist.add(new ImmagineDati(name, imageView2, "", "", "", null));
         tbwimage.setItems(oblist);
     }
 
     @Override
-    public void initialize(URL location, ResourceBundle resources)
-    {
+    public void initialize(URL location, ResourceBundle resources) {
         col_image.setCellValueFactory(new PropertyValueFactory<>("imageView"));
-        oblist=FXCollections.observableArrayList();
+        oblist = FXCollections.observableArrayList();
 
         try {
             LoadImage();
@@ -131,3 +120,4 @@ public class ViewImage implements Initializable
         }
 
     }
+}
