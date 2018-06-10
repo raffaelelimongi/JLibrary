@@ -56,6 +56,7 @@ public class HomePageController implements Initializable
         Parent root;
         try
         {
+            //setto la nuova scena della home page e nascondo la precedente
             root = FXMLLoader.load(HomePageController.class.getResource("../view/home.fxml"));
             Stage stage = new Stage();
             stage.setTitle("HomePage");
