@@ -106,14 +106,22 @@ public class UploadController implements Initializable
 
     public void Upload() throws SQLException
     {
-        operaInfoInterface.OperaInfoQuery(txtTitolo.getText(), txtautore.getText(), date.getValue(), txtgenere.getText(),nome,lblchose.getText());
         //invio le informazioni relative all'opera da inserire nel DB
-
+         result = operaInfoInterface.OperaInfoQuery(txtTitolo.getText(), txtautore.getText(), date.getValue(), txtgenere.getText(),nome,lblchose.getText());
+         
         for(File file:f)
         {
-            imageQueryInterface.UploadImageQuery(file.getName(), file.getAbsolutePath(), txtTitolo.getText(),txtautore.getText());
+            //passo il nome dell'immagine e l'immagine alla query per inserirla nel DB
+          result= result+ imageQueryInterface.UploadImageQuery(file.getName(), file.getAbsolutePath(), txtTitolo.getText(),txtautore.getText());
         }
-        //passo il nome dell'immagine e l'immagine alla query per inserirla nel DB
+        if (result == 2)
+        {
+            lblchose.setText("Info Opera e immagini Caricate correttamente");
+        }
+        else
+        {
+            lblchose.setText("Errore, opera gia presente!");
+        }
     }
 
     @Override
