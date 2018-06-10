@@ -72,6 +72,17 @@ public class TrascrizioneController implements Initializable
 
         ResultSet resultSet = trascrQueryInterface.getTrascrizioniList(userModel.getUsername(),userModel.getPrivilegio());
 
+     if(userModel.getPrivilegio().equals("supervisor") || userModel.getPrivilegio().equals("admin"))
+        {
+            ResultSet result = trascrQueryInterface.getUserAbility(); //effettuo la query per selezionare tutte le trascrizioni aperte nel caso in cui l'utente è un supervisor.
+            while (result.next())
+            {
+                    titolo = result.getString("o.titolo");
+                    setTable(titolo);
+                    trascrizioneDati.setTitolo(titolo);
+            }
+        }else
+        {
         while (resultSet.next())
         {
             //controllo se la trascrizione è stata accettata o meno, se non è stata accettata la carico nella tabella
@@ -83,17 +94,8 @@ public class TrascrizioneController implements Initializable
                     trascrizioneDati.setTitolo(titolo);
             }
         }
-
-        if(userModel.getPrivilegio().equals("supervisor") || userModel.getPrivilegio().equals("admin"))
-        {
-            ResultSet result = trascrQueryInterface.getUserAbility(); //effettuo la query per selezionare tutte le trascrizioni aperte nel caso in cui l'utente è un supervisor.
-            while (result.next())
-            {
-                    titolo = result.getString("o.titolo");
-                    setTable(titolo);
-                    trascrizioneDati.setTitolo(titolo);
-            }
         }
+       
     }
 
     @Override
