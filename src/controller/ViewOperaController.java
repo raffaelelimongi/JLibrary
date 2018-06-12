@@ -61,20 +61,7 @@ public class ViewOperaController implements Initializable
     {
         titolo=titolo1;
 
-         Parent root;
-            try
-            {
-                root = FXMLLoader.load(ViewOperaController.class.getResource("../view/operaview.fxml"));
-                Stage stage = new Stage();
-                stage.setTitle("Opera");
-                Scene home = new Scene(root);
-                stage.setScene(home);
-                stage.show();
 
-            } catch (IOException e)
-            {
-                e.printStackTrace();
-            }
     }
 
     public void LoadOpera()throws SQLException, IOException
