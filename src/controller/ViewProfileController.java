@@ -38,27 +38,10 @@ public class ViewProfileController implements Initializable {
     {
 
     }
-    //metodo che carica la view per la visualizzazione del profilo
-    public static void ViewProfile(ActionEvent event) throws SQLException
-    {
-        Parent root;
-        try {
-            root = FXMLLoader.load(ViewProfileController.class.getResource("../view/profile.fxml"));
-            Stage stage = new Stage();
-            stage.setTitle("Profile");
-            Scene home = new Scene(root);
-            stage.setScene(home);
-            stage.show();
-            ((Node) (event.getSource())).getScene().getWindow().hide();
-
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-    }
 
     public void backhome(ActionEvent event)
     {
-        HomePageController.setscene(event);
+        JavaFXController.sethome(event);
     }
 
     public void userInfo()
@@ -130,4 +113,3 @@ public class ViewProfileController implements Initializable {
     {
         userInfo();
     }
-}
