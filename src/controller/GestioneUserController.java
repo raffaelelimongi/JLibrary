@@ -59,22 +59,6 @@ public class GestioneUserController implements Initializable
     {
     }
 
-    public static void setscene(ActionEvent event) throws SQLException
-    {
-        Parent root;
-        try {
-            root = FXMLLoader.load(ViewProfileController.class.getResource("../view/gestioneuser.fxml"));
-            Stage stage = new Stage();
-            stage.setTitle("Manage User");
-            Scene home = new Scene(root);
-            stage.setScene(home);
-            stage.show();
-            ((Node) (event.getSource())).getScene().getWindow().hide();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-    }
-
     public void search() throws SQLException, IOException
     {
 
@@ -131,13 +115,14 @@ public class GestioneUserController implements Initializable
 
     public void gotohome(ActionEvent event)
     {
-        HomePageController.setscene(event);
+        JavaFXController.sethome(event);
     }
 
     public void AssegnaTrascrizione()
     {
-        AssegnazioneTrascrizioneController.setscene();
+        JavaFXController.setAssegnaTrascrizione();
     }
+
     @Override
     public void initialize(URL location, ResourceBundle resources)
     {
@@ -161,6 +146,3 @@ public class GestioneUserController implements Initializable
         oblist.add(new InfoUserTable(Username, Privilegio, Nome, Cognome,Email));
         tablesearch.setItems(oblist);
     }
-
-
-}
