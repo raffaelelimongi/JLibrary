@@ -56,10 +56,10 @@ public class GestioneImmaginiController implements Initializable
         }
     }
 
-    public void gotohome(ActionEvent event)
+ /*   public void gotohome(ActionEvent event)
     {
         HomePageController.setscene(event);
-    }
+    }*/
 
     //metodo per caricare il testo dal DB al Text
     public void LoadInfoOpera() throws SQLException, IOException
