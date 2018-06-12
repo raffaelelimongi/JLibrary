@@ -42,24 +42,6 @@ public class AssegnazioneTrascrizioneController implements Initializable
     public AssegnazioneTrascrizioneController()
     {}
 
-    public static void setscene()
-    {
-        Parent root;
-        try
-        {
-            root = FXMLLoader.load(HomePageController.class.getResource("../view/assegnatrascrizione.fxml"));
-            Stage stage = new Stage();
-            stage.setTitle("Trascrizione");
-            Scene home = new Scene(root);
-            stage.setScene(home);
-            stage.show();
-
-        } catch (IOException e)
-        {
-            e.printStackTrace();
-        }
-    }
-
     public void CaricaOpere() throws SQLException, IOException
     {
         oblist.removeAll(oblist);
