@@ -6,14 +6,9 @@ import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
-import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
-import javafx.scene.Node;
-import javafx.scene.Parent;
-import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
-import javafx.stage.Stage;
 import model.UserModel;
 import model.OperaMetadati;
 import java.io.IOException;
@@ -49,26 +44,6 @@ public class HomePageController implements Initializable
 
     public HomePageController() throws IOException
     {
-    }
-
-    public static void setscene(ActionEvent event)
-    {
-        Parent root;
-        try
-        {
-            //setto la nuova scena della home page e nascondo la precedente
-            root = FXMLLoader.load(HomePageController.class.getResource("../view/home.fxml"));
-            Stage stage = new Stage();
-            stage.setTitle("HomePage");
-            Scene home = new Scene(root);
-            stage.setScene(home);
-            stage.show();
-            ((Node)(event.getSource())).getScene().getWindow().hide();
-
-        } catch (IOException e)
-        {
-            e.printStackTrace();
-        }
     }
 
     @FXML
@@ -133,50 +108,35 @@ public class HomePageController implements Initializable
         txtsearch.clear();
     }
 
-    public void returnlogin()
+    public void returnlogin(ActionEvent event)
     {
-        try{
-        Stage back;
-        Parent gologin;
-
-        back =(Stage) btlogout.getScene().getWindow();
-        gologin = FXMLLoader.load(getClass().getResource("../view/Login.fxml"));
-        back.setTitle("JLibrary");
-        Scene homescene = new Scene(gologin);
-        back.setScene(homescene);
-        back.show();
-
-        } catch (IOException e)
-        {
-            e.printStackTrace();
-
-        }
+        JavaFXController.setLogin(event);
     }
 
-    public void gotoprofile(ActionEvent event) throws SQLException
+    public void gotoprofile(ActionEvent event)
     {
         if (user.getPrivilegio().equals("admin"))
-            AdminPannelController.setsceneAdmin(event);
+        JavaFXController.setAdminPanel(event);
         else
-            ViewProfileController.ViewProfile(event);
+        JavaFXController.setProfile(event);
     }
 
     public void gotochose()
     {
-        new UploadController().setscene();
+        JavaFXController.setUpload();
     }
 
-    public void gotomanageuser(ActionEvent event) throws SQLException
+    public void gotomanageuser(ActionEvent event)
     {
-        GestioneUserController.setscene(event);
+      JavaFXController.setManageUser(event);
     }
-    public void gototrascrizione(ActionEvent event) throws IOException
+    public void gototrascrizione(ActionEvent event)
     {
-        new TrascrizioneController().setScene(event);
+        JavaFXController.setTrascrizione(event);
     }
-    public void gotomanageimage(ActionEvent event)
+    public void gotomanageimage()
     {
-        new GestioneImmaginiController().setscene(event);
+        JavaFXController.setManageImage();
     }
 
     //metodo per inizializzare il ChoiseBox,tableview e l'observablelist
@@ -209,7 +169,7 @@ public class HomePageController implements Initializable
     //Metodo per settare la Tableview con i valori presi dal DB
     private void setTable(String titolo, String autore, String genere,Date data) throws IOException
     {
-        oblist.add(new OperaMetadati(titolo, autore, genere,data));
+        oblist.add(new OperaMetadati(titolo, autore, genere, data));
         tablesearch.setItems(oblist);
     }
 
