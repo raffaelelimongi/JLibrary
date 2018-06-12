@@ -6,15 +6,10 @@ import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
-import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
-import javafx.scene.Node;
-import javafx.scene.Parent;
-import javafx.scene.Scene;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.cell.PropertyValueFactory;
-import javafx.stage.Stage;
 import model.UserModel;
 import model.TrascrizioneDati;
 import java.io.IOException;
@@ -45,28 +40,10 @@ public class TrascrizioneController implements Initializable
     public TrascrizioneController() throws IOException {
 
     }
-    public void setScene(ActionEvent event)
-    {
-        Parent root;
-        try
-        {
-            root = FXMLLoader.load(HomePageController.class.getResource("../view/trascrizione.fxml"));
-            Stage stage = new Stage();
-            stage.setTitle("Trascrizione");
-            Scene home = new Scene(root);
-            stage.setScene(home);
-            stage.show();
-            ((Node)(event.getSource())).getScene().getWindow().hide();
-
-        } catch (IOException e)
-        {
-            e.printStackTrace();
-        }
-    }
 
     public void gotohome(ActionEvent event)
     {
-        HomePageController.setscene(event);
+        new JavaFXController().sethome(event);
     }
 
     //in questo metodo carico il titolo dell'opera da trascrivere nella tabella per poterlo visualizzare
@@ -96,8 +73,6 @@ public class TrascrizioneController implements Initializable
                 }
             }
         }
-
-
     }
 
     @Override
