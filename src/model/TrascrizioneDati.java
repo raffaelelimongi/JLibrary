@@ -25,10 +25,15 @@ public class TrascrizioneDati
         link.setOnMouseClicked((MouseEvent mouseEvent) ->
         {
             try {
-               TeiEditor.setscene(titolo);
+                JavaFXController.setTeiEditor();
             } catch (IOException e) {
                 e.printStackTrace();
             }
+           /* try {
+               TeiEditor.setscene(titolo);
+            } catch (IOException e) {
+                e.printStackTrace();
+            }*/
         });
 
     }
