@@ -53,18 +53,7 @@ public class ViewImage implements Initializable {
 
     public void setscene(String tit) {
         titolo = tit;
-        Parent root;
-        try {
-            root = FXMLLoader.load(getClass().getResource("../view/imageview.fxml"));
-            Stage stage = new Stage();
-            stage.setTitle("Manage Image");
-            Scene home = new Scene(root);
-            stage.setScene(home);
-            stage.show();
 
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
     }
 
     public void LoadImage() throws SQLException, IOException {
