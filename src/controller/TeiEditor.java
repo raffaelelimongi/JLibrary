@@ -50,15 +50,7 @@ public class TeiEditor implements Initializable
     public static void setscene(String titolo1) throws IOException
     {
         titolo=titolo1;
-        // Setto la scena per l'apertura della finestra del teiEditor di quella determinata opera
-        Parent root;
 
-        root = FXMLLoader.load(TrascrizioneController.class.getResource("../view/teieditor.fxml"));
-        Stage stage = new Stage();
-        stage.setTitle("Trascrizione");
-        Scene home = new Scene(root);
-        stage.setScene(home);
-        stage.show();
     }
 
     //metodo per caricare il testo dal DB al Text
