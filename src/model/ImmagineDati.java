@@ -1,5 +1,6 @@
 package model;
 
+import controller.JavaFXController;
 import controller.ViewImage;
 import javafx.event.EventHandler;
 import javafx.scene.control.Label;
@@ -29,7 +30,9 @@ public class ImmagineDati extends OperaMetadati
         link.setOnMouseClicked((new EventHandler<MouseEvent>() {
             @Override
             public void handle(MouseEvent event) {
-                new ViewImage().setscene(t);
+              //  new ViewImage().setscene(t);
+
+                JavaFXController.setManageImage();
             }
     }   ));
     }
@@ -58,3 +61,4 @@ public class ImmagineDati extends OperaMetadati
         this.link = link;
     }
 }
+
