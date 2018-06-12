@@ -59,21 +59,6 @@ public class UploadController implements Initializable
     {
     }
 
-    public void setscene()
-    {
-        Parent root;
-        try {
-            root = FXMLLoader.load(getClass().getResource("../view/uploadView.fxml"));
-            Stage stage = new Stage();
-            stage.setTitle("Chose Image");
-            Scene home = new Scene(root);
-            stage.setScene(home);
-            stage.show();
-
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-    }
 
     //metodo per la scelta e il caricamento delle immagini nel DB
     public void choseImage()
