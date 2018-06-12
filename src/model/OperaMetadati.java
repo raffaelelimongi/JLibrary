@@ -25,7 +25,8 @@ public class OperaMetadati
         //se viene cliccato apre la finestra per la visualizzazione dell'opera
         view.setOnMouseClicked((MouseEvent mouseEvent) ->
         {
-            ViewOperaController.ViewOpera(this.titolo);
+            JavaFXController.setViewOpera();
+            //ViewOperaController.ViewOpera(this.titolo);
         });
 
     }
