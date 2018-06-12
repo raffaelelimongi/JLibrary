@@ -2,15 +2,11 @@ package controller;
 
 import dao.UserAuthenticationQuery;
 import javafx.fxml.FXML;
-import javafx.fxml.FXMLLoader;
-import javafx.scene.Parent;
-import javafx.scene.Scene;
+import javafx.event.ActionEvent;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
-import javafx.stage.Stage;
-import java.io.IOException;
 import java.sql.SQLException;
 
 public class SignUpController
@@ -29,7 +25,7 @@ public class SignUpController
     {
     }
 
-    public void Submit() throws Exception
+    public void Submit(ActionEvent event) throws Exception
     {
         //Controllo che nei campi Username,password,email non venga inserito un testo vuoto
         if (!txtpass.getText().matches("") && !txtuser.getText().matches("") && !txtemail.getText().matches(""))
@@ -44,17 +40,7 @@ public class SignUpController
 
                     int result= userDaoInterface.SignInQuery(txtuser.getText(),txtpass.getText(),txtname.getText(),txtsurname.getText(), txtemail.getText());
                     if (result == 1) {
-                        Stage stage;
-                        Parent home;
-
-                        stage = (Stage) btsubmit.getScene().getWindow();
-                        home = FXMLLoader.load(getClass().getResource("../view/Login.fxml"));
-
-                        Scene homescene = new Scene(home);
-                        stage.setScene(homescene);
-                        stage.setTitle("JLibrary");
-
-                        stage.show();
+                        gotologin(event);
                     } else {
                         error.setText("Errore");
                     }
@@ -81,16 +67,8 @@ public class SignUpController
         }
     }
 
-    public  void gotologin() throws IOException
+    public  void gotologin(ActionEvent event)
     {
-        Stage back;
-        Parent gologin;
-
-        back =(Stage) btback.getScene().getWindow();
-        gologin = FXMLLoader.load(getClass().getResource("../view/Login.fxml"));
-        back.setTitle("JLibrary");
-        Scene homescene = new Scene(gologin);
-        back.setScene(homescene);
-        back.show();
+        JavaFXController.setLogin(event);
     }
 }
