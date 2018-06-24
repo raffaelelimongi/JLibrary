@@ -1,6 +1,8 @@
 package dao;
 
 import dao.Interface.OperaInfoInterface;
+import model.OperaMetadati;
+
 import java.sql.*;
 import java.time.LocalDate;
 
@@ -28,13 +30,12 @@ public class OperaInfoQuery implements OperaInfoInterface
     }
 
     @Override
-    public void DeleteOpera(String tit,String aut) throws SQLException
+    public void DeleteOpera(OperaMetadati delopera) throws SQLException
     {
         String sql = "DELETE FROM opera WHERE titolo=? AND autore=?";
         st=connection.prepareStatement(sql);
-        System.out.println(tit+aut);
-        st.setString(1,tit);
-        st.setString(2,aut);
+        st.setString(1,delopera.getTitolo());
+        st.setString(2,delopera.getAutore());
         st.execute();
     }
 
