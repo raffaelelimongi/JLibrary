@@ -1,15 +1,11 @@
 package controller;
 
-import dao.Interface.ImageQueryInterface;
 import dao.Interface.TrascrizioneQueryInterface;
 import dao.TrascrizioneQuery;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
-import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
-import javafx.scene.Parent;
-import javafx.scene.Scene;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.image.Image;
@@ -40,7 +36,7 @@ public class TeiEditor implements Initializable
     private ObservableList<ImmagineDati> oblist;
     private Image image;
     TrascrizioneQueryInterface trascrQueryInterf = new TrascrizioneQuery();
-    ImageQueryInterface trascmanage = new TrascrizioneQuery();
+    TrascrizioneQueryInterface trascmanage = new TrascrizioneQuery();
     static  String titolo;
 
     public TeiEditor()
