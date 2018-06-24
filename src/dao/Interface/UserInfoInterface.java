@@ -1,7 +1,10 @@
 package dao.Interface;
 
+import model.InfoUserTable;
+
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
 
 public interface UserInfoInterface
 {
@@ -13,7 +16,7 @@ public interface UserInfoInterface
 
     void Trascrittore(String user , int rictrascr) throws SQLException;
 
-     ResultSet GetListUser(String k) throws SQLException;
+    ArrayList<InfoUserTable> GetListUser(String k) throws SQLException;
 
       ResultSet  SupervisorUserPanelQuery (String keyword , String kind) throws SQLException;
 
@@ -25,9 +28,9 @@ public interface UserInfoInterface
 
     void RetrocediUser(String u) throws SQLException;
 
-    void setSupervisorQuery(String username1) throws SQLException;
+    void setSupervisorQuery(InfoUserTable supervisor) throws SQLException;
 
-    void setUserQuery(String username1) throws SQLException;
+    void setUserQuery(InfoUserTable user) throws SQLException;
 
-    void setAdminQuery(String username1) throws SQLException;
+    void setAdminQuery(InfoUserTable admin) throws SQLException;
 }
