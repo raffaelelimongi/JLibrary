@@ -4,8 +4,7 @@ import vo.UserInfo;
 
 import java.io.IOException;
 
-public class InfoUserTable extends UserInfo
-{
+public class InfoUserTable extends UserInfo {
     String username,privilegio;
 
     public InfoUserTable(String username, String privilegio,String nome,String cognome,String email) throws IOException
@@ -28,7 +27,9 @@ public class InfoUserTable extends UserInfo
     public String getPrivilegio() {
         return privilegio;
     }
+    
     public void setPrivilegio(String privilegio) {
         this.privilegio = privilegio;
     }
+    
 }
