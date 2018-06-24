@@ -2,6 +2,7 @@ package controller;
 
 import dao.Interface.SearchOperaInterface;
 import dao.Interface.TrascrizioneQueryInterface;
+import dao.SearchOperaQuery;
 import dao.TrascrizioneQuery;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -36,7 +37,7 @@ public class AssegnazioneTrascrizioneController implements Initializable
 
     private ObservableList<OperaMetadati> oblist;
 
-    SearchOperaInterface assegnatrascrizione= new TrascrizioneQuery();
+    SearchOperaInterface assegnatrascrizione= new SearchOperaQuery();
     TrascrizioneQueryInterface assegnatrascrizione2= new TrascrizioneQuery();
 
     public AssegnazioneTrascrizioneController()
