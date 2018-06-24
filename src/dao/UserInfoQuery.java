@@ -1,9 +1,12 @@
 package dao;
 
 import dao.Interface.UserInfoInterface;
+import model.InfoUserTable;
 import model.UserModel;
 
+import java.io.IOException;
 import java.sql.*;
+import java.util.ArrayList;
 
 public class UserInfoQuery implements UserInfoInterface
 {
@@ -88,14 +91,32 @@ public class UserInfoQuery implements UserInfoInterface
     }
 
     @Override
-    public ResultSet GetListUser(String key) throws SQLException {
+    public ArrayList<InfoUserTable> GetListUser(String key) throws SQLException
+    {
+        ArrayList<InfoUserTable> userlist= new ArrayList<>();
         String sql = "SELECT username,email,nome,cognome,r.privilegio FROM utente JOIN ruolo r ON(utente.ID=r.IDutente) WHERE username LIKE ?";
         st = connection.prepareStatement(sql);
         st.setString(1,"%"+key+"%");
         //ritorno il sisultato della query
         ResultSet resultSet = st.executeQuery();
 
-        return  resultSet;
+        while (resultSet.next())
+        {
+            String username = resultSet.getString("username");
+            String email = resultSet.getString("email");
+            String nome = resultSet.getString("nome");
+            String cognome = resultSet.getString("cognome");
+            String privilegio =resultSet.getString("r.privilegio");
+
+            try {
+                InfoUserTable user = new InfoUserTable(username,privilegio,nome,cognome,email);
+                userlist.add(user);
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+
+        }
+        return  userlist;
     }
 
     @Override
@@ -181,34 +202,34 @@ public class UserInfoQuery implements UserInfoInterface
     }
 
     @Override
-    public  void setSupervisorQuery(String username1) throws SQLException
+    public  void setSupervisorQuery(InfoUserTable supervisor) throws SQLException
     {
         String sql="UPDATE ruolo inner join utente u on ruolo.IDutente=u.ID SET privilegio = ? WHERE u.username = ? " ;
         st=connection.prepareStatement(sql);
         st.setString(1,"supervisor");
-        st.setString(2,username1);
+        st.setString(2,supervisor.getUsername());
 
         st.executeUpdate();
     }
 
     @Override
-    public  void setUserQuery(String username1) throws SQLException
+    public  void setUserQuery(InfoUserTable user) throws SQLException
     {
         String sql="UPDATE ruolo inner join utente u on ruolo.IDutente=u.ID SET privilegio = ? WHERE u.username = ? " ;
         st=connection.prepareStatement(sql);
         st.setString(1,"utente base");
-        st.setString(2,username1);
+        st.setString(2, user.getUsername());
 
         st.executeUpdate();
     }
 
     @Override
-    public  void setAdminQuery(String username1) throws SQLException
+    public  void setAdminQuery(InfoUserTable admin) throws SQLException
     {
         String sql="UPDATE ruolo inner join utente u on ruolo.IDutente=u.ID SET privilegio =? WHERE u.username=? " ;
         st=connection.prepareStatement(sql);
         st.setString(1,"admin");
-        st.setString(2,username1);
+        st.setString(2,admin.getUsername());
 
         st.executeUpdate();
     }
