@@ -1,10 +1,15 @@
 package dao;
 
-import dao.Interface.ImageQueryInterface;
 import dao.Interface.SearchOperaInterface;
-import java.sql.*;
+import model.OperaMetadati;
 
-public class SearchOperaQuery implements SearchOperaInterface,ImageQueryInterface {
+import java.io.IOException;
+import java.sql.*;
+import java.util.ArrayList;
+import java.util.Date;
+
+public class SearchOperaQuery implements SearchOperaInterface
+{
     PreparedStatement ps;
     ConnectionClass connectionClass = new ConnectionClass();
     Connection connection = connectionClass.getConnection();
@@ -27,16 +32,32 @@ public class SearchOperaQuery implements SearchOperaInterface,ImageQueryInterfac
     }
 
     @Override
-    public ResultSet SearchOperaQueryAdmin(String keyword, String kind) throws SQLException
+    public ArrayList<OperaMetadati> SearchOperaQueryAdmin(String keyword) throws SQLException
     {
-        String sql = "SELECT DISTINCT(titolo) titolo,autore,c.nome,IDcategoria,data_pubb FROM opera join categoria c ON (opera.IDcategoria=c.ID) WHERE TITOLO LIKE ? AND c.nome LIKE ? ";
+        ArrayList<OperaMetadati> listopere =new ArrayList<>();
+        String sql = "SELECT DISTINCT(titolo) titolo,autore,c.nome,IDcategoria,data_pubb FROM opera join categoria c ON (opera.IDcategoria=c.ID) WHERE TITOLO LIKE ?";
         ps = connection.prepareStatement(sql);
         ps.setString(1, "%" + keyword + "%");
-        ps.setString(2, "%" + kind + "%");
 
         ResultSet resultSet = ps.executeQuery();
+        while (resultSet.next())
+        {
+            //setto le variabili con le informazioni presenti nel DB e le passo al metodo setTable
+           String autore = resultSet.getString("autore");
+           String titolo = resultSet.getString("titolo");
+           String genere = resultSet.getString("c.nome");
+           Date data= resultSet.getDate("data_pubb");
 
-        return resultSet;
+            OperaMetadati opera = null;
+            try {
+                opera = new OperaMetadati(titolo,autore,genere,data);
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+            listopere.add(opera);
+        }
+
+        return listopere;
     }
 
     @Override
@@ -56,27 +77,4 @@ public class SearchOperaQuery implements SearchOperaInterface,ImageQueryInterfac
 
         return resultSet;
     }
-
-
-    @Override
-    public ResultSet LoadImage(String tit) throws SQLException {
-        return null;
-    }
-
-    @Override
-    public int UploadImageQuery(String nome, String path, String tit,String aut) throws SQLException {
-        return 0;
-    }
-
-    @Override
-    public void Accept(String name, String tit) throws SQLException {
-
-    }
-
-    @Override
-    public void Decline(String name, String tit) throws SQLException {
-
-    }
 }
-
-
