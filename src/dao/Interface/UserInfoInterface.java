@@ -20,7 +20,7 @@ public interface UserInfoInterface
 
       ResultSet  SupervisorUserPanelQuery (String keyword , String kind) throws SQLException;
 
-    void DeleteUser(String Username) throws SQLException;
+    void DeleteUser(InfoUserTable deluser) throws SQLException;
 
     void AcceptTrascrittore(String u) throws SQLException;
 
