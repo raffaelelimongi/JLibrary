@@ -9,20 +9,16 @@ import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
-import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
-import javafx.scene.Node;
-import javafx.scene.Parent;
-import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
-import javafx.stage.Stage;
 import model.InfoUserTable;
 import model.OperaMetadati;
 import java.io.IOException;
 import java.net.URL;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.ResourceBundle;
 
@@ -31,49 +27,32 @@ public class AdminPannelController implements Initializable
 
     @FXML
     public TextField tfricerca;
-
     @FXML
-    private Button butdelete,butuser,buthome,butsuperv,btdeleteopera;
-
+    private Button butdelete,btdeleteopera;
     @FXML
     private CheckBox cbsuperv,cbadmin;
-
     @FXML
     private ChoiceBox<String> cbou;
-
     @FXML
     private TableView<InfoUserTable> tableView;
-
     @FXML
     private TableView<OperaMetadati> tableView1;
-
     @FXML
     private TableColumn<InfoUserTable, String> col_username;
-
-    @FXML
-    private TableColumn<OperaMetadati, String> col_id;
-
     @FXML
     private TableColumn<OperaMetadati, String> col_nomeop;
-
     @FXML
     private TableColumn<InfoUserTable, String> col_email;
-
     @FXML
     private TableColumn<OperaMetadati, String> col_autoreop;
-
     @FXML
     private TableColumn<InfoUserTable, String> col_nome;
-
     @FXML
     private TableColumn<OperaMetadati, String> col_genereop;
-
     @FXML
     private TableColumn<InfoUserTable, String> col_cognome;
-
     @FXML
     private TableColumn<OperaMetadati, String> col_dataop;
-
     @FXML
     private TableColumn<OperaMetadati, String> col_viewop;
 
@@ -89,46 +68,20 @@ public class AdminPannelController implements Initializable
     OperaInfoQuery operainfoInterface = new OperaInfoQuery();
     SearchOperaInterface searchOperaInterface = new SearchOperaQuery();
 
-    InfoUserTable userTable = new InfoUserTable("", "", "", "","");
-    OperaMetadati operadati = new OperaMetadati("", "", "",null);
+    ArrayList<InfoUserTable> listuser= new ArrayList<>();
 
-    public AdminPannelController() throws IOException {
+    public AdminPannelController() {
     }
 
-    public static void setsceneAdmin(ActionEvent event) {
-        Parent root1;
-        try {
-            root1 = FXMLLoader.load(AdminPannelController.class.getResource("../view/AdminPanel.fxml"));
-            Stage stage = new Stage();
-            stage.setTitle("AdminPanel");
-            Scene home = new Scene(root1);
-            stage.setScene(home);
-            stage.show();
-            ((Node) (event.getSource())).getScene().getWindow().hide();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-    }
-
-    public void gotoProfile() throws Exception {
-        Stage stage1;
-        Parent home1;
-
-        stage1 = (Stage) butuser.getScene().getWindow();
-        home1 = FXMLLoader.load(getClass().getResource("../view/Profile.fxml"));
-
-        Scene homescene1 = new Scene(home1);
-        stage1.setScene(homescene1);
-        stage1.setTitle("Profile");
-
-        stage1.show();
+    public void gotoProfile(ActionEvent event)  {
+      JavaFXController.setProfile(event);
     }
 
     public void gotoHome(ActionEvent event) {
-        HomePageController.setscene(event);
+        JavaFXController.sethome(event);
     }
 
-    private void searchuser() throws SQLException, IOException
+    private void searchuser() throws SQLException
     {
         tableView1.setVisible(false);
         tableView.setVisible(true);
@@ -136,34 +89,16 @@ public class AdminPannelController implements Initializable
         btdeleteopera.setVisible(false);
 
         oblist.removeAll(oblist);
-        String keywords = tfricerca.getText();
-        ResultSet resultSet = userInfoInterface.GetListUser(keywords);
-        while (resultSet.next())
-        {
-            username = resultSet.getString("username");
-            email = resultSet.getString("email");
-            nome = resultSet.getString("nome");
-            cognome = resultSet.getString("cognome");
-            privilegio =resultSet.getString("r.privilegio");
+        listuser = userInfoInterface.GetListUser(tfricerca.getText());
 
-            setTable(username, privilegio,email, nome, cognome);
+        setTable(listuser);
 
-        }
         tfricerca.clear();
+
     }
 
-    public void gotoSupervisor() throws Exception {
-        Stage stage1;
-        Parent home1;
-
-        stage1 = (Stage) butsuperv.getScene().getWindow();
-        home1 = FXMLLoader.load(getClass().getResource("../view/gestioneuser.fxml"));
-
-        Scene homescene1 = new Scene(home1);
-        stage1.setScene(homescene1);
-        stage1.setTitle("Supervisor Panel");
-
-        stage1.show();
+    public void gotoSupervisor(ActionEvent event) {
+       JavaFXController.setManageUser(event);
     }
 
     private void searchOpera() throws SQLException, IOException
@@ -237,13 +172,13 @@ public class AdminPannelController implements Initializable
     {
         InfoUserTable superMan= tableView.getSelectionModel().getSelectedItem();
         if (cbsuperv.isSelected())
-            userInfoInterface.setSupervisorQuery(superMan.getUsername());
+            userInfoInterface.setSupervisorQuery(superMan);
         else
         {
             if (cbadmin.isSelected())
-                userInfoInterface.setAdminQuery(superMan.getUsername());
+                userInfoInterface.setAdminQuery(superMan);
             else
-                userInfoInterface.setUserQuery(superMan.getUsername());
+                userInfoInterface.setUserQuery(superMan);
         }
     }
 
@@ -252,12 +187,12 @@ public class AdminPannelController implements Initializable
     {
         InfoUserTable superMan = tableView.getSelectionModel().getSelectedItem();
         if (cbadmin.isSelected()) {
-            userInfoInterface.setAdminQuery(superMan.getUsername());
+            userInfoInterface.setAdminQuery(superMan);
         } else {
             if (cbsuperv.isSelected()) {
-                userInfoInterface.setSupervisorQuery(superMan.getUsername());
+                userInfoInterface.setSupervisorQuery(superMan);
             } else {
-                userInfoInterface.setUserQuery(superMan.getUsername());
+                userInfoInterface.setUserQuery(superMan);
             }
         }
     }
@@ -307,10 +242,13 @@ public class AdminPannelController implements Initializable
         oblist1 = FXCollections.observableArrayList();
     }
 
-    private void setTable(String u,String p, String e, String n, String c) throws IOException
+    private void setTable(ArrayList<InfoUserTable>user)
     {
-        oblist.add(new InfoUserTable(u,p,n,c,e));
-        tableView.setItems(oblist);
+        for(int i=0;i<user.size();i++)
+        {
+            oblist.add(user.get(i));
+            tableView.setItems(oblist);
+        }
     }
 
     private void setTable1(String titolo, String autore, String genere,Date data) throws IOException
