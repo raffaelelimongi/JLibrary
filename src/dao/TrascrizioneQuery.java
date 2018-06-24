@@ -1,11 +1,9 @@
 package dao;
 
-import dao.Interface.ImageQueryInterface;
-import dao.Interface.SearchOperaInterface;
 import dao.Interface.TrascrizioneQueryInterface;
 import java.sql.*;
 
-public class TrascrizioneQuery implements TrascrizioneQueryInterface,SearchOperaInterface,ImageQueryInterface
+public class TrascrizioneQuery implements TrascrizioneQueryInterface
 {
     PreparedStatement ps;
     ConnectionClass connectionClass = new ConnectionClass();
@@ -143,30 +141,5 @@ public class TrascrizioneQuery implements TrascrizioneQueryInterface,SearchOpera
         ResultSet resultSet = ps.executeQuery();
 
         return resultSet;
-    }
-
-    @Override
-    public ResultSet SearchOperaQueryGeneral(String keyword, String kind) throws SQLException {
-        return null;
-    }
-
-    @Override
-    public ResultSet LoadOpera(String tit) throws SQLException {
-        return null;
-    }
-
-    @Override
-    public ResultSet SearchOperaQueryAdmin(String keyword, String kind) throws SQLException {
-        return null;
-    }
-
-    @Override
-    public ResultSet LoadImage(String tit) throws SQLException {
-        return null;
-    }
-
-    @Override
-    public int UploadImageQuery(String nome, String path, String tit, String autore) throws SQLException {
-        return  0;
     }
 }
