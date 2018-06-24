@@ -14,12 +14,9 @@ import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 import model.InfoUserTable;
 import model.OperaMetadati;
-import java.io.IOException;
 import java.net.URL;
-import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.ResourceBundle;
 
 public class AdminPannelController implements Initializable
@@ -57,18 +54,14 @@ public class AdminPannelController implements Initializable
     private TableColumn<OperaMetadati, String> col_viewop;
 
     private ObservableList<InfoUserTable> oblist;
-
     private ObservableList<OperaMetadati> oblist1;
-
-    public String autore,titolo,genere,username,email,nome,cognome,privilegio;
-    public int id;
-    public Date data;
 
     UserInfoInterface userInfoInterface = new UserInfoQuery();
     OperaInfoQuery operainfoInterface = new OperaInfoQuery();
     SearchOperaInterface searchOperaInterface = new SearchOperaQuery();
 
     ArrayList<InfoUserTable> listuser= new ArrayList<>();
+    ArrayList<OperaMetadati> listopera= new ArrayList<>();
 
     public AdminPannelController() {
     }
@@ -87,6 +80,8 @@ public class AdminPannelController implements Initializable
         tableView.setVisible(true);
         butdelete.setVisible(true);
         btdeleteopera.setVisible(false);
+        cbsuperv.setVisible(true);
+        cbadmin.setVisible(true);
 
         oblist.removeAll(oblist);
         listuser = userInfoInterface.GetListUser(tfricerca.getText());
@@ -101,36 +96,27 @@ public class AdminPannelController implements Initializable
        JavaFXController.setManageUser(event);
     }
 
-    private void searchOpera() throws SQLException, IOException
+    private void searchOpera() throws SQLException
     {
         tableView.setVisible(false);
         tableView1.setVisible(true);
         btdeleteopera.setVisible(true);
         butdelete.setVisible(false);
-
-        String keywords2;
+        cbsuperv.setVisible(false);
+        cbadmin.setVisible(false);
 
         tfricerca.setPromptText("");
         oblist1.removeAll(oblist1);
 
-            keywords2 = tfricerca.getText();
-            ResultSet resultSet = searchOperaInterface.SearchOperaQueryAdmin(keywords2,"");
-            while (resultSet.next()) {
-                //setto le variabili con le informazioni presenti nel DB e le passo al metodo setTable
-                autore = resultSet.getString("autore");
-                titolo = resultSet.getString("titolo");
-                genere = resultSet.getString("c.nome");
-                data= resultSet.getDate("data_pubb");
+        listopera = searchOperaInterface.SearchOperaQueryAdmin(tfricerca.getText());
 
+        setTable1(listopera);
 
-                setTable1(titolo, autore, genere,data);
-
-            }
         tfricerca.clear();
     }
 
     @FXML
-    private void search1() throws SQLException, IOException
+    private void search1() throws SQLException
     {
         if(cbou.getValue().equals("Utente")) {
             searchuser();
@@ -149,7 +135,7 @@ public class AdminPannelController implements Initializable
         {
             InfoUserTable Deleter= tableView.getSelectionModel().getSelectedItem();
             tableView.getItems().removeAll(tableView.getSelectionModel().getSelectedItem());
-            userInfoInterface.DeleteUser(Deleter.getUsername());
+            userInfoInterface.DeleteUser(Deleter);
         }
     }
 
@@ -163,7 +149,7 @@ public class AdminPannelController implements Initializable
         {
             OperaMetadati DeleteOP = tableView1.getSelectionModel().getSelectedItem();
             tableView1.getItems().removeAll(tableView1.getSelectionModel().getSelectedItem());
-            operainfoInterface.DeleteOpera(DeleteOP.getTitolo(),DeleteOP.getAutore());
+            operainfoInterface.DeleteOpera(DeleteOP);
         }
     }
 
@@ -225,6 +211,9 @@ public class AdminPannelController implements Initializable
         cbou.getItems().addAll("Utente", "Opera");
         cbou.setValue("Opera");
 
+        cbsuperv.setVisible(false);
+        cbadmin.setVisible(false);
+
         butdelete.setVisible(false);
 
         col_nomeop.setCellValueFactory(new PropertyValueFactory<>("titolo"));
@@ -251,9 +240,12 @@ public class AdminPannelController implements Initializable
         }
     }
 
-    private void setTable1(String titolo, String autore, String genere,Date data) throws IOException
+    private void setTable1(ArrayList<OperaMetadati> opera)
     {
-        oblist1.add(new OperaMetadati(titolo, autore, genere, data));
-        tableView1.setItems(oblist1);
+        for(int i=0;i<opera.size();i++)
+        {
+            oblist1.add(opera.get(i));
+            tableView1.setItems(oblist1);
+        }
     }
 }
