@@ -1,7 +1,12 @@
-package dao;
+ackage dao;
 
 import dao.Interface.TrascrizioneQueryInterface;
+import model.InfoUserTable;
+import model.OperaMetadati;
+
+import java.io.IOException;
 import java.sql.*;
+import java.util.ArrayList;
 
 public class TrascrizioneQuery implements TrascrizioneQueryInterface
 {
@@ -121,25 +126,37 @@ public class TrascrizioneQuery implements TrascrizioneQueryInterface
     }
 
     @Override
-    public int AssegnaTrascrizione(String tit,String aut,String user) throws SQLException
+    public int AssegnaTrascrizione(OperaMetadati opera, InfoUserTable user) throws SQLException
     {
         String sql = "UPDATE utente SET IDtrascrizione=(SELECT op.ID from opera_trascritta op JOIN opera o ON(op.ID=o.IDoperatrascritta) WHERE(o.titolo=? AND o.autore=?)) WHERE (username=? AND trascrittore=?)";
         ps = connection.prepareStatement(sql);
-        ps.setString(1,tit);
-        ps.setString(2,aut);
-        ps.setString(3,user);
+        ps.setString(1,opera.getTitolo());
+        ps.setString(2,opera.getAutore());
+        ps.setString(3,user.getUsername());
         ps.setInt(4,1);
         return ps.executeUpdate();
     }
 
     @Override
-    public ResultSet SearchOperaSoft() throws SQLException
+    public ArrayList<OperaMetadati> SearchOperaSoft() throws SQLException
     {
+        ArrayList<OperaMetadati> listopere = new ArrayList<>();
         String sql = "SELECT DISTINCT(titolo) titolo,autore FROM opera JOIN opera_trascritta op WHERE (IDoperatrascritta != op.ID)";
         ps = connection.prepareStatement(sql);
 
         ResultSet resultSet = ps.executeQuery();
 
-        return resultSet;
+        while(resultSet.next())
+        {
+            String titolo = resultSet.getString("titolo");
+            String autore = resultSet.getString("autore");
+            try {
+                OperaMetadati opera = new OperaMetadati(titolo,autore,null,null);
+                listopere.add(opera);
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
+        return listopere;
     }
 }
