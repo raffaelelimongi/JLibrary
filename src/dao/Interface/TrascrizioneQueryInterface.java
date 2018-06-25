@@ -1,7 +1,11 @@
 package dao.Interface;
 
+import model.InfoUserTable;
+import model.OperaMetadati;
+
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
 
 public interface TrascrizioneQueryInterface
 {
@@ -15,7 +19,7 @@ public interface TrascrizioneQueryInterface
 
      void Create(String titolo) throws SQLException;
 
-     int AssegnaTrascrizione(String tit,String aut,String user) throws SQLException;
+     int AssegnaTrascrizione(OperaMetadati op, InfoUserTable user) throws SQLException;
 
      ResultSet LoadTrascrizione(String tit) throws SQLException;
 
@@ -23,6 +27,5 @@ public interface TrascrizioneQueryInterface
 
      void Decline(String name,String titolo) throws SQLException;
 
-     ResultSet SearchOperaSoft() throws SQLException;
-
+     ArrayList<OperaMetadati> SearchOperaSoft() throws SQLException;
 }
