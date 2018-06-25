@@ -1,27 +1,22 @@
 package controller;
 
-import dao.Interface.SearchOperaInterface;
 import dao.Interface.TrascrizioneQueryInterface;
-import dao.SearchOperaQuery;
 import dao.TrascrizioneQuery;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
-import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
-import javafx.scene.Parent;
-import javafx.scene.Scene;
 import javafx.scene.control.Label;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
 import javafx.scene.control.cell.PropertyValueFactory;
-import javafx.stage.Stage;
+import model.InfoUserTable;
 import model.OperaMetadati;
 import java.io.IOException;
 import java.net.URL;
-import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.ResourceBundle;
 
 public class AssegnazioneTrascrizioneController implements Initializable
@@ -37,30 +32,30 @@ public class AssegnazioneTrascrizioneController implements Initializable
 
     private ObservableList<OperaMetadati> oblist;
 
-    SearchOperaInterface assegnatrascrizione= new SearchOperaQuery();
+    TrascrizioneQueryInterface searchopera= new TrascrizioneQuery();
     TrascrizioneQueryInterface assegnatrascrizione2= new TrascrizioneQuery();
+
+    ArrayList<OperaMetadati> listoperatrascr = new ArrayList<>();
 
     public AssegnazioneTrascrizioneController()
     {}
 
-    public void CaricaOpere() throws SQLException, IOException
+    public void CaricaOpere() throws SQLException
     {
         oblist.removeAll(oblist);
 
-        ResultSet resultSet = assegnatrascrizione.SearchOperaSoft();
-        while (resultSet.next())
-        {
-            setTable(resultSet.getString("titolo"), resultSet.getString("autore"));
-        }
+        listoperatrascr = searchopera.SearchOperaSoft();
+
+        setTable(listoperatrascr);
     }
 
-    public void Assegna() throws SQLException
+    public void Assegna() throws SQLException, IOException
     {
         if(textuser.getText().equals("") || textTitolo.getText().equals("") || textautore.getText().equals(""))
         {
             lbmex.setText("Errore nessun campo deve essere vuoto");
                 } else {
-                    int result = assegnatrascrizione2.AssegnaTrascrizione(textTitolo.getText(), textautore.getText(), textuser.getText());
+                    int result = assegnatrascrizione2.AssegnaTrascrizione(new OperaMetadati(textTitolo.getText(),textautore.getText(),null,null),new InfoUserTable( textuser.getText(),null,null,null,null));
                     if (result == 1) {
                         lbmex.setText("Assegnazione riuscita!");
                     } else {
@@ -82,9 +77,12 @@ public class AssegnazioneTrascrizioneController implements Initializable
     }
 
     //Metodo per settare la Tableview con i valori presi dal DB
-    private void setTable(String titolo, String autore) throws IOException
+    private void setTable(ArrayList<OperaMetadati> listopere)
     {
-        oblist.add(new OperaMetadati(titolo, autore, "",null));
-        table.setItems(oblist);
+        for(int i=0;i<listopere.size();i++)
+        {
+            oblist.add(listopere.get(i));
+            table.setItems(oblist);
+        }
     }
 }
