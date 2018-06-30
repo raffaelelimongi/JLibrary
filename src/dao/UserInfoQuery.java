@@ -120,81 +120,115 @@ public class UserInfoQuery implements UserInfoInterface
     }
 
     @Override
-    public void DeleteUser(String Username) throws SQLException
+    public void DeleteUser(InfoUserTable deluser) throws SQLException
     {
         String sql = "DELETE FROM utente WHERE username = ?";
         st=connection.prepareStatement(sql);
-        st.setString(1,Username);
+        st.setString(1,deluser.getUsername());
         st.execute();
     }
 
     @Override
-    public void AcceptTrascrittore(String user) throws SQLException
+    public void AcceptTrascrittore(InfoUserTable user) throws SQLException
     {
         String sql = "UPDATE utente SET trascrittore=? WHERE( username = ?)";
         st=connection.prepareStatement(sql);
         st.setInt(1,1);
-        st.setString(2,user);
+        st.setString(2,user.getUsername());
         st.execute();
     }
 
     @Override
-    public void PromoteUser(String user) throws SQLException
+    public void PromoteUser(InfoUserTable user) throws SQLException
     {
         String sql = "UPDATE utente inner join ruolo r ON(utente.ID=r.IDutente) SET privilegio=? WHERE(username = ? AND r.privilegio !=?)";
         st=connection.prepareStatement(sql);
         st.setString(1,"supervisor");
-        st.setString(2,user);
+        st.setString(2,user.getUsername());
         st.setString(3,"supervisor");
         st.execute();
     }
 
     @Override
-    public void RetrocediUser(String user) throws SQLException
+    public void RetrocediUser(InfoUserTable user) throws SQLException
     {
         String sql = "UPDATE utente JOIN ruolo ON(utente.ID=ruolo.IDutente) SET trascrittore=?,ric_trascrittore=? WHERE(username=? AND ruolo.privilegio !=?)";
         st=connection.prepareStatement(sql);
         st.setInt(1,0);
         st.setInt(2,2);
-        st.setString(3,user);
+        st.setString(3,user.getUsername());
         st.setString(4,"supervisor");
         st.execute();
     }
 
     @Override
-    public  ResultSet  SupervisorUserPanelQuery (String keyword , String kind) throws SQLException
+    public  ArrayList<InfoUserTable>  SupervisorUserPanelQuery (String keyword , String kind) throws SQLException
     {
+        ArrayList<InfoUserTable>listuser = new ArrayList<>();
+
         if(kind.equals("ric_trascrittore"))
         {
             //preparo la query da inviare ed eseguire sul DB
-            String sql1 = "SELECT username,password,nome,cognome,email,r.privilegio FROM utente JOIN ruolo r ON(utente.ID=r.IDutente) WHERE (ric_trascrittore=? AND trascrittore=? AND r.privilegio!=?)";
+            String sql1 = "SELECT username,nome,cognome,email,r.privilegio FROM utente JOIN ruolo r ON(utente.ID=r.IDutente) WHERE (ric_trascrittore=? AND trascrittore=? AND r.privilegio!=?)";
             st = connection.prepareStatement(sql1);
             st.setInt(1, 1);
             st.setInt(2, 0);
             st.setString(3,"admin");
             ResultSet resultSet = st.executeQuery();
-            return resultSet;
+
+            while (resultSet.next())
+            {
+                try {
+                    listuser.add(new InfoUserTable(resultSet.getString("username"),resultSet.getString("r.privilegio"),resultSet.getString("nome"),resultSet.getString("cognome"),resultSet.getString("email")));
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            }
+            return listuser;
         }
         else
         {
             if(kind.equals("Trascrittori"))
             {
-                String sql1 = "SELECT username,password,nome,cognome,email,r.privilegio FROM utente JOIN ruolo r ON(utente.ID=r.IDutente) WHERE (trascrittore=? AND r.privilegio!=?)";
+                String sql1 = "SELECT username,nome,cognome,email,r.privilegio FROM utente JOIN ruolo r ON(utente.ID=r.IDutente) WHERE (trascrittore=? AND r.privilegio!=?)";
                 st = connection.prepareStatement(sql1);
                 st.setInt(1, 1);
                 st.setString(2,"admin");
                 ResultSet resultSet = st.executeQuery();
-                return resultSet;
+                while (resultSet.next())
+                {
+                    try {
+                        listuser.add(new InfoUserTable(resultSet.getString("username"),resultSet.getString("r.privilegio"),resultSet.getString("nome"),resultSet.getString("cognome"),resultSet.getString("email")));
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
+                }
+                return listuser;
             }
             else
             {
                 if(kind.equals(""))
                 {
-                    String sql1 = "SELECT username,password,nome,cognome,email,r.privilegio FROM utente JOIN ruolo r ON(utente.ID=r.IDutente) WHERE (r.privilegio!=?)";
+                    String sql1 = "SELECT username,nome,cognome,email,r.privilegio FROM utente JOIN ruolo r ON(utente.ID=r.IDutente) WHERE (r.privilegio!=?)";
                     st = connection.prepareStatement(sql1);
                     st.setString(1, "admin");
                     ResultSet resultSet = st.executeQuery();
-                    return resultSet;
+                    while (resultSet.next())
+                    {
+                        String username = resultSet.getString("username");
+                        String email = resultSet.getString("email");
+                        String nome = resultSet.getString("nome");
+                        String cognome = resultSet.getString("cognome");
+                        String privilegio =resultSet.getString("r.privilegio");
+
+                        try {
+                            InfoUserTable user = new InfoUserTable(username,privilegio,nome,cognome,email);
+                            listuser.add(user);
+                        } catch (IOException e) {
+                            e.printStackTrace();
+                        }
+                    }
+                    return listuser;
                 }
             }
         }
