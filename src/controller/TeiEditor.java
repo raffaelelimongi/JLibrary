@@ -1,5 +1,7 @@
 package controller;
 
+import dao.ImageQuery;
+import dao.Interface.ImageQueryInterface;
 import dao.Interface.TrascrizioneQueryInterface;
 import dao.TrascrizioneQuery;
 import javafx.collections.FXCollections;
@@ -8,17 +10,16 @@ import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.cell.PropertyValueFactory;
-import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.stage.Stage;
+import model.TrascrizioneDati;
 import model.UserModel;
 import model.ImmagineDati;
 import model.OperaMetadati;
 import javafx.scene.control.TableView;
-import java.io.*;
 import java.net.URL;
-import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.ResourceBundle;
 import  com.jfoenix.controls.JFXButton;
 
@@ -31,65 +32,39 @@ public class TeiEditor implements Initializable
     @FXML
     private TableColumn<OperaMetadati,ImageView> col_image;
     @FXML
-    private JFXButton btclose,btaccept,btdecline,btsave;
+    private JFXButton btclose,btaccept,btdecline;
 
     private ObservableList<ImmagineDati> oblist;
-    private Image image;
+
+    ImageQueryInterface imagequery = new ImageQuery();
     TrascrizioneQueryInterface trascrQueryInterf = new TrascrizioneQuery();
     TrascrizioneQueryInterface trascmanage = new TrascrizioneQuery();
-    static  String titolo;
+    static TrascrizioneDati trasc;
+    ArrayList<ImmagineDati>imagedata=new ArrayList<>();
 
     public TeiEditor()
     {
     }
 
-    public static void setscene(String titolo1) throws IOException
+    public void setTitolo(TrascrizioneDati trascrizioneDati)
     {
-        titolo=titolo1;
-
+        trasc=trascrizioneDati;
     }
 
     //metodo per caricare il testo dal DB al Text
-    public void LoadText() throws SQLException, IOException
+    public void LoadText() throws SQLException
     {
+        trasc = trascrQueryInterf.loadtext(trasc); //faccio la query per caricarmi le info delle opere da trascrivere
+        texttrascrizione.setText(trasc.getTesto());
 
-        ResultSet resultSet = trascrQueryInterf.loadtext(titolo); //faccio la query per caricarmi le info delle opere da trascrivere
+        imagedata= imagequery.LoadImageOpera(trasc.getTitolo());
+        setTable(imagedata);
 
-        while (resultSet.next())
-        {
-                texttrascrizione.setText(resultSet.getString("op.testo"));
-                titolo = resultSet.getString("o.titolo");
-          /*   2 modo per visualizzare le immagini ma poco efficente e sicuro,anche se un po piu reale
-
-            InputStream is = resultSet.getBinaryStream("i.image");
-            OutputStream os = new FileOutputStream(new File("photo.jpg"));
-            byte[] content = new byte[1024];
-            int size ;
-            while((size = is.read(content)) != -1)
-            {
-                os.write(content,0,size);
-            }
-            os.close();
-            is.close();
-
-            image = new Image("file:photo.jpg", 1000, 500, true, true);
-          ImageView imageView = new ImageView(image);
-
-          */
-                File file = new File(resultSet.getString("i.image"));
-                image = new Image(file.toURI().toString());
-                ImageView imageView = new ImageView(image);
-                imageView.setFitWidth(1000);
-                imageView.setFitHeight(500);
-                imageView.setPreserveRatio(true);
-                setTable(titolo, imageView);
-            }
         }
-
-
     public void SaveText() throws SQLException
     {
-        trascrQueryInterf.savetext(titolo,texttrascrizione.getText());
+        trasc.setTesto(texttrascrizione.getText());
+        trascrQueryInterf.savetext(trasc);
     }
 
     //metodo per chiudere lo stage TeiEditor
@@ -101,20 +76,23 @@ public class TeiEditor implements Initializable
 
     public void Decline() throws SQLException
     {
-        trascmanage.Decline("",titolo);
+        trascmanage.Decline(trasc);
     }
 
     public void Accept() throws SQLException
     {
-        trascmanage.Accept(null,texttrascrizione.getText());
+        trascmanage.Accept(trasc);
         Stage stage = (Stage) btaccept.getScene().getWindow();
         stage.close();
     }
 
-    private void setTable(String titolo, ImageView imageView2) throws IOException
+    private void setTable(ArrayList<ImmagineDati>imagez)
     {
-        oblist.add(new ImmagineDati(titolo,imageView2,titolo,"","",null));
-        tbwimage.setItems(oblist);
+        for(int i=0;i<imagez.size();i++)
+        {
+            oblist.add(imagez.get(i));
+            tbwimage.setItems(oblist);
+        }
     }
 
     @Override
@@ -133,8 +111,6 @@ public class TeiEditor implements Initializable
         try {
             LoadText();
         } catch (SQLException e) {
-            e.printStackTrace();
-        } catch (IOException e) {
             e.printStackTrace();
         }
     }
