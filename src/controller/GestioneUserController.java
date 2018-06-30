@@ -23,6 +23,7 @@ import java.io.IOException;
 import java.net.URL;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.ResourceBundle;
 
 public class GestioneUserController implements Initializable
@@ -42,8 +43,9 @@ public class GestioneUserController implements Initializable
     
     private ObservableList<InfoUserTable> oblist;
 
-    public String Username,Nome,Cognome,Email,Privilegio;
     UserInfoInterface userInfoInterface = new UserInfoQuery();
+    ArrayList<InfoUserTable> listuser=new ArrayList<>();
+
     InfoUserTable datiuser;
     {
         try {
@@ -59,9 +61,8 @@ public class GestioneUserController implements Initializable
     {
     }
 
-    public void search() throws SQLException, IOException
+    public void search() throws SQLException
     {
-
         oblist.removeAll(oblist);
 
         if(!cbfilter.getValue().equals("ric_trascrittore"))
@@ -72,44 +73,29 @@ public class GestioneUserController implements Initializable
         {
             btacctrasc.setVisible(true);
         }
-
-        String kind= cbfilter.getValue();
-        String keywords = searchutente.getText();
-
-        ResultSet resultSet = user.SupervisorUserPanelQuery (keywords,kind);
-
-        while (resultSet.next())
-        {
-            //setto le variabili con le informazioni presenti nel DB e le passo al metodo setTable
-            Username = resultSet.getString("username");
-            Nome = resultSet.getString("nome");
-            Cognome = resultSet.getString("cognome");
-            Email = resultSet.getString("email");
-            Privilegio= resultSet.getString("r.privilegio");
-
-            setTable(Username, Nome, Cognome, Email,Privilegio);
-        }
+        listuser = user.SupervisorUserPanelQuery (searchutente.getText(),cbfilter.getValue());
+        setTable(listuser);
     }
 
     public void PromuoviUser() throws SQLException
     {
         InfoUserTable Deleter= tablesearch.getSelectionModel().getSelectedItem();
         tablesearch.getItems().removeAll(tablesearch.getSelectionModel().getSelectedItem());
-        userInfoInterface.PromoteUser(Deleter.getUsername());
+        userInfoInterface.PromoteUser(Deleter);
     }
 
     public void RetrocediUser() throws SQLException
     {
         InfoUserTable Deleter= tablesearch.getSelectionModel().getSelectedItem();
         tablesearch.getItems().removeAll(tablesearch.getSelectionModel().getSelectedItem());
-        userInfoInterface.RetrocediUser(Deleter.getUsername());
+        userInfoInterface.RetrocediUser(Deleter);
     }
 
     public void AcceptTrascrittore() throws SQLException
     {
         InfoUserTable Deleter= tablesearch.getSelectionModel().getSelectedItem();
         tablesearch.getItems().removeAll(tablesearch.getSelectionModel().getSelectedItem());
-        userInfoInterface.AcceptTrascrittore(Deleter.getUsername());
+        userInfoInterface.AcceptTrascrittore(Deleter);
 
     }
 
@@ -141,8 +127,12 @@ public class GestioneUserController implements Initializable
     }
 
     //Metodo per settare la Tableview con i valori presi dal DB
-    private void setTable (String Username, String Nome, String Cognome, String Email, String Privilegio) throws IOException
+    private void setTable (ArrayList<InfoUserTable>listuser)
     {
-        oblist.add(new InfoUserTable(Username, Privilegio, Nome, Cognome,Email));
-        tablesearch.setItems(oblist);
+        for(int i =0;i<listuser.size();i++)
+        {
+            oblist.add(listuser.get(i));
+            tablesearch.setItems(oblist);
+        }
     }
+}
