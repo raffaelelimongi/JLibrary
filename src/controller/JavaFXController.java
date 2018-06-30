@@ -7,6 +7,8 @@ import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
+import model.TrascrizioneDati;
+
 import java.io.IOException;
 
 public class JavaFXController extends Application {
@@ -153,13 +155,16 @@ public class JavaFXController extends Application {
         }
     }
 
-    public static void setManageImage()
+    public static void setViewImage(String tit)
     {
+        new ViewImage().setTitolo(tit);
+
         Parent root;
-        try {
+        try
+        {
             root = FXMLLoader.load(JavaFXController.class.getResource("../view/imageview.fxml"));
             Stage stage = new Stage();
-            stage.setTitle("Manage Image");
+            stage.setTitle("Image");
             Scene home = new Scene(root);
             stage.setScene(home);
             stage.show();
@@ -187,8 +192,10 @@ public class JavaFXController extends Application {
         }
     }
 
-    public static void setTeiEditor() throws IOException
+    public static void setTeiEditor(String titolo) throws IOException
     {
+        TrascrizioneDati trascrizioneDati= new TrascrizioneDati(titolo,null,null);
+        new TeiEditor().setTitolo(trascrizioneDati);
         // Setto la scena per l'apertura della finestra del teiEditor di quella determinata opera
         Parent root;
 
@@ -200,12 +207,14 @@ public class JavaFXController extends Application {
         stage.show();
     }
 
-    public static void setViewOpera()
+    public static void setViewOpera(String tit)
     {
+        new ViewOperaController().setTitolo(tit);
+
         Parent root;
         try
         {
-            root = FXMLLoader.load(ViewOperaController.class.getResource("../view/operaview.fxml"));
+            root = FXMLLoader.load(JavaFXController.class.getResource("../view/operaview.fxml"));
             Stage stage = new Stage();
             stage.setTitle("Opera");
             Scene home = new Scene(root);
@@ -214,6 +223,24 @@ public class JavaFXController extends Application {
 
         } catch (IOException e)
         {
+            e.printStackTrace();
+        }
+
+    }
+
+    public static void setManageImage(ActionEvent event)
+    {
+        Parent root;
+        try {
+            root = FXMLLoader.load(JavaFXController.class.getResource("../view/gestioneimage.fxml"));
+            Stage stage = new Stage();
+            stage.setTitle("Manage Image");
+            Scene home = new Scene(root);
+            stage.setScene(home);
+            stage.show();
+            ((Node)(event.getSource())).getScene().getWindow().hide();
+
+        } catch (IOException e) {
             e.printStackTrace();
         }
     }
