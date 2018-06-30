@@ -7,33 +7,26 @@ import dao.TrascrizioneQuery;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
-import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
-import javafx.scene.Parent;
-import javafx.scene.Scene;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.cell.PropertyValueFactory;
-import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.stage.Stage;
 import model.ImmagineDati;
 import model.OperaMetadati;
 import com.jfoenix.controls.JFXButton;
-import java.io.File;
-import java.io.IOException;
 import java.net.URL;
-import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
-import java.util.List;
 import java.util.ResourceBundle;
 
-public class ViewImage implements Initializable {
+public class ViewImage implements Initializable
+{
     @FXML
     private TableView<ImmagineDati> tbwimage;
     @FXML
-    private TableColumn<OperaMetadati, ImageView> col_image;
+    private TableColumn<OperaMetadati,ImageView> col_image;
     @FXML
     private JFXButton btaccept, btdecline;
 
@@ -43,71 +36,61 @@ public class ViewImage implements Initializable {
     TrascrizioneQueryInterface createtrascr = new TrascrizioneQuery();
 
     public static String titolo;
-    private Image image;
-    private List<Image> list = new ArrayList<>();
-    private String[] name = new String[20];
-    public int i = 0;
+    ArrayList<ImmagineDati> listimage = new ArrayList<>();
 
-    public ViewImage() {
+    public ViewImage()
+    {
     }
 
-    public void setscene(String tit) {
-        titolo = tit;
-
+    public void setTitolo(String tit)
+    {
+        titolo=tit;
     }
 
-    public void LoadImage() throws SQLException, IOException {
-        ResultSet resultSet = imageQueryInterface.LoadImage(titolo);
-
-        while (resultSet.next()) {
-            File file = new File(resultSet.getString("i.image"));
-            image = new Image(file.toURI().toString());
-            list.add(image);
-            ImageView imageView = new ImageView(image);
-            imageView.setFitWidth(1000);
-            imageView.setFitHeight(500);
-            imageView.setPreserveRatio(true);
-            setTable(name[i] = resultSet.getString("i.nome"), imageView);
-            i++;
-        }
+    public void LoadImage() throws SQLException
+    {
+        listimage = imageQueryInterface.LoadImage(titolo);
+        setTable(listimage);
     }
 
     public void Accept() throws SQLException
     {
         createtrascr.Create(titolo);
 
-        for (int i = 0; i < list.size(); i++)
-        {
-            imageQueryInterface.Accept(name[i], titolo);
-        }
+        imageQueryInterface.Accept(listimage, titolo);
+
         Stage stage = (Stage) btaccept.getScene().getWindow();
         stage.close();
     }
 
-    public void Decline() throws SQLException {
-        for (int i = 0; i < list.size(); i++) {
-            imageQueryInterface.Decline(name[i], titolo);
-        }
+    public void Decline() throws SQLException
+    {
+        imageQueryInterface.Decline(titolo);
+
         Stage stage = (Stage) btdecline.getScene().getWindow();
         stage.close();
     }
 
-    private void setTable(String name, ImageView imageView2) throws IOException {
-        oblist.add(new ImmagineDati(name, imageView2, "", "", "", null));
-        tbwimage.setItems(oblist);
+    private void setTable(ArrayList<ImmagineDati> listimage)
+    {
+        for(int i=0;i<listimage.size();i++)
+        {
+            oblist.add(listimage.get(i));
+            tbwimage.setItems(oblist);
+        }
     }
 
     @Override
-    public void initialize(URL location, ResourceBundle resources) {
+    public void initialize(URL location, ResourceBundle resources)
+    {
         col_image.setCellValueFactory(new PropertyValueFactory<>("imageView"));
-        oblist = FXCollections.observableArrayList();
+        oblist=FXCollections.observableArrayList();
 
         try {
             LoadImage();
         } catch (SQLException e) {
             e.printStackTrace();
-        } catch (IOException e) {
-            e.printStackTrace();
         }
+
     }
 }
