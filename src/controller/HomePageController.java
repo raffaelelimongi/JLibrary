@@ -11,11 +11,9 @@ import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 import model.UserModel;
 import model.OperaMetadati;
-import java.io.IOException;
 import java.net.URL;
-import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.util.Date;
+import java.util.ArrayList;
 import java.util.ResourceBundle;
 
 public class HomePageController implements Initializable
@@ -25,29 +23,25 @@ public class HomePageController implements Initializable
     @FXML
     private ChoiceBox<String> cbfilter;
     @FXML
-    private Button btsearch,bttrascrizione,btlogout,btimage,btgestuser;
+    private Button bttrascrizione,btimage,btgestuser;
     @FXML
     private TableView<OperaMetadati> tablesearch;
     @FXML
     private TableColumn<OperaMetadati,String> col_titolo, col_autore, col_genere, col_data, col_link;
 
     private ObservableList<OperaMetadati> oblist;  //uso la Collection ObservableList per creare una lista di istanze di tipo OperaMetadati da inserire successivamente nella tableview
-
-    public String autore;
-    public static String titolo;
-    public String genere;
-    public Date data;
-
+    
     UserModel user =UserModel.getInstance();
-    OperaMetadati operadati = new OperaMetadati("","","",null);
     SearchOperaInterface searchOperaInterface =new SearchOperaQuery();
 
-    public HomePageController() throws IOException
+    ArrayList<OperaMetadati>listopere=new ArrayList<>();
+
+    public HomePageController()
     {
     }
 
     @FXML
-    private void search() throws SQLException, IOException
+    private void search() throws SQLException
     {
         String keywords2, kind2;
         txtsearch.setPromptText("");
@@ -57,54 +51,21 @@ public class HomePageController implements Initializable
         if(cbfilter.getValue().equals(""))       //controllo che la choisebox sia vuota per cercare solo tramite keyword
         {
             keywords2 = txtsearch.getText();
-            if (!keywords2.equals(""))
-            {
-                keywords2=txtsearch.getText();
-                ResultSet resultSet = searchOperaInterface.SearchOperaQueryGeneral(keywords2,cbfilter.getValue());
-                while (resultSet.next())
-                {
-                    //setto le variabili con le informazioni presenti nel DB e le passo al metodo setTable
-                    autore = resultSet.getString("autore");
-                    titolo = resultSet.getString("titolo");
-                    genere = resultSet.getString("c.nome");
-                    data=resultSet.getDate("data_pubb");
-
-                        setTable(titolo, autore, genere,data);
-
-                        operadati.setTitolo(titolo);
-                        operadati.setAutore(autore);
-                        operadati.setGenere(genere);
-                        operadati.setDatapubb(data);
-                }
-
-            } else
-                {
+            if (!keywords2.equals("")) {
+                listopere = searchOperaInterface.SearchOperaQueryGeneral(txtsearch.getText(), cbfilter.getValue());
+                setTable(listopere);
+            } else {
                 txtsearch.setPromptText("Inserire almeno una lettera!");
-                }
+            }
         }
         else
         {
             keywords2 = txtsearch.getText();
             kind2 = cbfilter.getValue();
 
-            ResultSet resultSet = searchOperaInterface.SearchOperaQueryGeneral(keywords2,kind2);
-
-            while (resultSet.next())
-            {
-                //setto le variabili con le informazioni presenti nel DB e le passo al metodo setTable
-                autore = resultSet.getString("autore");
-                titolo = resultSet.getString("titolo");
-                genere = resultSet.getString("c.nome");
-                data=resultSet.getDate("data_pubb");
-
-                setTable(titolo, autore, genere,data);
-
-                operadati.setTitolo(titolo);
-                operadati.setAutore(autore);
-                operadati.setGenere(genere);
-                operadati.setDatapubb(data);
+            listopere = searchOperaInterface.SearchOperaQueryGeneral(keywords2,kind2);
+            setTable(listopere);
             }
-        }
         txtsearch.clear();
     }
 
@@ -125,7 +86,6 @@ public class HomePageController implements Initializable
     {
         JavaFXController.setUpload();
     }
-
     public void gotomanageuser(ActionEvent event)
     {
       JavaFXController.setManageUser(event);
@@ -134,9 +94,9 @@ public class HomePageController implements Initializable
     {
         JavaFXController.setTrascrizione(event);
     }
-    public void gotomanageimage()
+    public void gotomanageimage(ActionEvent event)
     {
-        JavaFXController.setManageImage();
+        JavaFXController.setManageImage(event);
     }
 
     //metodo per inizializzare il ChoiseBox,tableview e l'observablelist
@@ -167,10 +127,13 @@ public class HomePageController implements Initializable
     }
 
     //Metodo per settare la Tableview con i valori presi dal DB
-    private void setTable(String titolo, String autore, String genere,Date data) throws IOException
+    private void setTable(ArrayList<OperaMetadati>listopere)
     {
-        oblist.add(new OperaMetadati(titolo, autore, genere, data));
-        tablesearch.setItems(oblist);
+        for(int i=0;i<listopere.size();i++)
+        {
+            oblist.add(listopere.get(i));
+            tablesearch.setItems(oblist);
+        }
     }
 
 }
