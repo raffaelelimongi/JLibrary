@@ -18,15 +18,15 @@ public interface UserInfoInterface
 
     ArrayList<InfoUserTable> GetListUser(String k) throws SQLException;
 
-      ResultSet  SupervisorUserPanelQuery (String keyword , String kind) throws SQLException;
+    ArrayList<InfoUserTable> SupervisorUserPanelQuery (String keyword , String kind) throws SQLException;
 
     void DeleteUser(InfoUserTable deluser) throws SQLException;
 
-    void AcceptTrascrittore(String u) throws SQLException;
+    void AcceptTrascrittore(InfoUserTable user) throws SQLException;
 
-    void PromoteUser(String u) throws SQLException;
+    void PromoteUser(InfoUserTable user) throws SQLException;
 
-    void RetrocediUser(String u) throws SQLException;
+    void RetrocediUser(InfoUserTable user) throws SQLException;
 
     void setSupervisorQuery(InfoUserTable supervisor) throws SQLException;
 
