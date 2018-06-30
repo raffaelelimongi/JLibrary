@@ -1,10 +1,17 @@
 package dao;
 
 import dao.Interface.ImageQueryInterface;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
+import model.ImmagineDati;
+import java.io.File;
+import java.io.IOException;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.List;
 
 public class ImageQuery implements  ImageQueryInterface
 {
@@ -17,7 +24,14 @@ public class ImageQuery implements  ImageQueryInterface
     public ImageQuery() {
     }
 
-    public ResultSet LoadImage(String tit) throws SQLException {
+    @Override
+    public ArrayList<ImmagineDati> LoadImage(String tit) throws SQLException
+    {
+        ImmagineDati imagee;
+        ArrayList<ImmagineDati> imagelist = new ArrayList<>();
+        Image image;
+        List<Image> list = new ArrayList<>();
+
         //preparo la query da inviare ed eseguire sul DB
         String sql = "SELECT o.titolo,i.image,i.nome FROM  opera o JOIN immagine i ON (o.ID=i.IDopera) WHERE(titolo=? AND accept=?) ";
         ps = connection.prepareStatement(sql);
@@ -25,7 +39,70 @@ public class ImageQuery implements  ImageQueryInterface
         ps.setInt(2, 0);
         //ritorno il sisultato della query
         ResultSet resultSet = ps.executeQuery();
-        return resultSet;
+
+        while(resultSet.next())
+        {
+            File file = new File(resultSet.getString("i.image"));
+            image = new Image(file.toURI().toString());
+            list.add(image);
+            ImageView imageView = new ImageView(image);
+            imageView.setFitWidth(1000);
+            imageView.setFitHeight(500);
+            imageView.setPreserveRatio(true);
+            imagee = new ImmagineDati(resultSet.getString("i.nome"),imageView,null,null,null,null);
+            imagelist.add(imagee);
+        }
+        return imagelist;
+    }
+
+    @Override
+    public ArrayList<ImmagineDati> LoadImageOpera(String tit) throws SQLException
+    {
+        ImmagineDati imagee;
+        ArrayList<ImmagineDati> imagelist = new ArrayList<>();
+        Image image;
+        List<Image> list = new ArrayList<>();
+        String[] name = new String[20];
+
+        //preparo la query da inviare ed eseguire sul DB
+        String sql = "SELECT o.titolo,i.image,i.nome FROM  opera o JOIN immagine i ON (o.ID=i.IDopera) WHERE(titolo=? AND accept=?) ";
+        ps = connection.prepareStatement(sql);
+        ps.setString(1, tit);
+        ps.setInt(2, 1);
+        //ritorno il sisultato della query
+        ResultSet resultSet = ps.executeQuery();
+
+        while(resultSet.next())
+        {
+                 /*   2 modo per visualizzare le immagini ma poco efficente e sicuro,anche se un po piu reale
+
+            InputStream is = resultSet.getBinaryStream("i.image");
+            OutputStream os = new FileOutputStream(new File("photo.jpg"));
+            byte[] content = new byte[1024];
+            int size ;
+            while((size = is.read(content)) != -1)
+            {
+                os.write(content,0,size);
+            }
+            os.close();
+            is.close();
+
+            image = new Image("file:photo.jpg", 1000, 500, true, true);
+          ImageView imageView = new ImageView(image);
+
+          */
+
+            File file = new File(resultSet.getString("i.image"));
+            image = new Image(file.toURI().toString());
+            list.add(image);
+            ImageView imageView = new ImageView(image);
+            imageView.setFitWidth(1000);
+            imageView.setFitHeight(500);
+            imageView.setPreserveRatio(true);
+            imagee = new ImmagineDati(resultSet.getString("i.nome"),imageView,null,null,null,null);
+            imagelist.add(imagee);
+        }
+        return imagelist;
     }
 
     @Override
@@ -54,14 +131,9 @@ public class ImageQuery implements  ImageQueryInterface
     }
 
     @Override
-    public void Accept(String name, String tit) throws SQLException
+    public void Accept(ArrayList<ImmagineDati>imagelist, String tit) throws SQLException
     {
-        if(nome.equals(""))
-        {
-            nome=name;
-        }
-
-        //collego l'opera appena accettata all'opera trascritta
+         //collego l'opera appena accettata all'opera trascritta
         String sql = "UPDATE opera o SET o.IDoperatrascritta=(SELECT ID from opera_trascritta WHERE(testo=? AND accept=0 )) WHERE (o.titolo=?)";
         ps = connection.prepareStatement(sql);
         ps.setString(1, tit);
@@ -69,24 +141,24 @@ public class ImageQuery implements  ImageQueryInterface
         ps.execute();
 
         //collego l'immagine appena accettata all'opera trascritta
-        String sql2 = "UPDATE immagine i SET i.accept=? ,i.IDoperatrascritta=(SELECT ID from opera_trascritta WHERE(testo=? AND accept=0)) WHERE i.nome=?";
-        ps = connection.prepareStatement(sql2);
-        ps.setBoolean(1,true);
-        ps.setString(2,tit);
-        ps.setString(3, name);
-        ps.execute();
+        for(int i=0;i<imagelist.size();i++)
+        {
+            String sql2 = "UPDATE immagine i SET i.accept=? ,i.IDoperatrascritta=(SELECT ID from opera_trascritta WHERE(testo=? AND accept=0)) WHERE i.nome=?";
+            ps = connection.prepareStatement(sql2);
+            ps.setBoolean(1, true);
+            ps.setString(2, tit);
+            ps.setString(3, imagelist.get(i).getNomeimg());
+            ps.execute();
+        }
 
     }
 
     @Override
-    public void Decline(String name, String tit) throws SQLException
+    public void Decline(String tit) throws SQLException
     {
-        if(titolo.equals(""))
-        {
             String sql = "DELETE  FROM opera WHERE(titolo=?)";
             ps = connection.prepareStatement(sql);
             ps.setString(1, tit);
             ps.execute();
-        }
     }
 }
