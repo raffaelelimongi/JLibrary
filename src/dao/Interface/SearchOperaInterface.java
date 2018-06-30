@@ -8,11 +8,12 @@ import java.util.ArrayList;
 
 public interface SearchOperaInterface
 {
-    ResultSet SearchOperaQueryGeneral(String keyword, String kind) throws SQLException;
+    ArrayList<OperaMetadati> SearchOperaQueryGeneral(String keyword, String kind) throws SQLException;
 
-    ResultSet LoadOpera(String tit) throws SQLException;
+    ArrayList<OperaMetadati> LoadOpera(String tit) throws SQLException;
 
     ArrayList<OperaMetadati> SearchOperaQueryAdmin(String keyword) throws SQLException;
 
     ResultSet SearchOperaSoft() throws SQLException;
 }
+
