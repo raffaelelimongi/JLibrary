@@ -1,10 +1,9 @@
-ackage dao;
+package dao;
 
 import dao.Interface.TrascrizioneQueryInterface;
 import model.InfoUserTable;
 import model.OperaMetadati;
-
-import java.io.IOException;
+import model.TrascrizioneDati;
 import java.sql.*;
 import java.util.ArrayList;
 
@@ -46,15 +45,22 @@ public class TrascrizioneQuery implements TrascrizioneQueryInterface
 
     //metodo per caricare il testo dal DB
     @Override
-    public ResultSet loadtext(String tit) throws SQLException
+    public TrascrizioneDati loadtext(TrascrizioneDati trascdate) throws SQLException
     {
+        TrascrizioneDati trascdati=null;
         //preparo la query da inviare ed eseguire sul DB
         String sql = "SELECT op.testo,o.titolo,i.image,op.accept FROM opera_trascritta op JOIN opera o ON (op.ID = o.IDoperatrascritta) JOIN immagine i ON (op.ID=i.IDoperatrascritta) WHERE(o.titolo=? AND o.IDoperatrascritta=op.ID) ";
         ps =connection.prepareStatement(sql);
-        ps.setString(1,tit);
+        ps.setString(1,trascdate.getTitolo());
         //ritorno il sisultato della query
         ResultSet resultSet = ps.executeQuery();
-        return  resultSet;
+
+        while(resultSet.next())
+        {
+            trascdati= new TrascrizioneDati(resultSet.getString("o.titolo"),null,resultSet.getString("op.testo"));
+        }
+
+        return  trascdati;
     }
 
     public ResultSet LoadTrascrizione(String tit) throws SQLException
@@ -71,20 +77,18 @@ public class TrascrizioneQuery implements TrascrizioneQueryInterface
 
     //metodo per salvare il testo modificato sul DB
     @Override
-    public void savetext(String titolo,String testo) throws SQLException
+    public void savetext(TrascrizioneDati trasc) throws SQLException
     {
-
         //preparo la query da inviare ed eseguire sul DB
         String sql = "UPDATE opera_trascritta op JOIN opera o ON (op.ID = o.IDoperatrascritta) SET testo=? WHERE o.titolo=?";
         ps = connection.prepareStatement(sql);
-        ps.setString(1,testo);
-        ps.setString(2,titolo);
+        ps.setString(1,trasc.getTesto());
+        ps.setString(2,trasc.getTitolo());
         ps.execute();
-
     }
 
     @Override
-    public  void Accept(String name, String tit) throws SQLException
+    public  void Accept(TrascrizioneDati trasc) throws SQLException
     {
 
         //preparo la query da inviare ed eseguire sul DB
@@ -96,21 +100,21 @@ public class TrascrizioneQuery implements TrascrizioneQueryInterface
 
 
         //preparo la query da inviare ed eseguire sul DB
-        String sql1 = "UPDATE opera_trascritta SET accept=? WHERE testo=?";
+        String sql1 = "UPDATE opera_trascritta op join opera o ON(op.ID=o.IDoperatrascritta) SET accept=? WHERE titolo=?";
         ps = connection.prepareStatement(sql1);
         ps.setFloat(1, 1);
-        ps.setString(2,tit);
+        ps.setString(2,trasc.getTitolo());
         ps.execute();
 
     }
 
     @Override
-    public void Decline(String name,String titolo) throws SQLException
+    public void Decline(TrascrizioneDati trasc) throws SQLException
     {
         //preparo la query da inviare ed eseguire sul DB
         String sql = "DELETE op.* FROM opera_trascritta op INNER JOIN opera o ON op.ID = o.IDoperatrascritta WHERE (o.titolo=?)";
         ps = connection.prepareStatement(sql);
-        ps.setString(1,titolo);
+        ps.setString(1,trasc.getTitolo());
         ps.execute();
     }
 
@@ -150,12 +154,8 @@ public class TrascrizioneQuery implements TrascrizioneQueryInterface
         {
             String titolo = resultSet.getString("titolo");
             String autore = resultSet.getString("autore");
-            try {
-                OperaMetadati opera = new OperaMetadati(titolo,autore,null,null);
-                listopere.add(opera);
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
+            OperaMetadati opera = new OperaMetadati(titolo,autore,null,null);
+            listopere.add(opera);
         }
         return listopere;
     }
