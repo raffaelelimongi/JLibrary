@@ -7,6 +7,8 @@ import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
+import model.UserModel;
+
 import java.sql.SQLException;
 
 public class SignUpController
@@ -18,14 +20,14 @@ public class SignUpController
     private TextField txtuser,txtname,txtsurname,txtemail;
     @FXML
     private PasswordField txtpass,txtrpass;
-    @FXML
-    private Button btsubmit,btback;
+
+    UserModel user= UserModel.getInstance();
 
     public SignUpController()
     {
     }
 
-    public void Submit(ActionEvent event) throws Exception
+    public void Submit(ActionEvent event)
     {
         //Controllo che nei campi Username,password,email non venga inserito un testo vuoto
         if (!txtpass.getText().matches("") && !txtuser.getText().matches("") && !txtemail.getText().matches(""))
@@ -38,7 +40,13 @@ public class SignUpController
                 try {
                     UserAuthenticationQuery userDaoInterface = new UserAuthenticationQuery();
 
-                    int result= userDaoInterface.SignInQuery(txtuser.getText(),txtpass.getText(),txtname.getText(),txtsurname.getText(), txtemail.getText());
+                    user.setUsername(txtuser.getText());
+                    user.setPassword(txtpass.getText());
+                    user.setNome(txtname.getText());
+                    user.setCognome(txtsurname.getText());
+                    user.setEmail(txtemail.getText());
+
+                    int result= userDaoInterface.SignInQuery(user);
                     if (result == 1) {
                         gotologin(event);
                     } else {
@@ -66,7 +74,6 @@ public class SignUpController
             }
         }
     }
-
     public  void gotologin(ActionEvent event)
     {
         JavaFXController.setLogin(event);
