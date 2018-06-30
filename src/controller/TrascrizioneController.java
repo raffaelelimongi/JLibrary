@@ -33,12 +33,12 @@ public class TrascrizioneController implements Initializable
 
     String titolo;
 
-    TrascrizioneDati trascrizioneDati= new TrascrizioneDati(titolo,null);
+    TrascrizioneDati trascrizioneDati= new TrascrizioneDati(titolo,null,null);
 
     UserModel userModel =UserModel.getInstance();
 
-    public TrascrizioneController() throws IOException {
-
+    public TrascrizioneController()
+    {
     }
 
     public void gotohome(ActionEvent event)
@@ -92,9 +92,9 @@ public class TrascrizioneController implements Initializable
         }
     }
     //Metodo per settare la Tableview con i valori presi dal DB
-    private void setTable(String titolo) throws IOException
+    private void setTable(String titolo)
     {
-        oblist.add(new TrascrizioneDati(titolo,null));
+        oblist.add(new TrascrizioneDati(titolo,null,null));
         tabletrascrizioni.setItems(oblist);
     }
 }
