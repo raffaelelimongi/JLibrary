@@ -3,6 +3,7 @@ package dao.Interface;
 import model.InfoUserTable;
 import model.OperaMetadati;
 import model.TrascrizioneDati;
+import model.UserModel;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -10,9 +11,9 @@ import java.util.ArrayList;
 
 public interface TrascrizioneQueryInterface
 {
-     ResultSet getTrascrizioniList (String u,String priv) throws SQLException;
+     ArrayList<TrascrizioneDati> getTrascrizioniList (UserModel userModel) throws SQLException;
 
-     ResultSet getUserAbility() throws SQLException;
+     ArrayList<TrascrizioneDati> getTrascUserAbility() throws SQLException;
 
      TrascrizioneDati loadtext(TrascrizioneDati trasc) throws SQLException;
 
