@@ -77,7 +77,12 @@ public class ViewProfileController implements Initializable {
     //Metodo per l'update dei dati nel profilo dell'utente
     public void updateinfo() throws SQLException
     {
-        int resultSet = userInfoInterface.UpdateInfo(userModel.getUsername(), txtpass.getText(), txtemail.getText(), txtnome.getText(), txtcognome.getText());
+        userModel.setPassword(txtpass.getText());
+        userModel.setEmail(txtemail.getText());
+        userModel.setNome(txtnome.getText());
+        userModel.setCognome(txtcognome.getText());
+
+        int resultSet = userInfoInterface.UpdateInfo(userModel);
 
         if (resultSet == 1)
         {
@@ -92,7 +97,8 @@ public class ViewProfileController implements Initializable {
     {
         lbvip.setText("SI");
         try {
-            userInfoInterface.VipQuery(userModel.getUsername(),1);
+            userModel.setVip(true);
+            userInfoInterface.VipQuery(userModel);
         } catch (SQLException e) {
             e.printStackTrace();
         }
@@ -103,7 +109,8 @@ public class ViewProfileController implements Initializable {
     public void Trascrittore() throws SQLException
     {
         lbtrascrittore.setText("SI");
-        userInfoInterface.Trascrittore(userModel.getUsername(),1);
+        userModel.setRictrascrittore(true);
+        userInfoInterface.Trascrittore(userModel);
         textlbtrasc.setVisible(false);
         bttrasc.setVisible(false);
     }
@@ -113,3 +120,4 @@ public class ViewProfileController implements Initializable {
     {
         userInfo();
     }
+}
