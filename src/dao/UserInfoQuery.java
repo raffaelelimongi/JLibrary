@@ -45,48 +45,50 @@ public class UserInfoQuery implements UserInfoInterface
     }
 
     @Override
-    public int UpdateInfo(String user, String pass, String email, String name, String surname) throws SQLException
+    public int UpdateInfo(UserModel user) throws SQLException
     {
 
         //preparo la query da inviare ed eseguire sul DB
         String sql = "UPDATE utente SET password =?, email=?, nome=?, cognome =? WHERE username=?";
         st =connection.prepareStatement(sql);
-        st.setString(1,pass);
-        st.setString(2,email);
-        st.setString(3,name);
-        st.setString(4,surname);
-        st.setString(5,user);
+        st.setString(1,user.getPassword());
+        st.setString(2,user.getEmail());
+        st.setString(3,user.getNome());
+        st.setString(4,user.getCognome());
+        st.setString(5,user.getUsername());
 
         //ritorno il sisultato della query
         int resultSet = st.executeUpdate();
-
-        UserInfoQuery(user);
 
         return resultSet;
     }
 
     @Override
-    public void VipQuery(String user , int vip) throws SQLException
+    public void VipQuery(UserModel user) throws SQLException
     {
+        int vip=0;
+        if(user.isVip()==true){vip=1;}
 
         //preparo la query da inviare ed eseguire sul DB
         String sql = "UPDATE utente SET vip=? WHERE username=?";
         st = connection.prepareStatement(sql);
         st.setInt(1,vip);
-        st.setString(2,user);
+        st.setString(2,user.getUsername());
         st.executeUpdate();
 
     }
 
     @Override
-    public void Trascrittore(String user , int rictrascr) throws SQLException
+    public void Trascrittore(UserModel user) throws SQLException
     {
+        int rictrascr=0;
+        if(user.getRictrascrittore()==true){rictrascr=1;}
 
         //preparo la query da inviare ed eseguire sul DB
         String sql = "UPDATE utente SET ric_trascrittore=? WHERE username=?";
         st = connection.prepareStatement(sql);
         st.setInt(1,rictrascr);
-        st.setString(2,user);
+        st.setString(2,user.getUsername());
         st.executeUpdate();
     }
 
