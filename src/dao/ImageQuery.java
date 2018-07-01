@@ -4,6 +4,8 @@ import dao.Interface.ImageQueryInterface;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import model.ImmagineDati;
+import model.OperaMetadati;
+
 import java.io.File;
 import java.io.IOException;
 import java.sql.Connection;
@@ -49,7 +51,7 @@ public class ImageQuery implements  ImageQueryInterface
             imageView.setFitWidth(1000);
             imageView.setFitHeight(500);
             imageView.setPreserveRatio(true);
-            imagee = new ImmagineDati(resultSet.getString("i.nome"),imageView,null,null,null,null);
+            imagee = new ImmagineDati(resultSet.getString("i.nome"),null,imageView,null,null,null,null);
             imagelist.add(imagee);
         }
         return imagelist;
@@ -99,14 +101,14 @@ public class ImageQuery implements  ImageQueryInterface
             imageView.setFitWidth(1000);
             imageView.setFitHeight(500);
             imageView.setPreserveRatio(true);
-            imagee = new ImmagineDati(resultSet.getString("i.nome"),imageView,null,null,null,null);
+            imagee = new ImmagineDati(resultSet.getString("i.nome"),null,imageView,null,null,null,null);
             imagelist.add(imagee);
         }
         return imagelist;
     }
 
     @Override
-    public int UploadImageQuery(String nome, String path, String tit,String aut) throws SQLException {
+    public int UploadImageQuery(ImmagineDati image, OperaMetadati opera) throws SQLException {
 
       /*
        try {
@@ -119,11 +121,11 @@ public class ImageQuery implements  ImageQueryInterface
 
         String sql = "INSERT INTO immagine(nome,formato,image,IDopera) VALUES (?,?,?,(SELECT ID from opera WHERE titolo=? AND autore=?))";
         ps = connection.prepareStatement(sql);
-        ps.setString(1, nome);
+        ps.setString(1, image.getNomeimg());
         ps.setString(2, ".jpg");
-        ps.setString(3, path);
-        ps.setString(4,tit);
-        ps.setString(5,aut);
+        ps.setString(3, image.getPath());
+        ps.setString(4,opera.getTitolo());
+        ps.setString(5,opera.getAutore());
 
         //ps.setBinaryStream(3,(InputStream)fis, (int)f.length()); //2modo di memorizzare le immagini ma poco efficente e sicuro
 
