@@ -3,7 +3,7 @@ package model;
 import controller.*;
 import javafx.scene.control.Label;
 import javafx.scene.input.MouseEvent;
-import java.io.IOException;
+
 import java.util.Date;
 
 public class OperaMetadati
@@ -12,7 +12,7 @@ public class OperaMetadati
     Date datapubb ;
     private Label view;
 
-    public OperaMetadati(String titolo, String autore, String genere,Date datapubb) throws IOException
+    public OperaMetadati(String titolo, String autore, String genere, Date datapubb)
     {
         this.titolo = titolo;
         this.autore = autore;
@@ -25,8 +25,7 @@ public class OperaMetadati
         //se viene cliccato apre la finestra per la visualizzazione dell'opera
         view.setOnMouseClicked((MouseEvent mouseEvent) ->
         {
-            JavaFXController.setViewOpera();
-            //ViewOperaController.ViewOpera(this.titolo);
+            JavaFXController.setViewOpera(titolo);
         });
 
     }
