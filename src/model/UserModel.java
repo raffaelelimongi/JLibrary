@@ -2,8 +2,6 @@ package model;
 
 import vo.UserInfo;
 
-import java.util.Iterator;
-
 //Classe contenente tutti i dati principali dell'Utente iscritto
 public class UserModel extends UserInfo
 {
@@ -33,6 +31,7 @@ public class UserModel extends UserInfo
     {
         return instance;
     }
+
     public String getUsername() {
         return username;
     }
@@ -41,7 +40,7 @@ public class UserModel extends UserInfo
         return password;
     }
 
-    public boolean isVip() {
+    public Boolean isVip() {
         return vip;
     }
 
