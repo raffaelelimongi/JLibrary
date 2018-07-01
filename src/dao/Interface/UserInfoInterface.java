@@ -1,6 +1,7 @@
 package dao.Interface;
 
 import model.InfoUserTable;
+import model.UserModel;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -10,11 +11,11 @@ public interface UserInfoInterface
 {
     ResultSet UserInfoQuery(String user) throws SQLException;
 
-    int UpdateInfo(String user, String pass, String email, String name, String surname) throws SQLException;
+    int UpdateInfo(UserModel userModel) throws SQLException;
 
-    void VipQuery(String user , int vip) throws SQLException;
+    void VipQuery(UserModel userModel) throws SQLException;
 
-    void Trascrittore(String user , int rictrascr) throws SQLException;
+    void Trascrittore(UserModel userModel) throws SQLException;
 
     ArrayList<InfoUserTable> GetListUser(String k) throws SQLException;
 
