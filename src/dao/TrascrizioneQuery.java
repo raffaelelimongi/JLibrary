@@ -4,6 +4,8 @@ import dao.Interface.TrascrizioneQueryInterface;
 import model.InfoUserTable;
 import model.OperaMetadati;
 import model.TrascrizioneDati;
+import model.UserModel;
+
 import java.sql.*;
 import java.util.ArrayList;
 
@@ -18,21 +20,32 @@ public class TrascrizioneQuery implements TrascrizioneQueryInterface
 
     //metodo che restituisce tutte le opere che devono essere trascritte + l'eventuale testo che viene messo nella variabile Text testo della classe TrascrizioneDati
     @Override
-    public ResultSet getTrascrizioniList (String user,String privilegio) throws SQLException
+    public ArrayList<TrascrizioneDati> getTrascrizioniList (UserModel user) throws SQLException
     {
+        ArrayList<TrascrizioneDati>listtrasc=new ArrayList<>();
         //preparo la query da inviare ed eseguire sul DB
-        String sql = "SELECT o.titolo,op.accept FROM opera o JOIN opera_trascritta op ON (op.ID = o.IDoperatrascritta) JOIN utente u ON (op.id=u.IDtrascrizione) JOIN ruolo r ON (u.ID=r.IDutente) WHERE (u.username=? AND u.IDtrascrizione=op.ID)";
+        String sql = "SELECT o.titolo,op.accept FROM opera o JOIN opera_trascritta op ON (op.ID = o.IDoperatrascritta) JOIN utente u ON (op.id=u.IDtrascrizione) JOIN ruolo r ON (u.ID=r.IDutente) WHERE (u.username=?)";
         ps = connection.prepareStatement(sql);
-        ps.setString(1,user);
+        ps.setString(1,user.getUsername());
         //ritorno il sisultato della query
         ResultSet resultSet = ps.executeQuery();
 
-        return  resultSet;
+        while (resultSet.next()) {
+            //controllo se la trascrizione è stata accettata o meno, se non è stata accettata la carico nella tabella
+            if (!resultSet.getBoolean("op.accept")) {
+                String titolo = resultSet.getString("titolo");
+                listtrasc.add(new TrascrizioneDati(titolo,null,null));
+
+            }
+        }
+
+        return  listtrasc;
     }
 
     @Override
-    public ResultSet getUserAbility () throws SQLException
+    public ArrayList<TrascrizioneDati> getTrascUserAbility () throws SQLException
     {
+        ArrayList<TrascrizioneDati> listtrascr=new ArrayList<>();
         //preparo la query da inviare ed eseguire sul DB
         String sql = "SELECT DISTINCT (titolo) titolo,op.accept FROM opera o JOIN opera_trascritta op ON (op.ID = o.IDoperatrascritta) JOIN utente u JOIN ruolo r ON (u.ID=r.IDutente)";
         ps = connection.prepareStatement(sql);
@@ -40,7 +53,12 @@ public class TrascrizioneQuery implements TrascrizioneQueryInterface
         //ritorno il sisultato della query
         ResultSet resultSet = ps.executeQuery();
 
-        return  resultSet;
+        while (resultSet.next()) {
+                String titolo = resultSet.getString("titolo");
+                listtrascr.add(new TrascrizioneDati(titolo,null,null));
+
+            }
+        return  listtrascr;
     }
 
     //metodo per caricare il testo dal DB
