@@ -3,8 +3,10 @@ package dao;
 import dao.Interface.OperaInfoInterface;
 import model.OperaMetadati;
 
+import java.io.IOException;
 import java.sql.*;
 import java.time.LocalDate;
+import java.util.ArrayList;
 
 public class OperaInfoQuery implements OperaInfoInterface
 {
@@ -17,15 +19,15 @@ public class OperaInfoQuery implements OperaInfoInterface
     public OperaInfoQuery(){}
 
     @Override
-    public int OperaInfoQuery(String titolo, String autore, LocalDate data, String genere,String nomeimmagine,String pathimage) throws SQLException
+    public int OperaInfoQuery(OperaMetadati opera) throws SQLException
     {
 
         String sql= "INSERT INTO opera (titolo,autore,data_pubb,IDcategoria) VALUES (?,?,?,(SELECT ID FROM categoria c WHERE c.nome=?))";
         st = connection.prepareStatement(sql);
-        st.setString(1,titolo);
-        st.setString(2,autore);
-        st.setDate(3,Date.valueOf(data));
-        st.setString(4,genere);
+        st.setString(1,opera.getTitolo());
+        st.setString(2,opera.getAutore());
+        st.setDate(3, (Date) opera.getDatapubb());
+        st.setString(4,opera.getGenere());
         return st.executeUpdate();
     }
 
@@ -52,15 +54,23 @@ public class OperaInfoQuery implements OperaInfoInterface
     }
 
     @Override
-    public ResultSet LoadOpera(String tit) throws SQLException {
+    public ArrayList<OperaMetadati> LoadOpera() throws SQLException
+    {
+        ArrayList<OperaMetadati> listop = new ArrayList<>();
         ConnectionClass connectionClass = new ConnectionClass();
         Connection connection = connectionClass.getConnection();
-        String sql ="SELECT DISTINCT (titolo) FROM opera o JOIN immagine i ON(o.ID=i.Idopera) WHERE i.accept=?";
+        String sql ="SELECT DISTINCT (titolo) titolo FROM opera o JOIN immagine i ON(o.ID=i.Idopera) WHERE i.accept=?";
         st = connection.prepareStatement(sql);
         st.setInt(1,0);
 
         ResultSet resultSet = st.executeQuery();
 
-        return resultSet;
+        while(resultSet.next())
+        {
+            listop.add(new OperaMetadati(resultSet.getString("titolo"),null,null,null));
+
+        }
+
+        return listop;
     }
 }
