@@ -15,6 +15,7 @@ import model.TrascrizioneDati;
 import java.net.URL;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.ResourceBundle;
 
 public class TrascrizioneController implements Initializable
@@ -76,9 +77,10 @@ public class TrascrizioneController implements Initializable
     //Metodo per settare la Tableview con i valori presi dal DB
     private void setTable(ArrayList<TrascrizioneDati>trasclist)
     {
-        for(int i=0;i<trasclist.size();i++)
+        Iterator<TrascrizioneDati>itr=trasclist.iterator();
+        while(itr.hasNext())
         {
-            oblist.add(trasclist.get(i));
+            oblist.add(itr.next());
             tabletrascrizioni.setItems(oblist);
         }
     }
