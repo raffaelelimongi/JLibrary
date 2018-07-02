@@ -1,6 +1,7 @@
 package controller;
 
 import dao.*;
+import dao.Interface.ImageQueryInterface;
 import dao.Interface.SearchOperaInterface;
 import dao.Interface.TrascrizioneQueryInterface;
 import javafx.collections.FXCollections;
@@ -28,6 +29,7 @@ import java.net.URL;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 import java.util.ResourceBundle;
 
@@ -45,47 +47,47 @@ public class ViewOperaController implements Initializable
     private Button btdownload;
 
     private ObservableList<ImmagineDati> oblist;
-    private Image image;
     static  String titolo;
     private List<Image> list = new ArrayList<>();
+    private ArrayList<OperaMetadati> opere = new ArrayList<>();
+    private ArrayList<ImmagineDati> immagine = new ArrayList<>();
 
     SearchOperaInterface searchOperaInterface = new SearchOperaQuery();
     TrascrizioneQueryInterface trascrizioneQueryInterface = new TrascrizioneQuery();
+    ImageQueryInterface imageQueryInterface = new ImageQuery();
     UserModel user = UserModel.getInstance();
 
     public ViewOperaController()
     {
-    }
-
-    public static void ViewOpera(String titolo1)
-    {
-        titolo=titolo1;
-
 
     }
 
-    public void LoadOpera()throws SQLException, IOException
+    public void setTitolo(String tit)
     {
-        ResultSet resultSet = searchOperaInterface.LoadOpera(titolo); //faccio la query per caricarmi le info dell opera da visualizzare
+        titolo=tit;
+    }
 
-        while (resultSet.next()) {
-            titolo = resultSet.getString("titolo");
-            lbtitolo.setText(resultSet.getString("titolo"));
-            lbautore.setText(resultSet.getString("autore"));
-            lbdata.setText(resultSet.getString("data_pubb"));
-            lbgenere.setText(resultSet.getString("c.nome"));
 
-            File file = new File(resultSet.getString("i.image"));
-            image = new Image(file.toURI().toString());
-            list.add(image);
-            ImageView imageView = new ImageView(image);
-            imageView.setFitWidth(1000);
-            imageView.setFitHeight(500);
-            imageView.setPreserveRatio(true);
-            setTable(titolo, imageView);
+    public void LoadOpera()throws SQLException
+    {
+
+        opere = searchOperaInterface.LoadOpera(titolo); //faccio la query per caricarmi le info dell opera da visualizzare
+        Iterator<OperaMetadati>itr=opere.iterator();
+        while(itr.hasNext())
+        {
+            OperaMetadati op=itr.next();
+            titolo = op.getTitolo();
+            lbtitolo.setText(op.getTitolo());
+            lbautore.setText(op.getAutore());
+            lbdata.setText(String.valueOf(op.getDatapubb()));
+            lbgenere.setText(op.getGenere());
         }
 
-        resultSet=trascrizioneQueryInterface.LoadTrascrizione(titolo);
+        immagine = imageQueryInterface.LoadImageOpera(titolo);
+
+        setTable(immagine);
+
+       ResultSet resultSet=trascrizioneQueryInterface.LoadTrascrizione(titolo);
 
         while (resultSet.next())
         {
@@ -95,8 +97,6 @@ public class ViewOperaController implements Initializable
             else{
                 text.setPromptText("Trascrizione non disponibile!!");
             }
-
-
         }
     }
 
@@ -132,16 +132,20 @@ public class ViewOperaController implements Initializable
 
     }
 
-    public void setTable(String titolo, ImageView imageView2) throws IOException
+    public void setTable(ArrayList<ImmagineDati> image)
     {
-    oblist.add(new ImmagineDati("",imageView2,titolo,"","",null));
-    tableimage.setItems(oblist);
+        Iterator<ImmagineDati>itr=image.iterator();
+        while(itr.hasNext())
+        {
+            oblist.add(itr.next());
+            tableimage.setItems(oblist);
+        }
     }
 
     @Override
     public void initialize(URL location, ResourceBundle resources)
     {
-        if(!user.isVip()) //controllo che l'utente sia un Vip per poter scaricare l'opera e quindi vedere il buttono per il download,altrimenti nascondo il button per il download
+        if(!user.isVip()) //controllo che l'utente sia un Vip per poter scaricare l'opera e quindi vedere il button per il download,altrimenti nascondo il button per il download
         {
          btdownload.setVisible(false);
         }
@@ -154,8 +158,6 @@ public class ViewOperaController implements Initializable
         try {
             LoadOpera();
         } catch (SQLException e) {
-            e.printStackTrace();
-        } catch (IOException e) {
             e.printStackTrace();
         }
     }
