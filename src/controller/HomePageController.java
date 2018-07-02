@@ -14,6 +14,7 @@ import model.OperaMetadati;
 import java.net.URL;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.ResourceBundle;
 
 public class HomePageController implements Initializable
@@ -30,7 +31,7 @@ public class HomePageController implements Initializable
     private TableColumn<OperaMetadati,String> col_titolo, col_autore, col_genere, col_data, col_link;
 
     private ObservableList<OperaMetadati> oblist;  //uso la Collection ObservableList per creare una lista di istanze di tipo OperaMetadati da inserire successivamente nella tableview
-    
+
     UserModel user =UserModel.getInstance();
     SearchOperaInterface searchOperaInterface =new SearchOperaQuery();
 
@@ -129,11 +130,12 @@ public class HomePageController implements Initializable
     //Metodo per settare la Tableview con i valori presi dal DB
     private void setTable(ArrayList<OperaMetadati>listopere)
     {
-        for(int i=0;i<listopere.size();i++)
+        Iterator<OperaMetadati>itr=listopere.iterator();
+
+        while ((itr.hasNext()))
         {
-            oblist.add(listopere.get(i));
+            oblist.add(itr.next());
             tablesearch.setItems(oblist);
         }
     }
-
 }
