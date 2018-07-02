@@ -20,6 +20,7 @@ import javafx.scene.control.TableView;
 import java.net.URL;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.ResourceBundle;
 import  com.jfoenix.controls.JFXButton;
 
@@ -88,9 +89,11 @@ public class TeiEditor implements Initializable
 
     private void setTable(ArrayList<ImmagineDati>imagez)
     {
-        for(int i=0;i<imagez.size();i++)
+        Iterator<ImmagineDati>itr=imagez.iterator();
+
+        while ((itr.hasNext()))
         {
-            oblist.add(imagez.get(i));
+            oblist.add(itr.next());
             tbwimage.setItems(oblist);
         }
     }
