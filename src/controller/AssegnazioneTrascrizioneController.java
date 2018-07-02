@@ -17,6 +17,7 @@ import java.io.IOException;
 import java.net.URL;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.ResourceBundle;
 
 public class AssegnazioneTrascrizioneController implements Initializable
@@ -79,9 +80,11 @@ public class AssegnazioneTrascrizioneController implements Initializable
     //Metodo per settare la Tableview con i valori presi dal DB
     private void setTable(ArrayList<OperaMetadati> listopere)
     {
-        for(int i=0;i<listopere.size();i++)
+        Iterator<OperaMetadati>itr=listopere.iterator();
+
+        while(itr.hasNext())
         {
-            oblist.add(listopere.get(i));
+            oblist.add(itr.next());
             table.setItems(oblist);
         }
     }
