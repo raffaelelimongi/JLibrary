@@ -24,6 +24,7 @@ import java.net.URL;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.ResourceBundle;
 
 public class GestioneUserController implements Initializable
@@ -129,9 +130,11 @@ public class GestioneUserController implements Initializable
     //Metodo per settare la Tableview con i valori presi dal DB
     private void setTable (ArrayList<InfoUserTable>listuser)
     {
-        for(int i =0;i<listuser.size();i++)
+        Iterator<InfoUserTable>itr=listuser.iterator();
+
+        while (itr.hasNext())
         {
-            oblist.add(listuser.get(i));
+            oblist.add(itr.next());
             tablesearch.setItems(oblist);
         }
     }
