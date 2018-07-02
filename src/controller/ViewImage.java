@@ -19,6 +19,7 @@ import com.jfoenix.controls.JFXButton;
 import java.net.URL;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.ResourceBundle;
 
 public class ViewImage implements Initializable
@@ -73,9 +74,10 @@ public class ViewImage implements Initializable
 
     private void setTable(ArrayList<ImmagineDati> listimage)
     {
-        for(int i=0;i<listimage.size();i++)
+        Iterator<ImmagineDati>itr=listimage.iterator();
+        while (itr.hasNext())
         {
-            oblist.add(listimage.get(i));
+            oblist.add(itr.next());
             tbwimage.setItems(oblist);
         }
     }
