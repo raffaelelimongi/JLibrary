@@ -17,13 +17,13 @@ public class SearchOperaQuery implements SearchOperaInterface
     }
 
     @Override
-    public ArrayList<OperaMetadati> SearchOperaQueryGeneral(String keyword, String kind) throws SQLException
+    public ArrayList<OperaMetadati> SearchOperaQueryGeneral(String ricerca, String kind) throws SQLException
     {
         ArrayList<OperaMetadati> listaopere = new ArrayList<>();
 
         String sql = "SELECT DISTINCT(titolo) titolo,autore,c.nome,IDcategoria,data_pubb FROM opera join categoria c ON (opera.IDcategoria=c.ID) JOIN immagine i ON(opera.ID=i.IDopera) WHERE TITOLO LIKE ? AND c.nome LIKE ? AND i.accept=?";
         ps = connection.prepareStatement(sql);
-        ps.setString(1, "%" + keyword + "%");
+        ps.setString(1, "%" + ricerca + "%");
         ps.setString(2, "%" + kind + "%");
         ps.setInt(3, 1);
 
@@ -43,12 +43,12 @@ public class SearchOperaQuery implements SearchOperaInterface
     }
 
     @Override
-    public ArrayList<OperaMetadati> SearchOperaQueryAdmin(String keyword) throws SQLException
+    public ArrayList<OperaMetadati> SearchOperaQueryAdmin(String ricerca) throws SQLException
     {
         ArrayList<OperaMetadati> listopere =new ArrayList<>();
         String sql = "SELECT DISTINCT(titolo) titolo,autore,c.nome,IDcategoria,data_pubb FROM opera join categoria c ON (opera.IDcategoria=c.ID) WHERE TITOLO LIKE ?";
         ps = connection.prepareStatement(sql);
-        ps.setString(1, "%" + keyword + "%");
+        ps.setString(1, "%" + ricerca + "%");
 
         ResultSet resultSet = ps.executeQuery();
         while (resultSet.next())
@@ -65,11 +65,6 @@ public class SearchOperaQuery implements SearchOperaInterface
         }
 
         return listopere;
-    }
-
-    @Override
-    public ResultSet SearchOperaSoft() throws SQLException {
-        return null;
     }
 
     @Override
