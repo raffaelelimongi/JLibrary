@@ -27,9 +27,9 @@ public class InfoUserTable extends UserInfo {
     public String getPrivilegio() {
         return privilegio;
     }
-    
+
     public void setPrivilegio(String privilegio) {
         this.privilegio = privilegio;
     }
-    
+
 }
