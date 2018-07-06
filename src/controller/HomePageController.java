@@ -44,15 +44,15 @@ public class HomePageController implements Initializable
     @FXML
     private void search() throws SQLException
     {
-        String keywords2, kind2;
+        String ricerca, kind2;
         txtsearch.setPromptText("");
 
         oblist.removeAll(oblist); //ogni volta che ri-effetuo una ricerca rimuovo tutte le vecchie istanze create nella oblist
 
         if(cbfilter.getValue().equals(""))       //controllo che la choisebox sia vuota per cercare solo tramite keyword
         {
-            keywords2 = txtsearch.getText();
-            if (!keywords2.equals("")) {
+            ricerca = txtsearch.getText();
+            if (!ricerca.equals("")) {
                 listopere = searchOperaInterface.SearchOperaQueryGeneral(txtsearch.getText(), cbfilter.getValue());
                 setTable(listopere);
             } else {
@@ -61,10 +61,10 @@ public class HomePageController implements Initializable
         }
         else
         {
-            keywords2 = txtsearch.getText();
+            ricerca = txtsearch.getText();
             kind2 = cbfilter.getValue();
 
-            listopere = searchOperaInterface.SearchOperaQueryGeneral(keywords2,kind2);
+            listopere = searchOperaInterface.SearchOperaQueryGeneral(ricerca,kind2);
             setTable(listopere);
             }
         txtsearch.clear();
