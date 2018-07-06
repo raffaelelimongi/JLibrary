@@ -17,6 +17,7 @@ import model.OperaMetadati;
 import java.net.URL;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.ResourceBundle;
 
 public class AdminPannelController implements Initializable
@@ -233,18 +234,20 @@ public class AdminPannelController implements Initializable
 
     private void setTable(ArrayList<InfoUserTable>user)
     {
-        for(int i=0;i<user.size();i++)
+        Iterator<InfoUserTable> itr=user.iterator();
+        while(itr.hasNext())
         {
-            oblist.add(user.get(i));
+            oblist.add(itr.next());
             tableView.setItems(oblist);
         }
     }
 
     private void setTable1(ArrayList<OperaMetadati> opera)
     {
-        for(int i=0;i<opera.size();i++)
+        Iterator<OperaMetadati>itr=opera.iterator();
+        while(itr.hasNext())
         {
-            oblist1.add(opera.get(i));
+            oblist1.add(itr.next());
             tableView1.setItems(oblist1);
         }
     }
