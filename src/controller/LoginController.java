@@ -14,11 +14,7 @@ public class LoginController
     @FXML
     public TextField textusername,textpassword;
     @FXML
-    private Button btlogin,btsignup;
-    @FXML
     private Label result;
-
-    private static String username;
 
     public LoginController()
     {
