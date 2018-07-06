@@ -1,6 +1,6 @@
 package controller;
 
-        import dao.ImageQuery;
+import dao.ImageQuery;
         import dao.Interface.ImageQueryInterface;
         import dao.Interface.OperaInfoInterface;
         import dao.OperaInfoQuery;
